@@ -54,10 +54,17 @@ jobs:
             git clone https://github.com/${{ github.repository }}.git .
             
             echo "📦 Installing dependencies..."
-            npm ci
+            npm install --production=false
             
             echo "🏗️ Building application..."
             npm run build
+            
+            # Check if build was successful
+            if [ ! -d "out" ]; then
+              echo "❌ Build failed - no 'out' directory found"
+              ls -la
+              exit 1
+            fi
             
             echo "🐳 Building Docker image..."
             docker build -t torregrossa-portfolio:latest .
@@ -77,28 +84,33 @@ jobs:
             docker image prune -f --filter "dangling=true"
             
             echo "⏳ Waiting for container to start..."
-            sleep 10
+            sleep 15
             
             echo "🔍 Running health check..."
-            for i in {1..5}; do
+            for i in {1..10}; do
               if curl -f http://localhost:80 >/dev/null 2>&1; then
                 echo "✅ Health check passed!"
                 echo "🌐 Site accessible at http://${{ secrets.VPS_HOST }}"
                 echo "📍 Your portfolio is now live at http://217.154.120.146"
+                
+                # Show container status for confirmation
+                docker ps --filter "name=torregrossa-app"
                 exit 0
               else
-                echo "⏳ Attempt $i/5 - waiting for container..."
-                sleep 5
+                echo "⏳ Attempt $i/10 - waiting for container..."
+                sleep 3
               fi
             done
             
-            echo "❌ Health check failed after 5 attempts!"
+            echo "❌ Health check failed after 10 attempts!"
             echo "📋 Container logs:"
             docker logs torregrossa-app --tail 50 2>/dev/null || echo "No container logs available"
             echo "📊 Container status:"
             docker ps -a --filter "name=torregrossa-app"
             echo "🔍 Docker images:"
             docker images | grep torregrossa || echo "No torregrossa images found"
+            echo "📁 Build output check:"
+            ls -la /opt/torregrossa-portfolio/out/ 2>/dev/null || echo "No build output directory"
             exit 1
 
   notify:
