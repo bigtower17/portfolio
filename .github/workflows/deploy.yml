@@ -28,10 +28,6 @@ jobs:
         
       - name: Run build test
         run: npm run build
-        
-      - name: Check code formatting
-        run: npx prettier --check .
-        continue-on-error: true
 
   build-and-push:
     needs: test
