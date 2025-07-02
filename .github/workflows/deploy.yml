@@ -1,14 +1,8 @@
-name: Deploy to VPS with GHCR
+name: Deploy Direct to VPS
 
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   test:
@@ -29,54 +23,9 @@ jobs:
       - name: Run build test
         run: npm run build
 
-  build-and-push:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-            
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     
     steps:
       - name: Deploy to VPS
@@ -86,47 +35,71 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
+            echo "🚀 Starting deployment..."
+            
+            # Navigate to project directory
             cd /opt/torregrossa-portfolio
             
-            echo "Logging into GitHub Container Registry..."
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            
-            echo "Pulling latest Docker image..."
-            docker pull ghcr.io/${{ github.repository }}:latest
-            
-            echo "Stopping old container..."
-            docker-compose down || true
-            
-            echo "Updating docker-compose configuration..."
-            sed -i "s|image:.*|image: ghcr.io/${{ github.repository }}:latest|" docker-compose.yml
-            
-            echo "Starting new container..."
-            docker-compose up -d
-            
-            echo "Cleaning up old images..."
-            docker image prune -f
-            
-            echo "Waiting for container to start..."
-            sleep 15
-            
-            echo "Running health check on port 80..."
-            if curl -f http://localhost:80; then
-              echo "✅ Health check passed!"
-              echo "🌐 Site accessible at http://${{ secrets.VPS_HOST }}"
+            echo "🔄 Pulling latest code..."
+            if [ ! -d ".git" ]; then
+              echo "📥 Cloning repository..."
+              git clone https://github.com/${{ github.repository }}.git .
             else
-              echo "❌ Health check failed!"
-              echo "📋 Container logs:"
-              docker-compose logs
-              echo "📊 Container status:"
-              docker-compose ps
-              exit 1
+              echo "📥 Updating repository..."
+              git fetch origin
+              git reset --hard origin/master
             fi
             
-            echo "🚀 Deployment completed successfully!"
-            echo "📍 Your portfolio is now live at http://${{ secrets.VPS_HOST }}"
+            echo "📦 Installing dependencies..."
+            npm ci
+            
+            echo "🏗️ Building application..."
+            npm run build
+            
+            echo "🐳 Building Docker image..."
+            docker build -t torregrossa-portfolio:latest .
+            
+            echo "⏹️ Stopping old container..."
+            docker stop torregrossa-app 2>/dev/null || true
+            docker rm torregrossa-app 2>/dev/null || true
+            
+            echo "🚀 Starting new container..."
+            docker run -d \
+              --name torregrossa-app \
+              --restart unless-stopped \
+              -p 80:80 \
+              torregrossa-portfolio:latest
+            
+            echo "🧹 Cleaning up old images..."
+            docker image prune -f --filter "dangling=true"
+            
+            echo "⏳ Waiting for container to start..."
+            sleep 10
+            
+            echo "🔍 Running health check..."
+            for i in {1..5}; do
+              if curl -f http://localhost:80 >/dev/null 2>&1; then
+                echo "✅ Health check passed!"
+                echo "🌐 Site accessible at http://${{ secrets.VPS_HOST }}"
+                echo "📍 Your portfolio is now live at http://217.154.120.146"
+                exit 0
+              else
+                echo "⏳ Attempt $i/5 - waiting for container..."
+                sleep 5
+              fi
+            done
+            
+            echo "❌ Health check failed after 5 attempts!"
+            echo "📋 Container logs:"
+            docker logs torregrossa-app --tail 50
+            echo "📊 Container status:"
+            docker ps -a --filter "name=torregrossa-app"
+            echo "🔍 System status:"
+            docker stats --no-stream torregrossa-app || true
+            exit 1
 
   notify:
-    needs: [test, build-and-push, deploy]
+    needs: [test, deploy]
     runs-on: ubuntu-latest
     if: always()
     
@@ -135,13 +108,12 @@ jobs:
         run: |
           echo "=== DEPLOYMENT SUMMARY ==="
           echo "Test job: ${{ needs.test.result }}"
-          echo "Build job: ${{ needs.build-and-push.result }}"
           echo "Deploy job: ${{ needs.deploy.result }}"
           
           if [ "${{ needs.deploy.result }}" == "success" ]; then
             echo "✅ Portfolio deployed successfully!"
             echo "🌐 Accessible at: http://217.154.120.146"
-            echo "📦 Docker image: ghcr.io/${{ github.repository }}:latest"
+            echo "📦 Docker image: torregrossa-portfolio:latest (local)"
             echo ""
             echo "🔗 Next steps:"
             echo "1. Configure DNS: torregrossa.dev → 217.154.120.146"
