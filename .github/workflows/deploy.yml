@@ -37,18 +37,21 @@ jobs:
           script: |
             echo "🚀 Starting deployment..."
             
-            # Navigate to project directory
+            # Install Node.js if not present
+            if ! command -v node &> /dev/null; then
+              echo "📦 Installing Node.js..."
+              curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+              apt-get install -y nodejs
+            fi
+            
+            # Clean and setup project directory
+            echo "🧹 Cleaning project directory..."
+            rm -rf /opt/torregrossa-portfolio
+            mkdir -p /opt/torregrossa-portfolio
             cd /opt/torregrossa-portfolio
             
-            echo "🔄 Pulling latest code..."
-            if [ ! -d ".git" ]; then
-              echo "📥 Cloning repository..."
-              git clone https://github.com/${{ github.repository }}.git .
-            else
-              echo "📥 Updating repository..."
-              git fetch origin
-              git reset --hard origin/master
-            fi
+            echo "📥 Cloning repository..."
+            git clone https://github.com/${{ github.repository }}.git .
             
             echo "📦 Installing dependencies..."
             npm ci
@@ -91,11 +94,11 @@ jobs:
             
             echo "❌ Health check failed after 5 attempts!"
             echo "📋 Container logs:"
-            docker logs torregrossa-app --tail 50
+            docker logs torregrossa-app --tail 50 2>/dev/null || echo "No container logs available"
             echo "📊 Container status:"
             docker ps -a --filter "name=torregrossa-app"
-            echo "🔍 System status:"
-            docker stats --no-stream torregrossa-app || true
+            echo "🔍 Docker images:"
+            docker images | grep torregrossa || echo "No torregrossa images found"
             exit 1
 
   notify:
