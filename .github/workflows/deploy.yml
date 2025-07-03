@@ -28,6 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Checkout code for deployment
+        uses: actions/checkout@v4
+        with:
+          path: 'source'
+          
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -44,14 +49,39 @@ jobs:
               apt-get install -y nodejs
             fi
             
-            # Clean and setup project directory
+            # Clean project directory
             echo "🧹 Cleaning project directory..."
             rm -rf /opt/torregrossa-portfolio
             mkdir -p /opt/torregrossa-portfolio
+            
+      - name: Copy files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "source/*"
+          target: "/opt/torregrossa-portfolio/"
+          strip_components: 1
+          
+      - name: Build and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
             cd /opt/torregrossa-portfolio
             
-            echo "📥 Cloning repository..."
-            git clone https://github.com/${{ github.repository }}.git .
+            echo "📁 Checking files..."
+            ls -la
+            
+            if [ ! -f "package.json" ]; then
+              echo "❌ package.json not found!"
+              echo "Files in directory:"
+              find . -type f -name "*.json" -o -name "*.js" -o -name "*.ts" | head -20
+              exit 1
+            fi
             
             echo "📦 Installing dependencies..."
             npm install --production=false
@@ -62,6 +92,7 @@ jobs:
             # Check if build was successful
             if [ ! -d "out" ]; then
               echo "❌ Build failed - no 'out' directory found"
+              echo "Available directories:"
               ls -la
               exit 1
             fi
@@ -109,8 +140,6 @@ jobs:
             docker ps -a --filter "name=torregrossa-app"
             echo "🔍 Docker images:"
             docker images | grep torregrossa || echo "No torregrossa images found"
-            echo "📁 Build output check:"
-            ls -la /opt/torregrossa-portfolio/out/ 2>/dev/null || echo "No build output directory"
             exit 1
 
   notify:
