@@ -4,6 +4,14 @@ import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from "lucide-react";
 import { useState } from "react";
 
+// Bold & Creative Color Palette
+const colors = {
+  background: '#1B1B1B',
+  primary: '#F8B400', 
+  secondary: '#E63946',
+  accent: '#FFFFFF'
+};
+
 export function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -18,7 +26,7 @@ export function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simula invio form (sostituisci con la tua logica)
+    // Simula invio form
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       setSubmitStatus("success");
@@ -44,18 +52,21 @@ export function Contact() {
       label: "Email",
       value: "hello@torregrossa.dev",
       href: "mailto:hello@torregrossa.dev",
+      color: colors.primary
     },
     {
       icon: Phone,
       label: "Telefono",
       value: "+39 123 456 7890",
       href: "tel:+391234567890",
+      color: colors.secondary
     },
     {
       icon: MapPin,
       label: "Località",
-      value: "Italia",
+      value: "Italia 🇮🇹",
       href: "#",
+      color: colors.primary
     },
   ];
 
@@ -64,19 +75,22 @@ export function Contact() {
       icon: Github,
       label: "GitHub",
       href: "https://github.com",
-      color: "hover:text-gray-900 dark:hover:text-white",
+      color: colors.accent,
+      hoverBg: colors.background
     },
     {
       icon: Linkedin,
-      label: "LinkedIn",
+      label: "LinkedIn", 
       href: "https://linkedin.com",
-      color: "hover:text-blue-600",
+      color: colors.primary,
+      hoverBg: colors.primary
     },
     {
       icon: Twitter,
       label: "Twitter",
       href: "https://twitter.com",
-      color: "hover:text-blue-400",
+      color: colors.secondary,
+      hoverBg: colors.secondary
     },
   ];
 
@@ -96,7 +110,11 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white dark:bg-gray-900">
+    <section 
+      id="contact" 
+      className="py-20"
+      style={{ backgroundColor: colors.background }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -107,25 +125,56 @@ export function Contact() {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-              Lavoriamo insieme
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              whileInView={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", duration: 1 }}
+              className="text-6xl mb-4"
+              style={{ filter: `drop-shadow(0 0 20px ${colors.primary})` }}
+            >
+              🚀
+            </motion.div>
+            <h2 
+              className="text-3xl md:text-4xl font-black"
+              style={{ 
+                background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Let's Build Something Epic Together
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Hai un progetto in mente? Sono sempre interessato a nuove sfide 
-              e opportunità di collaborazione. Parliamone!
+            <p 
+              className="text-lg max-w-2xl mx-auto font-bold"
+              style={{ color: colors.accent }}
+            >
+              Got a wild idea? Need a technical co-founder? Ready to disrupt an industry? 
+              Let's turn your vision into reality! 💡
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
+            <div 
+              className="w-24 h-1 mx-auto rounded-full"
+              style={{ 
+                background: `linear-gradient(90deg, ${colors.primary} 0%, ${colors.secondary} 100%)`
+              }}
+            />
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Information */}
             <motion.div variants={itemVariants} className="space-y-8">
               <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Informazioni di contatto
+                <h3 
+                  className="text-2xl font-black"
+                  style={{ color: colors.accent }}
+                >
+                  Get In Touch 📬
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Preferisci un approccio più diretto? Ecco come puoi raggiungermi.
+                <p 
+                  className="font-bold"
+                  style={{ color: colors.accent }}
+                >
+                  Skip the small talk. Let's dive straight into how we can create something amazing together.
                 </p>
               </div>
 
@@ -136,16 +185,32 @@ export function Contact() {
                     key={info.label}
                     href={info.href}
                     whileHover={{ scale: 1.02, x: 5 }}
-                    className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 group"
+                    className="flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group border-2 shadow-lg"
+                    style={{
+                      backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                      borderColor: info.color,
+                      backdropFilter: 'blur(10px)'
+                    }}
                   >
-                    <div className="flex-shrink-0 p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full">
-                      <info.icon size={20} className="text-white" />
+                    <div 
+                      className="flex-shrink-0 p-3 rounded-full"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${info.color} 0%, ${info.color}CC 100%)`
+                      }}
+                    >
+                      <info.icon size={20} style={{ color: colors.background }} />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <p 
+                        className="font-black transition-colors"
+                        style={{ color: colors.accent }}
+                      >
                         {info.label}
                       </p>
-                      <p className="text-gray-600 dark:text-gray-300">
+                      <p 
+                        className="font-bold"
+                        style={{ color: info.color }}
+                      >
                         {info.value}
                       </p>
                     </div>
@@ -155,8 +220,11 @@ export function Contact() {
 
               {/* Social Links */}
               <div className="space-y-4">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Seguimi su
+                <h4 
+                  className="text-lg font-black"
+                  style={{ color: colors.accent }}
+                >
+                  Connect With Me 🌐
                 </h4>
                 <div className="flex gap-4">
                   {socialLinks.map((social) => (
@@ -167,7 +235,21 @@ export function Contact() {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.1, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className={`p-3 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-600 dark:text-gray-300 ${social.color} transition-all duration-200 shadow-md hover:shadow-lg`}
+                      className="p-3 rounded-full transition-all duration-200 shadow-lg border-2"
+                      style={{
+                        backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                        borderColor: social.color,
+                        color: social.color,
+                        backdropFilter: 'blur(10px)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = social.hoverBg;
+                        e.currentTarget.style.color = social.hoverBg === colors.background ? colors.accent : colors.background;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(27, 27, 27, 0.9)';
+                        e.currentTarget.style.color = social.color;
+                      }}
                     >
                       <social.icon size={24} />
                       <span className="sr-only">{social.label}</span>
@@ -179,16 +261,29 @@ export function Contact() {
               {/* Availability */}
               <motion.div 
                 whileHover={{ scale: 1.02 }}
-                className="p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl border border-green-200 dark:border-green-800"
+                className="p-6 rounded-xl border-2 shadow-lg"
+                style={{
+                  backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                  borderColor: '#48BB78'
+                }}
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                  <span className="font-semibold text-green-700 dark:text-green-400">
-                    Disponibile per nuovi progetti
+                  <div 
+                    className="w-3 h-3 rounded-full animate-pulse"
+                    style={{ backgroundColor: '#48BB78' }}
+                  />
+                  <span 
+                    className="font-black"
+                    style={{ color: '#48BB78' }}
+                  >
+                    Available for Epic Projects 🔥
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Attualmente accetto nuove collaborazioni e progetti freelance.
+                <p 
+                  className="text-sm font-bold"
+                  style={{ color: colors.accent }}
+                >
+                  Currently accepting new collaborations, co-founder opportunities, and game-changing projects.
                 </p>
               </motion.div>
             </motion.div>
@@ -198,8 +293,12 @@ export function Contact() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Nome *
+                    <label 
+                      htmlFor="name" 
+                      className="block text-sm font-black mb-2"
+                      style={{ color: colors.accent }}
+                    >
+                      Name *
                     </label>
                     <input
                       type="text"
@@ -208,12 +307,21 @@ export function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
-                      placeholder="Il tuo nome"
+                      className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
+                      style={{
+                        backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                        borderColor: colors.primary,
+                        color: colors.accent
+                      }}
+                      placeholder="Your name"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label 
+                      htmlFor="email" 
+                      className="block text-sm font-black mb-2"
+                      style={{ color: colors.accent }}
+                    >
                       Email *
                     </label>
                     <input
@@ -223,15 +331,24 @@ export function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
-                      placeholder="tua@email.com"
+                      className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
+                      style={{
+                        backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                        borderColor: colors.primary,
+                        color: colors.accent
+                      }}
+                      placeholder="your@email.com"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Oggetto *
+                  <label 
+                    htmlFor="subject" 
+                    className="block text-sm font-black mb-2"
+                    style={{ color: colors.accent }}
+                  >
+                    Subject *
                   </label>
                   <input
                     type="text"
@@ -240,14 +357,23 @@ export function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
-                    placeholder="Di cosa vuoi parlare?"
+                    className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
+                    style={{
+                      backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                      borderColor: colors.primary,
+                      color: colors.accent
+                    }}
+                    placeholder="What's the big idea?"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Messaggio *
+                  <label 
+                    htmlFor="message" 
+                    className="block text-sm font-black mb-2"
+                    style={{ color: colors.accent }}
+                  >
+                    Message *
                   </label>
                   <textarea
                     id="message"
@@ -256,8 +382,13 @@ export function Contact() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors resize-none"
-                    placeholder="Raccontami del tuo progetto..."
+                    className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors resize-none font-bold"
+                    style={{
+                      backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                      borderColor: colors.primary,
+                      color: colors.accent
+                    }}
+                    placeholder="Tell me about your vision, your challenges, and how we can build something incredible together..."
                   />
                 </div>
 
@@ -267,22 +398,26 @@ export function Contact() {
                   disabled={isSubmitting}
                   whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                   whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                  className={`w-full flex items-center justify-center gap-3 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
-                    isSubmitting
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-xl"
-                  } text-white shadow-lg`}
+                  className="w-full flex items-center justify-center gap-3 px-8 py-4 rounded-lg font-black text-lg transition-all duration-300 shadow-2xl"
+                  style={{
+                    background: isSubmitting 
+                      ? 'rgba(107, 114, 128, 0.5)' 
+                      : `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
+                    color: colors.background,
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer'
+                  }}
                 >
                   {isSubmitting ? (
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                      className="w-5 h-5 border-2 border-t-transparent rounded-full"
+                      style={{ borderColor: colors.background }}
                     />
                   ) : (
                     <Send size={20} />
                   )}
-                  {isSubmitting ? "Invio in corso..." : "Invia messaggio"}
+                  {isSubmitting ? "Launching Message..." : "Launch This Message 🚀"}
                 </motion.button>
 
                 {/* Status Messages */}
@@ -290,9 +425,14 @@ export function Contact() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-400"
+                    className="p-4 border-2 rounded-lg font-black"
+                    style={{
+                      backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                      borderColor: '#48BB78',
+                      color: '#48BB78'
+                    }}
                   >
-                    ✅ Messaggio inviato con successo! Ti risponderò al più presto.
+                    ✅ Message launched successfully! I'll get back to you faster than a SpaceX rocket.
                   </motion.div>
                 )}
 
@@ -300,9 +440,14 @@ export function Contact() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400"
+                    className="p-4 border-2 rounded-lg font-black"
+                    style={{
+                      backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                      borderColor: colors.secondary,
+                      color: colors.secondary
+                    }}
                   >
-                    ❌ Errore nell'invio. Riprova o contattami direttamente via email.
+                    ❌ Houston, we have a problem! Try again or hit me up directly via email.
                   </motion.div>
                 )}
               </form>

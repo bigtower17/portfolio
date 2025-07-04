@@ -1,11 +1,118 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Github, ArrowRight } from "lucide-react";
+import { ExternalLink, Github, ArrowRight, Rocket, Zap, Target } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
+// Bold & Creative Color Palette
+const colors = {
+  background: '#1B1B1B',
+  primary: '#F8B400', 
+  secondary: '#E63946',
+  accent: '#FFFFFF'
+};
+
+// UI Components with bold styling
+function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div 
+      className={`rounded-xl border-2 shadow-xl transition-all duration-500 ${className}`}
+      style={{ 
+        backgroundColor: 'rgba(27, 27, 27, 0.95)',
+        borderColor: colors.primary,
+        backdropFilter: 'blur(15px)'
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function CardContent({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`p-6 pt-0 ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+function Badge({ children, variant = "default", className = "" }: { 
+  children: React.ReactNode; 
+  variant?: "default" | "secondary"; 
+  className?: string;
+}) {
+  const baseStyle = "inline-flex items-center rounded-full border-2 px-3 py-1 text-xs font-black transition-all duration-300 hover:scale-105";
+  
+  const variants = {
+    default: {
+      background: `linear-gradient(135deg, ${colors.primary} 0%, #FFC107 100%)`,
+      borderColor: colors.primary,
+      color: colors.background
+    },
+    secondary: {
+      backgroundColor: 'rgba(248, 180, 0, 0.1)',
+      borderColor: colors.primary,
+      color: colors.primary
+    }
+  };
+  
+  return (
+    <div 
+      className={`${baseStyle} ${className}`}
+      style={variants[variant]}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Button({ 
+  children, 
+  variant = "default", 
+  size = "default", 
+  className = "", 
+  onClick,
+  style,
+  ...props 
+}: {
+  children: React.ReactNode;
+  variant?: "default" | "ghost";
+  size?: "default" | "sm" | "lg";
+  className?: string;
+  onClick?: () => void;
+  style?: React.CSSProperties;
+}) {
+  const baseStyles = "inline-flex items-center justify-center rounded-lg font-black transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none transform hover:scale-105";
+  
+  const sizes = {
+    default: "h-10 py-2 px-4",
+    sm: "h-8 px-3 text-sm",
+    lg: "h-12 px-8 text-lg"
+  };
+  
+  const buttonStyle = style || (variant === "ghost" 
+    ? {
+        backgroundColor: 'transparent',
+        color: colors.primary,
+        border: `1px solid ${colors.primary}`
+      }
+    : {
+        background: `linear-gradient(135deg, ${colors.primary} 0%, #FFC107 100%)`,
+        color: colors.background,
+        boxShadow: `0 10px 30px ${colors.primary}25`
+      });
+  
+  return (
+    <button 
+      className={`${baseStyles} ${sizes[size]} ${className}`}
+      style={buttonStyle}
+      onClick={onClick}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
 
 export function Projects() {
   const [filter, setFilter] = useState("all");
@@ -13,70 +120,95 @@ export function Projects() {
   const projects = [
     {
       id: 1,
-      title: "E-Commerce Platform",
-      description: "Piattaforma e-commerce completa con gestione inventario, pagamenti e dashboard admin.",
-      technologies: ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
-      category: "fullstack",
+      title: "⚡ Serverless Beast",
+      subtitle: "AWS Infrastructure That Scales",
+      description: "Built a serverless architecture that went from 0 to 100K users without breaking a sweat. Lambda + DynamoDB + some magic ✨",
+      technologies: ["AWS Lambda", "DynamoDB", "API Gateway", "Terraform", "CloudFormation"],
+      category: "cloud",
       github: "https://github.com",
       live: "https://demo.com",
       featured: true,
+      impact: "💰 70% cost reduction",
+      emoji: "☁️",
+      glowColor: colors.primary
     },
     {
       id: 2,
-      title: "Task Management App",
-      description: "Applicazione per la gestione dei task con drag & drop, notifiche real-time e collaborazione team.",
-      technologies: ["React", "Node.js", "Socket.io", "MongoDB"],
+      title: "🚀 Deploy Machine",
+      subtitle: "CI/CD Pipeline on Steroids", 
+      description: "Zero-downtime deployments with automated testing, Docker magic, and Kubernetes orchestration. Because manual deploys are so 2020.",
+      technologies: ["GitHub Actions", "Docker", "Kubernetes", "EKS", "Terraform"],
+      category: "devops",
+      github: "https://github.com",
+      live: "https://demo.com",
+      featured: true,
+      impact: "⚡ 10x faster deploys",
+      emoji: "🔄",
+      glowColor: colors.secondary
+    },
+    {
+      id: 3,
+      title: "💎 Full-Stack Powerhouse",
+      subtitle: "React App That Users Love",
+      description: "Modern web app with buttery smooth UX, real-time features, and authentication that just works. Users actually enjoy using it!",
+      technologies: ["React", "Node.js", "PostgreSQL", "JWT", "WebSocket"],
       category: "fullstack",
       github: "https://github.com",
       live: "https://demo.com",
       featured: true,
-    },
-    {
-      id: 3,
-      title: "Weather Dashboard",
-      description: "Dashboard meteo con previsioni dettagliate, grafici interattivi e geolocalizzazione.",
-      technologies: ["React", "Chart.js", "Weather API"],
-      category: "frontend",
-      github: "https://github.com",
-      live: "https://demo.com",
-      featured: false,
+      impact: "📈 95% user satisfaction",
+      emoji: "💻",
+      glowColor: colors.primary
     },
     {
       id: 4,
-      title: "API RESTful",
-      description: "API robusta per gestione contenuti con autenticazione JWT, rate limiting e documentazione.",
-      technologies: ["Node.js", "Express", "JWT", "Swagger"],
-      category: "backend",
+      title: "🛠️ Infrastructure as Poetry",
+      subtitle: "Terraform Modules That Sing",
+      description: "Reusable Terraform modules that provision infrastructure faster than you can say 'vendor lock-in'. Multi-environment, zero drama.",
+      technologies: ["Terraform", "AWS", "GitLab CI", "CloudWatch"],
+      category: "cloud",
       github: "https://github.com",
       featured: false,
+      impact: "🎯 5min deployments",
+      emoji: "🏗️",
+      glowColor: colors.secondary
     },
     {
       id: 5,
-      title: "Portfolio Website",
-      description: "Sito portfolio responsive con CMS headless per la gestione dei contenuti.",
-      technologies: ["Next.js", "Tailwind", "Strapi"],
-      category: "frontend",
+      title: "📱 Mobile-First MVP",
+      subtitle: "React Native Done Right",
+      description: "Cross-platform app that doesn't feel like a hybrid. Push notifications, offline mode, and performance that rivals native.",
+      technologies: ["React Native", "Expo", "Node.js", "Firebase"],
+      category: "mobile",
       github: "https://github.com",
       live: "https://demo.com",
       featured: false,
+      impact: "📱 iOS + Android in 1 codebase",
+      emoji: "📲",
+      glowColor: colors.primary
     },
     {
       id: 6,
-      title: "Chat Application",
-      description: "Applicazione di chat real-time con stanze, messaggi privati e condivisione file.",
-      technologies: ["React", "Socket.io", "Node.js", "Redis"],
-      category: "fullstack",
+      title: "🧠 Data Pipeline Beast",
+      subtitle: "Python + AWS = Magic",
+      description: "Real-time data processing with Python, pandas, and serverless architecture. From raw data to insights in milliseconds.",
+      technologies: ["Python", "Pandas", "AWS Lambda", "S3", "CloudWatch"],
+      category: "backend", 
       github: "https://github.com",
-      live: "https://demo.com",
       featured: false,
+      impact: "🔥 Real-time analytics",
+      emoji: "📊",
+      glowColor: colors.secondary
     },
   ];
 
   const categories = [
-    { key: "all", label: "Tutti" },
-    { key: "fullstack", label: "Full Stack" },
-    { key: "frontend", label: "Frontend" },
-    { key: "backend", label: "Backend" },
+    { key: "all", label: "🎯 All Projects", color: colors.accent },
+    { key: "cloud", label: "☁️ Cloud & AWS", color: colors.primary },
+    { key: "devops", label: "🚀 DevOps", color: colors.secondary },
+    { key: "fullstack", label: "💻 Full Stack", color: colors.primary },
+    { key: "mobile", label: "📱 Mobile", color: colors.secondary },
+    { key: "backend", label: "🔧 Backend", color: colors.primary },
   ];
 
   const filteredProjects = filter === "all" 
@@ -98,8 +230,19 @@ export function Projects() {
     visible: { opacity: 1, y: 0 },
   };
 
+  const scrollToContact = () => {
+    const contactSection = document.querySelector("#contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section id="projects" className="py-20 bg-background">
+    <section 
+      id="projects" 
+      className="py-20"
+      style={{ backgroundColor: colors.background }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -109,26 +252,62 @@ export function Projects() {
           className="space-y-16"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              I miei progetti
+          <motion.div variants={itemVariants} className="text-center space-y-6">
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
+              className="text-6xl mb-4"
+              style={{ filter: `drop-shadow(0 0 30px ${colors.primary})` }}
+            >
+              🚀
+            </motion.div>
+            <h2 
+              className="text-4xl md:text-6xl font-black tracking-tight"
+              style={{ 
+                background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Things I've Shipped
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Una selezione dei progetti più significativi che ho realizzato, 
-              dalle applicazioni web complete alle API backend.
+            <p 
+              className="text-xl md:text-2xl max-w-3xl mx-auto font-bold"
+              style={{ color: colors.accent }}
+            >
+              From MVP to scale. Here's what happens when you mix{" "}
+              <strong style={{ color: colors.primary }}>code</strong>, 
+              <strong style={{ color: colors.secondary }}> creativity</strong>, and{" "}
+              <strong style={{ color: colors.primary }}>caffeine</strong> ☕
             </p>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
+            <div 
+              className="w-32 h-2 mx-auto rounded-full"
+              style={{ 
+                background: `linear-gradient(90deg, ${colors.primary} 0%, ${colors.secondary} 100%)`
+              }}
+            />
           </motion.div>
 
           {/* Filter Buttons */}
           <motion.div variants={itemVariants} className="flex justify-center">
-            <div className="flex flex-wrap gap-2 bg-muted p-2 rounded-lg">
+            <div 
+              className="flex flex-wrap gap-3 p-3 rounded-2xl border-2 shadow-lg"
+              style={{
+                backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                borderColor: colors.primary,
+                backdropFilter: 'blur(15px)'
+              }}
+            >
               {categories.map((category) => (
                 <Button
                   key={category.key}
                   variant={filter === category.key ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setFilter(category.key)}
+                  className={filter === category.key ? "shadow-lg" : ""}
+                  style={filter !== category.key ? { color: category.color } : {}}
                 >
                   {category.label}
                 </Button>
@@ -146,71 +325,157 @@ export function Projects() {
                 key={project.id}
                 layout
                 variants={itemVariants}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="group"
               >
-                <Card className="group h-full hover:shadow-lg transition-all duration-300">
-                  {/* Project Header */}
-                  <div className="relative p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-t-lg">
-                    <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <Card className="h-full hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                  {/* Project Header - FIXED LAYOUT */}
+                  <div 
+                    className="relative p-6 min-h-[120px]"
+                    style={{ 
+                      background: `linear-gradient(135deg, rgba(248, 180, 0, 0.1) 0%, rgba(230, 57, 70, 0.1) 100%)`
+                    }}
+                  >
+                    {/* Floating Emoji - Top Left */}
+                    <motion.div 
+                      animate={{ 
+                        y: [0, -5, 0],
+                        rotate: [0, 5, -5, 0]
+                      }}
+                      transition={{ 
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="absolute top-4 left-4 text-3xl z-10"
+                      style={{ filter: `drop-shadow(0 0 15px ${project.glowColor})` }}
+                    >
+                      {project.emoji}
+                    </motion.div>
+
+                    {/* Action Buttons - Top Right */}
+                    <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
                       {project.github && (
                         <motion.a
-                          whileHover={{ scale: 1.1 }}
+                          whileHover={{ scale: 1.2, rotate: 10 }}
                           whileTap={{ scale: 0.9 }}
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 bg-background/90 rounded-full text-muted-foreground hover:text-foreground transition-colors"
+                          className="p-2 rounded-full shadow-lg transition-colors"
+                          style={{
+                            backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                            color: colors.accent,
+                            border: `2px solid ${colors.primary}`
+                          }}
                         >
                           <Github size={18} />
                         </motion.a>
                       )}
                       {project.live && (
                         <motion.a
-                          whileHover={{ scale: 1.1 }}
+                          whileHover={{ scale: 1.2, rotate: -10 }}
                           whileTap={{ scale: 0.9 }}
                           href={project.live}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 bg-background/90 rounded-full text-muted-foreground hover:text-foreground transition-colors"
+                          className="p-2 rounded-full shadow-lg transition-colors"
+                          style={{
+                            backgroundColor: 'rgba(27, 27, 27, 0.9)',
+                            color: colors.accent,
+                            border: `2px solid ${colors.secondary}`
+                          }}
                         >
                           <ExternalLink size={18} />
                         </motion.a>
                       )}
                     </div>
+
+                    {/* Featured Badge - Top Center (only if no conflicts) */}
                     {project.featured && (
-                      <div className="absolute top-4 left-4">
-                        <Badge className="bg-yellow-500 text-yellow-900">
-                          Featured
+                      <motion.div 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.5, type: "spring" }}
+                        className="absolute top-2 left-1/2 transform -translate-x-1/2 z-20"
+                      >
+                        <Badge 
+                          className="shadow-lg font-black"
+                          style={{
+                            background: `linear-gradient(135deg, ${colors.secondary} 0%, #FF6B6B 100%)`,
+                            color: colors.accent,
+                            borderColor: colors.accent
+                          }}
+                        >
+                          ⭐ Featured
                         </Badge>
-                      </div>
+                      </motion.div>
                     )}
+
+                    {/* Impact Badge - Bottom Right */}
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }}
+                      className="absolute bottom-4 right-4 z-10"
+                    >
+                      <div 
+                        className="px-3 py-1 text-xs font-black rounded-full shadow-lg"
+                        style={{
+                          background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
+                          color: colors.background
+                        }}
+                      >
+                        {project.impact}
+                      </div>
+                    </motion.div>
                   </div>
 
                   {/* Project Content */}
                   <CardContent className="p-6 space-y-4">
-                    <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <div className="space-y-2">
+                      <h3 
+                        className="text-xl font-black transition-all duration-300"
+                        style={{ color: colors.accent }}
+                      >
+                        {project.title}
+                      </h3>
+                      <p 
+                        className="text-sm font-bold"
+                        style={{ color: colors.primary }}
+                      >
+                        {project.subtitle}
+                      </p>
+                    </div>
+                    
+                    <p 
+                      className="text-sm leading-relaxed"
+                      style={{ color: colors.accent }}
+                    >
                       {project.description}
                     </p>
                     
                     {/* Technologies */}
                     <div className="flex flex-wrap gap-2">
                       {project.technologies.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="text-xs">
-                          {tech}
-                        </Badge>
+                        <motion.div
+                          key={tech}
+                          whileHover={{ scale: 1.1, y: -2 }}
+                        >
+                          <Badge variant="secondary" className="text-xs transition-colors hover:shadow-lg">
+                            {tech}
+                          </Badge>
+                        </motion.div>
                       ))}
                     </div>
 
                     {/* Action Button */}
                     <div className="pt-2">
                       <motion.button
-                        whileHover={{ x: 5 }}
-                        className="flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all duration-200"
+                        whileHover={{ x: 5, scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-2 font-black text-sm group-hover:gap-3 transition-all duration-300"
+                        style={{ color: colors.primary }}
                       >
-                        Vedi dettagli
+                        <span>Dive Deeper</span>
                         <ArrowRight size={16} />
                       </motion.button>
                     </div>
@@ -221,18 +486,71 @@ export function Projects() {
           </motion.div>
 
           {/* Call to Action */}
-          <motion.div variants={itemVariants} className="text-center">
-            <p className="text-muted-foreground mb-6">
-              Interessato ai miei progetti? Vediamo cosa possiamo creare insieme!
-            </p>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                size="lg"
-                onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-8 py-6 text-lg"
-              >
-                Iniziamo a collaborare
-              </Button>
+          <motion.div 
+            variants={itemVariants} 
+            className="text-center rounded-3xl p-12 relative overflow-hidden"
+            style={{ 
+              background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
+              color: colors.background
+            }}
+          >
+            {/* Background decorations */}
+            <motion.div
+              animate={{ 
+                rotate: [0, 360],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{ 
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              className="absolute top-4 right-4 text-4xl opacity-20"
+            >
+              🚀
+            </motion.div>
+            <motion.div
+              animate={{ 
+                rotate: [360, 0],
+                y: [0, -10, 0]
+              }}
+              transition={{ 
+                duration: 15,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute bottom-4 left-4 text-3xl opacity-30"
+            >
+              ⚡
+            </motion.div>
+
+            <motion.div
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="space-y-6"
+            >
+              <h3 className="text-3xl md:text-4xl font-black">
+                Ready to Build Something Epic? 🦄
+              </h3>
+              <p className="text-xl opacity-90 max-w-3xl mx-auto font-bold">
+                Got a wild idea? A problem that needs solving? Let's turn your vision into 
+                a product that users will love (and investors will notice) 💰
+              </p>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  size="lg"
+                  onClick={scrollToContact}
+                  className="px-12 py-6 text-xl font-black shadow-2xl"
+                  style={{
+                    backgroundColor: colors.accent,
+                    color: colors.background,
+                    border: `3px solid ${colors.background}`
+                  }}
+                >
+                  <Rocket className="mr-3" size={24} />
+                  Let's Ship It! 🚀
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>
