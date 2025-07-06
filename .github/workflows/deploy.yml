@@ -155,10 +155,48 @@ jobs:
             fi
             
             echo "⏳ Waiting for container to start..."
-            sleep 20
+            sleep 10
+            
+            # Immediate container check
+            echo "📊 Container status after startup:"
+            docker ps -a --filter "name=torregrossa-app"
+            
+            echo "📋 Container logs after startup:"
+            docker logs torregrossa-app 2>/dev/null || echo "No logs available"
+            
+            # Test if nginx is running inside container
+            echo "🔍 Testing nginx inside container:"
+            docker exec torregrossa-app nginx -t 2>/dev/null && echo "✅ Nginx config OK" || echo "❌ Nginx config error"
+            docker exec torregrossa-app ps aux | grep nginx || echo "❌ Nginx not running"
+            
+            # Test if files exist
+            echo "📁 Checking static files:"
+            docker exec torregrossa-app ls -la /usr/share/nginx/html/ | head -5
+            docker exec torregrossa-app test -f /usr/share/nginx/html/index.html && echo "✅ index.html exists" || echo "❌ index.html missing"
+            
+            # Test internal connectivity
+            echo "🔍 Testing internal connectivity:"
+            docker exec torregrossa-app wget -q --spider http://localhost/ && echo "✅ Internal health check OK" || echo "❌ Internal health check failed"
             
             echo "🔍 Running health check..."
+            
+            # Check if container is actually running
+            echo "📊 Container status before health check:"
+            docker ps -a --filter "name=torregrossa-app"
+            
+            # Check container logs immediately
+            echo "📋 Initial container logs:"
+            docker logs torregrossa-app 2>/dev/null || echo "No logs yet"
+            
             for i in {1..15}; do
+              # Check container status
+              if ! docker ps --filter "name=torregrossa-app" --filter "status=running" | grep -q torregrossa-app; then
+                echo "❌ Container is not running!"
+                docker ps -a --filter "name=torregrossa-app"
+                docker logs torregrossa-app 2>/dev/null || echo "No container logs available"
+                exit 1
+              fi
+              
               if curl -f http://localhost:80 >/dev/null 2>&1; then
                 echo "✅ Health check passed!"
                 echo "🌐 Site accessible at http://${{ secrets.VPS_HOST }}"
@@ -179,6 +217,8 @@ jobs:
                 exit 0
               else
                 echo "⏳ Attempt $i/15 - waiting for container..."
+                echo "📋 Container logs (last 5 lines):"
+                docker logs torregrossa-app --tail 5 2>/dev/null || echo "No logs available"
                 sleep 5
               fi
             done

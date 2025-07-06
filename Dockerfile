@@ -35,31 +35,25 @@ FROM nginx:alpine
 # Install wget for health checks
 RUN apk add --no-cache wget
 
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Copy built application from cleaner stage
+# Copy built application from cleaner stage first
 COPY --from=cleaner /app/out /usr/share/nginx/html
 
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001
+# Copy custom nginx config after copying files
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Set proper permissions
-RUN chown -R nextjs:nodejs /usr/share/nginx/html && \
-    chown -R nextjs:nodejs /var/cache/nginx && \
-    chown -R nextjs:nodejs /var/log/nginx && \
-    chown -R nextjs:nodejs /etc/nginx/conf.d
+# Fix permissions for all nginx files
+RUN chmod -R 755 /usr/share/nginx/html && \
+    chown -R nginx:nginx /usr/share/nginx/html
 
-# Switch to non-root user
-USER nextjs
+# Test nginx configuration
+RUN nginx -t
 
 # Expose port
 EXPOSE 80
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx in foreground with error logging
+CMD ["sh", "-c", "nginx -g 'daemon off; error_log /dev/stderr info;'"]
