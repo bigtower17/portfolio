@@ -36,14 +36,15 @@ function CardContent({ children, className = "" }: { children: React.ReactNode; 
   );
 }
 
-function Badge({ children, variant = "default", className = "" }: { 
+function Badge({ children, variant = "default", className = "", style }: { 
   children: React.ReactNode; 
   variant?: "default" | "secondary"; 
   className?: string;
+  style?: React.CSSProperties;
 }) {
   const baseStyle = "inline-flex items-center rounded-full border-2 px-3 py-1 text-xs font-black transition-all duration-300 hover:scale-105";
   
-  const variants = {
+  const defaultStyles = {
     default: {
       background: `linear-gradient(135deg, ${colors.primary} 0%, #FFC107 100%)`,
       borderColor: colors.primary,
@@ -56,10 +57,12 @@ function Badge({ children, variant = "default", className = "" }: {
     }
   };
   
+  const finalStyle = style || defaultStyles[variant];
+  
   return (
     <div 
       className={`${baseStyle} ${className}`}
-      style={variants[variant]}
+      style={finalStyle}
     >
       {children}
     </div>
