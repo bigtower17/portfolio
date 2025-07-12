@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  // Remove or comment out the output export setting
+  // output: 'export',
   trailingSlash: true,
   images: {
-    unoptimized: true
+    unoptimized: true,
   },
   experimental: {
     optimizePackageImports: ['framer-motion'],
