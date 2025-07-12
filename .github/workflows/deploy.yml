@@ -3,8 +3,6 @@ name: Deploy Direct to VPS
 on:
   push:
     branches: [ master ]
-    paths:
-      - 'portfolio/**'
 
 env:
   NODE_OPTIONS: '--max-old-space-size=4096'
