@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Remove or comment out the output export setting
-  // output: 'export',
+  // Abilita export statico per compatibilità con Nginx
+  output: 'export',
   trailingSlash: true,
   images: {
     unoptimized: true,
