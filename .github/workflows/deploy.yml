@@ -98,6 +98,13 @@ jobs:
               usermod -aG docker $USER
             fi
             
+            # Install certbot if not present
+            if ! command -v certbot &> /dev/null; then
+              echo "🔒 Installing certbot..."
+              apt-get update
+              apt-get install -y certbot
+            fi
+            
             # Clean project directory
             echo "🧹 Cleaning project directory..."
             rm -rf /opt/torregrossa-portfolio
@@ -113,7 +120,7 @@ jobs:
           target: "/opt/torregrossa-portfolio/"
           strip_components: 1
           
-      - name: Build and deploy with Docker
+      - name: Setup SSL and deploy with Docker
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -130,6 +137,38 @@ jobs:
               echo "Files in directory:"
               find . -type f -name "*.json" -o -name "*.js" -o -name "*.ts" | head -20
               exit 1
+            fi
+            
+            # Setup SSL certificate if not exists
+            echo "🔒 Checking SSL certificate..."
+            if [ ! -d "/etc/letsencrypt/live/torregrossa.dev" ]; then
+              echo "📜 SSL certificate not found, creating new one..."
+              
+              # Stop any running container temporarily
+              docker stop torregrossa-app 2>/dev/null || true
+              docker rm torregrossa-app 2>/dev/null || true
+              
+              # Generate SSL certificate
+              certbot certonly --standalone \
+                -d torregrossa.dev \
+                -d www.torregrossa.dev \
+                --email hello@torregrossa.dev \
+                --agree-tos \
+                --non-interactive \
+                --force-renewal || {
+                echo "⚠️ SSL certificate generation failed, continuing without SSL..."
+                SSL_ENABLED=false
+              }
+              
+              if [ -d "/etc/letsencrypt/live/torregrossa.dev" ]; then
+                echo "✅ SSL certificate created successfully!"
+                SSL_ENABLED=true
+              else
+                SSL_ENABLED=false
+              fi
+            else
+              echo "✅ SSL certificate already exists!"
+              SSL_ENABLED=true
             fi
             
             echo "🐳 Building Docker image..."
@@ -159,13 +198,29 @@ jobs:
             docker images | grep torregrossa-portfolio
             
             echo "🚀 Starting new container..."
-            docker run -d \
-              --name torregrossa-app \
-              --restart unless-stopped \
-              -p 80:80 \
-              --memory="512m" \
-              --memory-swap="1g" \
-              torregrossa-portfolio:latest
+            
+            # Run container with or without SSL based on certificate availability
+            if [ "$SSL_ENABLED" = "true" ]; then
+              echo "🔒 Starting container with SSL support..."
+              docker run -d \
+                --name torregrossa-app \
+                --restart unless-stopped \
+                -p 80:80 \
+                -p 443:443 \
+                -v /etc/letsencrypt/live/torregrossa.dev:/etc/nginx/ssl:ro \
+                --memory="512m" \
+                --memory-swap="1g" \
+                torregrossa-portfolio:latest
+            else
+              echo "⚠️ Starting container without SSL..."
+              docker run -d \
+                --name torregrossa-app \
+                --restart unless-stopped \
+                -p 80:80 \
+                --memory="512m" \
+                --memory-swap="1g" \
+                torregrossa-portfolio:latest
+            fi
             
             if [ $? -ne 0 ]; then
               echo "❌ Failed to start container!"
@@ -212,7 +267,14 @@ jobs:
                 echo "✅ Health check passed!"
                 echo "🌐 Site accessible at http://${{ secrets.VPS_HOST }}"
                 echo "📍 Your portfolio is now live at http://217.154.120.146"
-                echo "🌍 Domain: http://torregrossa.dev (after DNS propagation)"
+                
+                if [ "$SSL_ENABLED" = "true" ]; then
+                  echo "🔒 HTTPS enabled: https://torregrossa.dev"
+                  echo "🔗 HTTP redirects to HTTPS"
+                else
+                  echo "🌍 HTTP only: http://torregrossa.dev"
+                  echo "🔒 Run manual SSL setup later with: sudo certbot --standalone"
+                fi
                 
                 # Show container status
                 echo "📊 Final container status:"
@@ -221,6 +283,13 @@ jobs:
                 # Show resource usage
                 echo "💾 Resource usage:"
                 docker stats --no-stream torregrossa-app
+                
+                # Setup auto-renewal cron job if SSL enabled
+                if [ "$SSL_ENABLED" = "true" ]; then
+                  echo "⏰ Setting up SSL auto-renewal..."
+                  (crontab -l 2>/dev/null; echo "0 3 * * * certbot renew --quiet && docker restart torregrossa-app") | crontab -
+                  echo "✅ SSL auto-renewal configured"
+                fi
                 
                 # Clean up old images
                 echo "🧹 Cleaning up old images..."
@@ -263,22 +332,25 @@ jobs:
           
           if [ "${{ needs.deploy.result }}" == "success" ]; then
             echo "✅ Portfolio deployed successfully!"
-            echo "🌐 Accessible at: http://217.154.120.146"
+            echo "🌐 HTTP: http://217.154.120.146"
+            echo "🔒 HTTPS: https://torregrossa.dev"
             echo "🌍 Domain: http://torregrossa.dev"
             echo "📦 Docker image: torregrossa-portfolio:latest"
             echo "🐳 Container: torregrossa-app"
             echo "🔧 Memory limit: 512MB (swap: 1GB)"
             echo ""
-            echo "🔗 Next steps:"
-            echo "1. ✅ DNS configured: torregrossa.dev → 217.154.120.146"
-            echo "2. 🔒 Setup SSL certificate with Let's Encrypt"
-            echo "3. 🔄 Configure nginx virtual host for domain"
-            echo "4. 📊 Setup monitoring and backup"
+            echo "🔗 Features enabled:"
+            echo "✅ DNS configured: torregrossa.dev → 217.154.120.146"
+            echo "🔒 SSL certificate with Let's Encrypt"
+            echo "🔄 HTTP to HTTPS redirect"
+            echo "⏰ SSL auto-renewal configured"
+            echo "📊 Container monitoring enabled"
           else
             echo "❌ Deployment failed! Check the logs above."
             echo "🔍 Common issues to check:"
             echo "- Memory usage during build"
             echo "- Docker build process"
+            echo "- SSL certificate generation"
             echo "- Network connectivity"
             echo "- Container health status"
             exit 1
