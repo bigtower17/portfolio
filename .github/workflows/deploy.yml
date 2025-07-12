@@ -202,6 +202,8 @@ jobs:
             # Run container with or without SSL based on certificate availability
             if [ "$SSL_ENABLED" = "true" ]; then
               echo "🔒 Starting container with SSL support..."
+              
+              # Copy SSL-enabled nginx config inside the container
               docker run -d \
                 --name torregrossa-app \
                 --restart unless-stopped \
@@ -211,6 +213,11 @@ jobs:
                 --memory="512m" \
                 --memory-swap="1g" \
                 torregrossa-portfolio:latest
+              
+              # Replace nginx config with SSL version
+              docker exec torregrossa-app cp /usr/share/nginx/html/nginx-ssl.conf /etc/nginx/nginx.conf 2>/dev/null || echo "Using default config"
+              docker exec torregrossa-app nginx -s reload 2>/dev/null || echo "Config reload not needed"
+              
             else
               echo "⚠️ Starting container without SSL..."
               docker run -d \
