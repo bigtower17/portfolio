@@ -2,7 +2,8 @@ name: Deploy Direct to VPS
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
+  workflow_dispatch:
 
 env:
   NODE_OPTIONS: '--max-old-space-size=4096'
@@ -30,13 +31,31 @@ jobs:
           
       - name: Verify build output
         run: |
-          if [ ! -d "out" ]; then
-            echo "❌ Build test failed - no 'out' directory found"
+          echo "🔍 Checking build output..."
+          ls -la
+          
+          if [ ! -d ".next" ]; then
+            echo "❌ Build test failed - no '.next' directory found"
             ls -la
             exit 1
           fi
-          echo "✅ Build test successful - 'out' directory exists"
-          ls -la out/ | head -10
+          
+          echo "✅ Build test successful - '.next' directory exists"
+          echo "📁 Contents of '.next' directory:"
+          ls -la .next/ | head -10
+          
+          # Verifica che ci siano i file essenziali
+          if [ ! -f ".next/BUILD_ID" ]; then
+            echo "⚠️  Warning: BUILD_ID not found"
+          else
+            echo "✅ BUILD_ID found: $(cat .next/BUILD_ID)"
+          fi
+          
+          if [ -d ".next/static" ]; then
+            echo "✅ Static assets found"
+          else
+            echo "⚠️  Warning: No static assets found"
+          fi
 
   deploy:
     needs: test
@@ -113,7 +132,7 @@ jobs:
               exit 1
             fi
             
-            echo "🐳 Building Docker image (this includes npm install and build)..."
+            echo "🐳 Building Docker image..."
             
             # Clean up old Docker resources first
             echo "🧹 Cleaning old Docker resources..."
@@ -157,36 +176,28 @@ jobs:
             echo "⏳ Waiting for container to start..."
             sleep 10
             
-            # Immediate container check
+            # Container health checks
             echo "📊 Container status after startup:"
             docker ps -a --filter "name=torregrossa-app"
             
             echo "📋 Container logs after startup:"
             docker logs torregrossa-app 2>/dev/null || echo "No logs available"
             
-            # Test if nginx is running inside container
+            # Test nginx inside container
             echo "🔍 Testing nginx inside container:"
             docker exec torregrossa-app nginx -t 2>/dev/null && echo "✅ Nginx config OK" || echo "❌ Nginx config error"
             docker exec torregrossa-app ps aux | grep nginx || echo "❌ Nginx not running"
             
-            # Test if files exist
+            # Check static files
             echo "📁 Checking static files:"
             docker exec torregrossa-app ls -la /usr/share/nginx/html/ | head -5
             docker exec torregrossa-app test -f /usr/share/nginx/html/index.html && echo "✅ index.html exists" || echo "❌ index.html missing"
             
-            # Test internal connectivity
+            # Internal connectivity test
             echo "🔍 Testing internal connectivity:"
             docker exec torregrossa-app wget -q --spider http://localhost/ && echo "✅ Internal health check OK" || echo "❌ Internal health check failed"
             
-            echo "🔍 Running health check..."
-            
-            # Check if container is actually running
-            echo "📊 Container status before health check:"
-            docker ps -a --filter "name=torregrossa-app"
-            
-            # Check container logs immediately
-            echo "📋 Initial container logs:"
-            docker logs torregrossa-app 2>/dev/null || echo "No logs yet"
+            echo "🔍 Running external health check..."
             
             for i in {1..15}; do
               # Check container status
@@ -201,9 +212,10 @@ jobs:
                 echo "✅ Health check passed!"
                 echo "🌐 Site accessible at http://${{ secrets.VPS_HOST }}"
                 echo "📍 Your portfolio is now live at http://217.154.120.146"
+                echo "🌍 Domain: http://torregrossa.dev (after DNS propagation)"
                 
-                # Show container status for confirmation
-                echo "📊 Container status:"
+                # Show container status
+                echo "📊 Final container status:"
                 docker ps --filter "name=torregrossa-app"
                 
                 # Show resource usage
@@ -224,8 +236,8 @@ jobs:
             done
             
             echo "❌ Health check failed after 15 attempts!"
-            echo "📋 Container logs:"
-            docker logs torregrossa-app --tail 50 2>/dev/null || echo "No container logs available"
+            echo "📋 Full container logs:"
+            docker logs torregrossa-app 2>/dev/null || echo "No container logs available"
             echo "📊 Container status:"
             docker ps -a --filter "name=torregrossa-app"
             echo "🔍 Docker images:"
@@ -252,15 +264,16 @@ jobs:
           if [ "${{ needs.deploy.result }}" == "success" ]; then
             echo "✅ Portfolio deployed successfully!"
             echo "🌐 Accessible at: http://217.154.120.146"
+            echo "🌍 Domain: http://torregrossa.dev"
             echo "📦 Docker image: torregrossa-portfolio:latest"
             echo "🐳 Container: torregrossa-app"
             echo "🔧 Memory limit: 512MB (swap: 1GB)"
             echo ""
             echo "🔗 Next steps:"
-            echo "1. Configure DNS: torregrossa.dev → 217.154.120.146"
-            echo "2. Setup SSL certificate with Let's Encrypt"
-            echo "3. Configure domain redirect"
-            echo "4. Setup monitoring and backup"
+            echo "1. ✅ DNS configured: torregrossa.dev → 217.154.120.146"
+            echo "2. 🔒 Setup SSL certificate with Let's Encrypt"
+            echo "3. 🔄 Configure nginx virtual host for domain"
+            echo "4. 📊 Setup monitoring and backup"
           else
             echo "❌ Deployment failed! Check the logs above."
             echo "🔍 Common issues to check:"
