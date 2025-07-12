@@ -8,7 +8,7 @@ const colors = {
   background: '#1B1B1B',
   primary: '#F8B400', 
   secondary: '#E63946',
-  accent: '#FFFFFF'
+  accent: '#FFFFFF' 
 };
 
 export function Footer() {
