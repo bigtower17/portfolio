@@ -4,12 +4,15 @@ import { motion } from "framer-motion";
 import { Code, Database, Cloud, Smartphone, Globe, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
-// Bold & Creative Color Palette
+// Usa variabili CSS per i colori
 const colors = {
-  background: '#1B1B1B',
-  primary: '#F8B400', 
-  secondary: '#E63946',
-  accent: '#FFFFFF'
+  background: 'var(--background)',
+  primary: 'var(--primary)',
+  secondary: 'var(--secondary)',
+  accent: 'var(--accent)',
+  textLight: 'var(--foreground)',
+  textDark: 'var(--card-foreground)',
+  textGreen: 'var(--textGreen, #4CAF50)',
 };
 
 export function Skills() {
@@ -19,7 +22,7 @@ export function Skills() {
     {
       icon: Code,
       title: "Frontend Development",
-      gradient: `linear-gradient(135deg, ${colors.primary} 0%, #FFC107 100%)`,
+      gradient: `linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%)`,
       skills: [
         { name: "React/Next.js", level: 95 },
         { name: "TypeScript", level: 90 },
@@ -30,7 +33,7 @@ export function Skills() {
     {
       icon: Database,
       title: "Backend Development",
-      gradient: `linear-gradient(135deg, ${colors.secondary} 0%, #FF6B6B 100%)`,
+      gradient: `linear-gradient(135deg, var(--secondary) 0%, var(--secondary) 100%)`,
       skills: [
         { name: "Node.js", level: 90 },
         { name: "Python", level: 80 },
@@ -41,7 +44,7 @@ export function Skills() {
     {
       icon: Cloud,
       title: "DevOps & Cloud",
-      gradient: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
+      gradient: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`,
       skills: [
         { name: "Docker", level: 85 },
         { name: "AWS", level: 80 },
@@ -52,7 +55,7 @@ export function Skills() {
     {
       icon: Smartphone,
       title: "Mobile Development",
-      gradient: `linear-gradient(135deg, ${colors.secondary} 0%, ${colors.primary} 100%)`,
+      gradient: `linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%)`,
       skills: [
         { name: "React Native", level: 80 },
         { name: "Flutter", level: 70 },
@@ -63,8 +66,8 @@ export function Skills() {
   ];
 
   const tools = [
-    "VS Code", "Git", "Figma", "Postman", "Jira", "Slack", 
-    "Linear", "Notion", "Adobe XD", "Chrome DevTools"
+    "VS Code", "Git", "Figma", "Postman", "Jira", "Slack",
+    "Linear", "Notion", "Adobe XD", "Chrome DevTools",
   ];
 
   const softSkills = [
@@ -97,10 +100,10 @@ export function Skills() {
   }, []);
 
   return (
-    <section 
-      id="skills" 
+    <section
+      id="skills"
       className="py-20"
-      style={{ backgroundColor: colors.background }}
+      style={{ backgroundColor: 'var(--background)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -117,32 +120,32 @@ export function Skills() {
               whileInView={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", duration: 1 }}
               className="text-6xl mb-4"
-              style={{ filter: `drop-shadow(0 0 20px ${colors.primary})` }}
+              style={{ filter: `drop-shadow(0 0 20px var(--primary))` }}
             >
               🧠
             </motion.div>
-            <h2 
+            <h2
               className="text-3xl md:text-4xl font-black"
-              style={{ 
-                background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
+              style={{
+                background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                backgroundClip: 'text',
               }}
             >
               My Arsenal of Skills
             </h2>
-            <p 
+            <p
               className="text-lg max-w-2xl mx-auto font-bold"
-              style={{ color: colors.accent }}
+              style={{ color: 'var(--accent)' }}
             >
-              A lethal combination of technical prowess and soft skills, 
+              A lethal combination of technical prowess and soft skills,
               constantly evolving with the latest tech trends.
             </p>
-            <div 
+            <div
               className="w-24 h-1 mx-auto rounded-full"
-              style={{ 
-                background: `linear-gradient(90deg, ${colors.primary} 0%, ${colors.secondary} 100%)`
+              style={{
+                background: `linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%)`,
               }}
             />
           </motion.div>
@@ -155,23 +158,23 @@ export function Skills() {
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="rounded-xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 border-2"
                 style={{
-                  backgroundColor: 'rgba(27, 27, 27, 0.95)',
-                  borderColor: colors.primary,
-                  backdropFilter: 'blur(15px)'
+                  backgroundColor: 'rgba(54, 54, 53, 0.95)',
+                  borderColor: 'var(--primary)',
+                  backdropFilter: 'blur(15px)',
                 }}
               >
                 <div className="space-y-6">
                   {/* Category Header */}
                   <div className="text-center space-y-3">
-                    <div 
+                    <div
                       className="inline-flex p-4 rounded-full shadow-lg"
                       style={{ background: category.gradient }}
                     >
-                      <category.icon size={24} style={{ color: colors.background }} />
+                      <category.icon size={24} style={{ color: 'var(--background)' }} />
                     </div>
-                    <h3 
+                    <h3
                       className="text-lg font-black"
-                      style={{ color: colors.accent }}
+                      style={{ color: 'var(--accent)' }}
                     >
                       {category.title}
                     </h3>
@@ -182,22 +185,22 @@ export function Skills() {
                     {category.skills.map((skill, skillIndex) => (
                       <div key={skill.name} className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span 
+                          <span
                             className="font-bold"
-                            style={{ color: colors.accent }}
+                            style={{ color: 'var(--accent)' }}
                           >
                             {skill.name}
                           </span>
-                          <span 
+                          <span
                             className="font-black"
-                            style={{ color: colors.primary }}
+                            style={{ color: 'var(--primary)' }}
                           >
                             {skill.level}%
                           </span>
                         </div>
-                        <div 
+                        <div
                           className="w-full rounded-full h-2"
-                          style={{ backgroundColor: 'rgba(248, 180, 0, 0.2)' }}
+                          style={{ backgroundColor: 'rgba(128,174,160, 0.2)' }}
                         >
                           <motion.div
                             initial={{ width: 0 }}
@@ -217,9 +220,9 @@ export function Skills() {
 
           {/* Tools & Technologies */}
           <motion.div variants={itemVariants} className="space-y-8">
-            <h3 
+            <h3
               className="text-2xl font-black text-center"
-              style={{ color: colors.accent }}
+              style={{ color: 'var(--accent)' }}
             >
               Tools & Technologies 🛠️
             </h3>
@@ -233,10 +236,10 @@ export function Skills() {
                   whileHover={{ scale: 1.1, y: -5 }}
                   className="px-6 py-3 rounded-full shadow-lg font-bold transition-all duration-200 border-2"
                   style={{
-                    backgroundColor: 'rgba(27, 27, 27, 0.9)',
-                    borderColor: index % 2 === 0 ? colors.primary : colors.secondary,
-                    color: colors.accent,
-                    backdropFilter: 'blur(10px)'
+                    backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                    borderColor: index % 2 === 0 ? 'var(--primary)' : 'var(--secondary)',
+                    color: 'var(--accent)',
+                    backdropFilter: 'blur(10px)',
                   }}
                 >
                   {tool}
@@ -247,9 +250,9 @@ export function Skills() {
 
           {/* Soft Skills */}
           <motion.div variants={itemVariants} className="space-y-8">
-            <h3 
+            <h3
               className="text-2xl font-black text-center"
-              style={{ color: colors.accent }}
+              style={{ color: 'var(--accent)' }}
             >
               Soft Skills 🎯
             </h3>
@@ -263,36 +266,36 @@ export function Skills() {
                   whileHover={{ scale: 1.05, y: -5 }}
                   className="space-y-3 p-4 rounded-xl border-2 shadow-lg transition-all duration-300"
                   style={{
-                    backgroundColor: 'rgba(27, 27, 27, 0.9)',
-                    borderColor: index % 2 === 0 ? colors.primary : colors.secondary,
-                    backdropFilter: 'blur(10px)'
+                    backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                    borderColor: index % 2 === 0 ? 'var(--primary)' : 'var(--secondary)',
+                    backdropFilter: 'blur(10px)',
                   }}
                 >
                   <div className="flex justify-between items-center">
-                    <span 
+                    <span
                       className="font-bold"
-                      style={{ color: colors.accent }}
+                      style={{ color: 'var(--accent)' }}
                     >
                       {skill.skill}
                     </span>
-                    <span 
+                    <span
                       className="text-sm font-black"
-                      style={{ color: colors.primary }}
+                      style={{ color: 'var(--primary)' }}
                     >
                       {skill.level}%
                     </span>
                   </div>
-                  <div 
+                  <div
                     className="w-full rounded-full h-2"
-                    style={{ backgroundColor: 'rgba(248, 180, 0, 0.2)' }}
+                    style={{ backgroundColor: 'rgba(128,174,160, 0.2)' }}
                   >
                     <motion.div
                       initial={{ width: 0 }}
                       animate={isVisible ? { width: `${skill.level}%` } : { width: 0 }}
                       transition={{ duration: 1.5, delay: 1 + index * 0.1 }}
                       className="h-2 rounded-full"
-                      style={{ 
-                        background: `linear-gradient(90deg, ${colors.primary} 0%, ${colors.secondary} 100%)`
+                      style={{
+                        background: `linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%)`,
                       }}
                     />
                   </div>
@@ -302,12 +305,12 @@ export function Skills() {
           </motion.div>
 
           {/* Learning & Growth */}
-          <motion.div 
-            variants={itemVariants} 
+          <motion.div
+            variants={itemVariants}
             className="text-center rounded-2xl p-8 relative overflow-hidden"
-            style={{ 
-              background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
-              color: colors.background
+            style={{
+              background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`,
+              color: 'var(--card-foreground)',
             }}
           >
             {/* Background decorations */}
@@ -319,14 +322,14 @@ export function Skills() {
               ⚡
             </motion.div>
             <motion.div
-              animate={{ 
+              animate={{
                 y: [0, -10, 0],
-                rotate: [0, 10, -10, 0]
+                rotate: [0, 10, -10, 0],
               }}
-              transition={{ 
+              transition={{
                 duration: 6,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: "easeInOut",
               }}
               className="absolute bottom-4 left-4 text-3xl opacity-30"
             >
@@ -342,7 +345,7 @@ export function Skills() {
             </motion.div>
             <h3 className="text-2xl font-black mb-4">Always Learning, Always Growing 📈</h3>
             <p className="text-lg opacity-90 max-w-2xl mx-auto font-bold">
-              Technology evolves at breakneck speed, and so do I. Currently diving deep into 
+              Technology evolves at breakneck speed, and so do I. Currently diving deep into
               AI/ML, Web3, and the bleeding edge of software development.
             </p>
           </motion.div>

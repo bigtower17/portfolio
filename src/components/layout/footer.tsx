@@ -3,14 +3,6 @@
 import { motion } from "framer-motion";
 import { Heart, ArrowUp, Github, Linkedin, Mail, Rocket } from "lucide-react";
 
-// Bold & Creative Color Palette
-const colors = {
-  background: '#1B1B1B',
-  primary: '#F8B400', 
-  secondary: '#E63946',
-  accent: '#FFFFFF' 
-};
-
 export function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -31,22 +23,16 @@ export function Footer() {
       icon: Github, 
       href: "https://github.com", 
       label: "GitHub",
-      color: colors.accent,
-      hoverColor: colors.primary
     },
     { 
       icon: Linkedin, 
       href: "https://linkedin.com", 
       label: "LinkedIn",
-      color: colors.primary,
-      hoverColor: colors.secondary
     },
     { 
       icon: Mail, 
       href: "mailto:hello@torregrossa.dev", 
       label: "Email",
-      color: colors.secondary,
-      hoverColor: colors.primary
     },
   ];
 
@@ -58,7 +44,7 @@ export function Footer() {
   };
 
   return (
-    <footer style={{ backgroundColor: colors.background }}>
+    <footer className="bg-background">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-4 gap-8">
@@ -68,27 +54,16 @@ export function Footer() {
               whileHover={{ scale: 1.05 }}
               className="inline-block"
             >
-              <h3 
-                className="text-2xl font-black"
-                style={{ 
-                  background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
+              <h3 className="text-2xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Torregrossa.dev
               </h3>
             </motion.div>
-            <p 
-              className="max-w-md leading-relaxed font-bold"
-              style={{ color: colors.accent }}
-            >
+            <p className="max-w-md leading-relaxed font-bold text-accent">
               Full-Stack Engineer obsessed with building products that scale, 
               break barriers, and create real value. Always ready for the next big challenge! 🚀
             </p>
             <div className="flex gap-4">
-              {socialLinks.map((social) => (
+              {socialLinks.map((social, index) => (
                 <motion.a
                   key={social.label}
                   href={social.href}
@@ -96,22 +71,9 @@ export function Footer() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2, rotate: 5 }}
                   whileTap={{ scale: 0.95 }}
-                  className="p-3 rounded-lg transition-all duration-300 border-2 shadow-lg"
+                  className="p-3 rounded-lg transition-all duration-300 border-2 shadow-lg bg-card border-primary text-primary hover:border-accent hover:text-accent"
                   style={{
-                    backgroundColor: 'rgba(27, 27, 27, 0.8)',
-                    borderColor: social.color,
-                    color: social.color,
                     backdropFilter: 'blur(10px)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = social.hoverColor;
-                    e.currentTarget.style.color = social.hoverColor;
-                    e.currentTarget.style.boxShadow = `0 10px 30px ${social.hoverColor}25`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = social.color;
-                    e.currentTarget.style.color = social.color;
-                    e.currentTarget.style.boxShadow = '';
                   }}
                 >
                   <social.icon size={20} />
@@ -123,10 +85,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 
-              className="text-lg font-black"
-              style={{ color: colors.primary }}
-            >
+            <h4 className="text-lg font-black text-primary">
               Quick Links 🔗
             </h4>
             <ul className="space-y-2">
@@ -135,14 +94,7 @@ export function Footer() {
                   <motion.button
                     onClick={() => scrollToSection(link.href)}
                     whileHover={{ x: 5, scale: 1.05 }}
-                    className="font-bold transition-colors"
-                    style={{ color: colors.accent }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = colors.primary;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = colors.accent;
-                    }}
+                    className="font-bold transition-colors text-accent hover:text-primary"
                   >
                     {link.name}
                   </motion.button>
@@ -153,29 +105,16 @@ export function Footer() {
 
           {/* Contact Info */}
           <div className="space-y-4">
-            <h4 
-              className="text-lg font-black"
-              style={{ color: colors.secondary }}
-            >
+            <h4 className="text-lg font-black text-accent">
               Let's Connect 🌐
             </h4>
-            <div 
-              className="space-y-3 text-sm font-bold"
-              style={{ color: colors.accent }}
-            >
+            <div className="space-y-3 text-sm font-bold text-accent">
               <div className="flex items-center gap-2">
                 <span>📧</span>
                 <motion.a
                   href="mailto:hello@torregrossa.dev"
                   whileHover={{ scale: 1.05 }}
-                  className="transition-colors"
-                  style={{ color: colors.accent }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = colors.primary;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = colors.accent;
-                  }}
+                  className="transition-colors text-accent hover:text-primary"
                 >
                   hello@torregrossa.dev
                 </motion.a>
@@ -188,10 +127,9 @@ export function Footer() {
                 <motion.span
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: '#48BB78' }}
+                  className="w-2 h-2 rounded-full bg-accent"
                 />
-                <span style={{ color: '#48BB78' }}>Available for Epic Projects</span>
+                <span className="text-accent">Available for Epic Projects</span>
               </div>
             </div>
           </div>
@@ -199,17 +137,11 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div 
-        className="border-t-2"
-        style={{ borderColor: colors.primary }}
-      >
+      <div className="border-t-2 border-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
-            <div 
-              className="flex items-center gap-2 text-sm font-bold"
-              style={{ color: colors.accent }}
-            >
+            <div className="flex items-center gap-2 text-sm font-bold text-accent">
               <span>© {currentYear} Torregrossa.dev</span>
               <span>•</span>
               <span className="flex items-center gap-2">
@@ -218,7 +150,7 @@ export function Footer() {
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
-                  <Heart size={14} style={{ color: colors.secondary }} />
+                  <Heart size={14} className="text-red-500" />
                 </motion.span>
                 and lots of ☕ in Italy
               </span>
@@ -229,12 +161,7 @@ export function Footer() {
               onClick={scrollToTop}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-black transition-all duration-300 shadow-lg border-2"
-              style={{
-                background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
-                borderColor: colors.accent,
-                color: colors.background
-              }}
+              className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-black transition-all duration-300 shadow-lg border-2 bg-gradient-to-r from-primary to-accent text-primary-foreground border-accent"
             >
               <Rocket size={16} />
               Back to Top 🚀
@@ -257,7 +184,7 @@ export function Footer() {
             ease: "easeInOut",
           }}
           className="absolute top-8 right-8 text-4xl"
-          style={{ filter: `drop-shadow(0 0 20px ${colors.primary})` }}
+          style={{ filter: `drop-shadow(0 0 20px hsl(var(--primary)))` }}
         >
           🚀
         </motion.div>
@@ -274,7 +201,7 @@ export function Footer() {
             delay: 2,
           }}
           className="absolute bottom-8 left-8 text-3xl"
-          style={{ filter: `drop-shadow(0 0 15px ${colors.secondary})` }}
+          style={{ filter: `drop-shadow(0 0 15px hsl(var(--accent)))` }}
         >
           ⚡
         </motion.div>

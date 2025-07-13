@@ -4,37 +4,91 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --border: 214.3 31.8% 91.4%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --background: hsl(0, 0%, 97%) !important; /* Grigio molto chiaro from theme-sober */
+    --foreground: hsl(222.2, 20%, 10%) !important; /* Grigio scuro per testo from theme-sober */
+    --muted: hsl(0, 0%, 90%) !important; /* Grigio chiaro from theme-sober */
+    --muted-foreground: hsl(222.2, 10%, 30%) !important;
+    --border: hsl(0, 0%, 80%) !important;
+    --primary: hsl(0, 0%, 40%) !important; /* Grigio scuro from theme-sober */
+    --primary-foreground: hsl(0, 0%, 100%) !important;
+    --accent: hsl(0, 0%, 70%) !important; /* Grigio medio from theme-sober */
+    --accent-foreground: hsl(222.2, 20%, 10%) !important;
+    --card: hsl(0, 0%, 95%) !important;
+    --card-foreground: hsl(222.2, 20%, 10%) !important;
+    --secondary: hsl(0, 0%, 60%) !important;
+    --secondary-foreground: hsl(0, 0%, 100%) !important;
+    --destructive: hsl(0, 60%, 50%) !important;
+    --destructive-foreground: hsl(0, 0%, 100%) !important;
+    --ring: hsl(0, 0%, 40%) !important;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --border: 217.2 32.6% 17.5%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --background: hsl(60, 2%, 21%) !important; /* #363635 - Grigio scuro from theme-beast */
+    --foreground: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante per testo from theme-beast */
+    --muted: hsl(0, 0%, 18%) !important;
+    --muted-foreground: hsl(163, 15%, 50%) !important;
+    --border: hsl(267, 48%, 35%) !important; /* #592e83 - Viola per bordi from theme-beast */
+    --primary: hsl(163, 23%, 59%) !important; /* #80aea0 - Verde-azzurro from theme-beast */
+    --primary-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde-azzurro from theme-beast */
+    --secondary: hsl(267, 48%, 35%) !important; /* #592e83 - Viola from theme-beast */
+    --secondary-foreground: hsl(126, 79%, 72%) !important; /* Verde su viola from theme-beast */
+    --accent: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante from theme-beast */
+    --accent-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde from theme-beast */
+    --card: hsl(60, 2%, 21%) !important; /* #363635 - Stesso del background from theme-beast */
+    --card-foreground: hsl(126, 79%, 72%) !important; /* Verde per testo su card from theme-beast */
+    --destructive: hsl(0, 84%, 60%) !important;
+    --destructive-foreground: hsl(60, 2%, 21%) !important;
+    --ring: hsl(163, 23%, 59%) !important;
+  }
+
+  /* Tema Super Sobra - Minimalista e professionale (optional override) */
+  .theme-sober {
+    --background: hsl(0, 0%, 97%) !important; /* Grigio molto chiaro */
+    --foreground: hsl(0, 0%, 0%) !important; /* Grigio scuro per testo */
+    --muted: hsl(0, 0%, 90%) !important; /* Grigio chiaro */
+    --muted-foreground: hsl(222.2, 10%, 30%) !important;
+    --border: hsl(0, 0%, 80%) !important;
+    --primary: hsl(0, 0%, 0%) !important; /* Grigio scuro */
+    --primary-foreground: hsl(0, 0%, 100%) !important;
+    --accent: hsl(0, 0%, 70%) !important; /* Grigio medio */
+    --accent-foreground: hsl(222.2, 20%, 10%) !important;
+    --card: hsl(0, 0%, 95%) !important;
+    --card-foreground: hsl(222.2, 20%, 10%) !important;
+    --secondary: hsl(0, 30%, 96%) !important;
+    --secondary-foreground: hsl(0, 0%, 100%) !important;
+    --destructive: hsl(0, 60%, 50%) !important;
+    --destructive-foreground: hsl(0, 0%, 100%) !important;
+    --ring: hsl(0, 0%, 40%) !important;
+  }
+
+  /* Tema Cyber Beast - FORZATO PER VINCERE SU OKLCH (optional override) */
+  .theme-beast {
+    --background: hsl(60, 2%, 21%) !important; /* #363635 - Grigio scuro */
+    --foreground: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante per testo */
+    --muted: hsl(0, 0%, 18%) !important;
+    --muted-foreground: hsl(163, 15%, 50%) !important;
+    --border: hsl(267, 48%, 35%) !important; /* #592e83 - Viola per bordi */
+    --primary: hsl(163, 23%, 59%) !important; /* #80aea0 - Verde-azzurro */
+    --primary-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde-azzurro */
+    --secondary: hsl(267, 48%, 35%) !important; /* #592e83 - Viola */
+    --secondary-foreground: hsl(126, 79%, 72%) !important; /* Verde su viola */
+    --accent: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante */
+    --accent-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde */
+    --card: hsl(60, 2%, 21%) !important; /* #363635 - Stesso del background */
+    --card-foreground: hsl(126, 79%, 72%) !important; /* Verde per testo su card */
+    --destructive: hsl(0, 84%, 60%) !important;
+    --destructive-foreground: hsl(60, 2%, 21%) !important;
+    --ring: hsl(163, 23%, 59%) !important;
   }
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    transition: all 0.5s ease; /* Transizione fluida per i cambiamenti di tema */
+  }
+  * {
+    @apply border-border outline-ring/50;
   }
 }
 
@@ -42,6 +96,19 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .theme-transition {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  }
+  .debug-theme {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--foreground);
+    padding: 5px 10px;
+    border-radius: 5px;
+    z-index: 1000;
   }
 }
 
@@ -85,78 +152,8 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+  --radius: 0.625rem;
 }

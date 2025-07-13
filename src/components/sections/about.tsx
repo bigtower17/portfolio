@@ -3,13 +3,6 @@
 import { motion } from "framer-motion";
 import { Code, Award, Globe, Cloud, Rocket, Zap } from "lucide-react";
 
-const colors = {
-  background: '#1B1B1B',
-  primary: '#F8B400', 
-  secondary: '#E63946',
-  accent: '#FFFFFF'
-};
-
 interface CardProps {
   children: React.ReactNode;
   className?: string;
@@ -18,10 +11,8 @@ interface CardProps {
 function Card({ children, className = "" }: CardProps) {
   return (
     <div 
-      className={`rounded-xl border-2 shadow-xl transition-all duration-300 ${className}`}
+      className={`rounded-xl border-2 shadow-xl transition-all duration-300 bg-card border-border ${className}`}
       style={{ 
-        backgroundColor: 'rgba(27, 27, 27, 0.9)',
-        borderColor: colors.primary,
         backdropFilter: 'blur(10px)'
       }}
     >
@@ -50,12 +41,7 @@ function Badge({ children, variant = "default", className = "" }: BadgeProps) {
   if (variant === "secondary") {
     return (
       <div 
-        className={`${baseStyle} ${className}`}
-        style={{
-          backgroundColor: 'rgba(248, 180, 0, 0.1)',
-          borderColor: colors.primary,
-          color: colors.primary
-        }}
+        className={`${baseStyle} ${className} bg-primary/10 border-primary text-primary`}
       >
         {children}
       </div>
@@ -64,12 +50,7 @@ function Badge({ children, variant = "default", className = "" }: BadgeProps) {
   
   return (
     <div 
-      className={`${baseStyle} ${className}`}
-      style={{
-        backgroundColor: colors.primary,
-        borderColor: colors.primary,
-        color: colors.background
-      }}
+      className={`${baseStyle} ${className} bg-primary border-primary text-primary-foreground`}
     >
       {children}
     </div>
@@ -78,10 +59,10 @@ function Badge({ children, variant = "default", className = "" }: BadgeProps) {
 
 export function About() {
   const stats = [
-    { icon: Rocket, label: "Years Shipping Code", value: "6+", color1: colors.primary, color2: colors.secondary },
-    { icon: Code, label: "Products Launched", value: "25+", color1: colors.secondary, color2: colors.primary },
-    { icon: Globe, label: "Global Teams", value: "10+", color1: colors.primary, color2: colors.accent },
-    { icon: Cloud, label: "Cloud Deployments", value: "15+", color1: colors.secondary, color2: colors.accent },
+    { icon: Rocket, label: "Years Shipping Code", value: "6+" },
+    { icon: Code, label: "Products Launched", value: "25+" },
+    { icon: Globe, label: "Global Teams", value: "10+" },
+    { icon: Cloud, label: "Cloud Deployments", value: "15+" },
   ];
 
   const technologies = [
@@ -104,18 +85,17 @@ export function About() {
     visible: { opacity: 1, y: 0 },
   };
 
-  const scrollToContact = () => {
-    const contactSection = document.querySelector("#contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
     <section 
       id="about" 
-      className="py-20"
-      style={{ backgroundColor: colors.background }}
+      className="py-20 bg-background"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -132,27 +112,14 @@ export function About() {
               whileInView={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", duration: 1 }}
               className="text-6xl mb-4"
-              style={{ filter: `drop-shadow(0 0 20px ${colors.primary})` }}
+              style={{ filter: `drop-shadow(0 0 20px hsl(var(--primary)))` }}
             >
               🧙‍♂️
             </motion.div>
-            <h2 
-              className="text-4xl md:text-6xl font-black tracking-tight"
-              style={{ 
-                background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
-            >
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-primary via-accent to-border bg-clip-text text-transparent">
               The Story Behind the Code
             </h2>
-            <div 
-              className="w-32 h-2 mx-auto rounded-full"
-              style={{ 
-                background: `linear-gradient(90deg, ${colors.primary} 0%, ${colors.secondary} 100%)`
-              }}
-            />
+            <div className="w-32 h-2 mx-auto rounded-full bg-gradient-to-r from-primary to-accent" />
           </motion.div>
 
           <div className="grid lg:grid-cols-3 gap-12 items-start">
@@ -161,49 +128,34 @@ export function About() {
               <div className="space-y-6 text-lg leading-relaxed">
                 <motion.div 
                   whileHover={{ scale: 1.02, y: -5 }}
-                  className="p-6 rounded-2xl border-2 transition-all duration-300"
-                  style={{
-                    backgroundColor: 'rgba(248, 180, 0, 0.05)',
-                    borderColor: colors.primary,
-                    color: colors.accent
-                  }}
+                  className="p-6 rounded-2xl border-2 border-primary/20 bg-primary/5 text-accent transition-all duration-300"
                 >
                   <p>
-                    <strong style={{ color: colors.primary }}>Plot twist:</strong> After{" "}
-                    <strong style={{ color: colors.secondary }}>6 years managing complex EU-funded projects</strong>, 
+                    <strong className="text-primary">Plot twist:</strong> After{" "}
+                    <strong className="text-accent">6 years managing complex EU-funded projects</strong>, 
                     I had an epiphany 💡 Why manage other people's code when I could write the future myself?
                   </p>
                 </motion.div>
                 
                 <motion.div 
                   whileHover={{ scale: 1.02, y: -5 }}
-                  className="p-6 rounded-2xl border-2 transition-all duration-300"
-                  style={{
-                    backgroundColor: 'rgba(230, 57, 70, 0.05)',
-                    borderColor: colors.secondary,
-                    color: colors.accent
-                  }}
+                  className="p-6 rounded-2xl border-2 border-accent/20 bg-accent/5 text-foreground transition-all duration-300"
                 >
                   <p>
-                    Now I live at the intersection of <strong style={{ color: colors.primary }}>shipping fast</strong> and{" "}
-                    <strong style={{ color: colors.secondary }}>building right</strong>. I'm{" "}
-                    <strong style={{ color: colors.accent }}>AWS Certified (SAA-C03)</strong> 
+                    Now I live at the intersection of <strong className="text-primary">shipping fast</strong> and{" "}
+                    <strong className="text-accent">building right</strong>. I'm{" "}
+                    <strong className="text-accent">AWS Certified (SAA-C03)</strong> 
                     and constantly learning the next big thing in DevOps, automation, and infrastructure-as-code.
                   </p>
                 </motion.div>
                 
                 <motion.div 
                   whileHover={{ scale: 1.02, y: -5 }}
-                  className="p-6 rounded-2xl border-2 transition-all duration-300"
-                  style={{
-                    background: `linear-gradient(135deg, rgba(248, 180, 0, 0.1) 0%, rgba(230, 57, 70, 0.1) 100%)`,
-                    borderColor: colors.primary,
-                    color: colors.accent
-                  }}
+                  className="p-6 rounded-2xl border-2 border-border bg-gradient-to-br from-primary/10 to-accent/10 text-foreground transition-all duration-300"
                 >
                   <p>
-                    <strong style={{ color: colors.secondary }}>Secret weapon:</strong> My background in{" "}
-                    <strong style={{ color: colors.primary }}>theoretical linguistics</strong> 
+                    <strong className="text-accent">Secret weapon:</strong> My background in{" "}
+                    <strong className="text-primary">theoretical linguistics</strong> 
                     gives me a superpower for spotting patterns and building systems that actually make sense 🧠
                   </p>
                 </motion.div>
@@ -219,14 +171,11 @@ export function About() {
                     animate={{ rotate: [0, 360] }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     className="text-3xl"
-                    style={{ filter: `drop-shadow(0 0 15px ${colors.primary})` }}
+                    style={{ filter: `drop-shadow(0 0 15px hsl(var(--primary)))` }}
                   >
                     🧠
                   </motion.div>
-                  <h3 
-                    className="text-2xl font-black"
-                    style={{ color: colors.accent }}
-                  >
+                  <h3 className="text-2xl font-black text-accent">
                     My Toolkit
                   </h3>
                 </div>
@@ -264,14 +213,11 @@ export function About() {
                       ease: "easeInOut"
                     }}
                     className="text-3xl"
-                    style={{ filter: `drop-shadow(0 0 15px ${colors.secondary})` }}
+                    style={{ filter: `drop-shadow(0 0 15px hsl(var(--accent)))` }}
                   >
                     🚀
                   </motion.div>
-                  <h3 
-                    className="text-2xl font-black"
-                    style={{ color: colors.accent }}
-                  >
+                  <h3 className="text-2xl font-black text-accent">
                     What I Actually Do
                   </h3>
                 </div>
@@ -287,11 +233,10 @@ export function About() {
                     <motion.div
                       key={index}
                       whileHover={{ scale: 1.05, x: 5 }}
-                      className="p-4 rounded-xl border-2 font-bold shadow-md hover:shadow-lg transition-all duration-300"
+                      className={`p-4 rounded-xl border-2 font-bold shadow-md hover:shadow-lg transition-all duration-300 bg-card text-card-foreground ${
+                        index % 2 === 0 ? 'border-primary' : 'border-accent'
+                      }`}
                       style={{
-                        backgroundColor: 'rgba(27, 27, 27, 0.8)',
-                        borderColor: index % 2 === 0 ? colors.primary : colors.secondary,
-                        color: colors.accent,
                         backdropFilter: 'blur(10px)'
                       }}
                     >
@@ -317,8 +262,7 @@ export function About() {
                         rotate: [0, 180, 360]
                       }}
                       transition={{ duration: 8, repeat: Infinity }}
-                      className="absolute inset-0 rounded-xl"
-                      style={{ backgroundColor: colors.primary }}
+                      className="absolute inset-0 rounded-xl bg-primary/20"
                     />
                     <div className="relative z-10">
                       <motion.div
@@ -330,19 +274,13 @@ export function About() {
                           src="/saabadge.png" 
                           alt="AWS Solutions Architect Associate Badge"
                           className="w-25 h-25 object-contain"
-                          style={{ filter: `drop-shadow(0 0 20px ${colors.primary})` }}
+                          style={{ filter: `drop-shadow(0 0 20px hsl(var(--primary)))` }}
                         />
                       </motion.div>
-                      <h3 
-                        className="font-black text-lg mb-2"
-                        style={{ color: colors.accent }}
-                      >
+                      <h3 className="font-black text-lg mb-2 text-accent">
                         AWS Certified
                       </h3>
-                      <p 
-                        className="text-sm font-bold mb-3"
-                        style={{ color: colors.primary }}
-                      >
+                      <p className="text-sm font-bold mb-3 text-primary">
                         Solutions Architect Associate
                       </p>
                       <Badge className="shadow-lg">
@@ -355,7 +293,7 @@ export function About() {
 
               {/* Stats */}
               <div className="grid grid-cols-2 gap-4">
-                {stats.map(({ icon: Icon, label, value, color1, color2 }, index) => (
+                {stats.map(({ icon: Icon, label, value }, index) => (
                   <motion.div 
                     key={label} 
                     initial={{ opacity: 0, y: 20 }}
@@ -366,25 +304,14 @@ export function About() {
                     <Card className="text-center hover:shadow-2xl transition-all duration-300">
                       <CardContent className="p-4">
                         <div className="mb-3 flex justify-center">
-                          <div 
-                            className="p-3 rounded-full shadow-lg"
-                            style={{ 
-                              background: `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`
-                            }}
-                          >
-                            <Icon size={20} style={{ color: colors.background }} />
+                          <div className="p-3 rounded-full shadow-lg bg-gradient-to-br from-primary to-accent">
+                            <Icon size={20} className="text-primary-foreground" />
                           </div>
                         </div>
-                        <div 
-                          className="text-2xl font-black mb-1"
-                          style={{ color: colors.accent }}
-                        >
+                        <div className="text-2xl font-black mb-1 text-accent">
                           {value}
                         </div>
-                        <div 
-                          className="text-xs font-bold"
-                          style={{ color: colors.primary }}
-                        >
+                        <div className="text-xs font-bold text-primary">
                           {label}
                         </div>
                       </CardContent>
@@ -410,7 +337,7 @@ export function About() {
                         ease: "linear"
                       }}
                       className="absolute top-2 right-2 text-2xl opacity-30"
-                      style={{ filter: `drop-shadow(0 0 10px ${colors.primary})` }}
+                      style={{ filter: `drop-shadow(0 0 10px hsl(var(--primary)))` }}
                     >
                       🦄
                     </motion.div>
@@ -420,31 +347,29 @@ export function About() {
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
                         className="text-2xl"
-                        style={{ filter: `drop-shadow(0 0 10px ${colors.secondary})` }}
+                        style={{ filter: `drop-shadow(0 0 10px hsl(var(--accent)))` }}
                       >
                         🚀
                       </motion.div>
-                      <h3 
-                        className="font-black"
-                        style={{ color: colors.accent }}
-                      >
+                      <h3 className="font-black text-accent">
                         Startup Mode: ON
                       </h3>
                     </div>
                     <div className="space-y-2 text-sm font-bold">
                       {[
-                        { text: "⚡ Zero-to-one mindset", color: colors.primary },
-                        { text: "🌍 Remote-first, global reach", color: colors.secondary },
-                        { text: "🔥 Early-stage collaborations", color: colors.primary },
-                        { text: "💡 Product-driven solutions", color: colors.secondary },
-                        { text: "🎯 Growth hacking approach", color: colors.primary },
-                        { text: "🦄 Unicorn potential seeker", color: colors.secondary }
+                        { text: "⚡ Zero-to-one mindset" },
+                        { text: "🌍 Remote-first, global reach" },
+                        { text: "🔥 Early-stage collaborations" },
+                        { text: "💡 Product-driven solutions" },
+                        { text: "🎯 Growth hacking approach" },
+                        { text: "🦄 Unicorn potential seeker" }
                       ].map((item, index) => (
                         <motion.p
                           key={index}
                           whileHover={{ x: 5, scale: 1.05 }}
-                          style={{ color: item.color }}
-                          className="transition-all duration-300"
+                          className={`transition-all duration-300 ${
+                            index % 2 === 0 ? 'text-primary' : 'text-accent'
+                          }`}
                         >
                           {item.text}
                         </motion.p>
@@ -459,11 +384,7 @@ export function About() {
           {/* Call to Action */}
           <motion.div 
             variants={itemVariants} 
-            className="text-center rounded-3xl p-12 relative overflow-hidden"
-            style={{ 
-              background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`,
-              color: colors.background
-            }}
+            className="text-center rounded-3xl p-12 relative overflow-hidden bg-gradient-to-br from-primary to-accent text-primary-foreground"
           >
             <motion.div
               animate={{ 
@@ -507,13 +428,8 @@ export function About() {
               </p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <button
-                  onClick={scrollToContact}
-                  className="px-12 py-6 text-xl font-black shadow-2xl rounded-lg border-3 transition-all duration-300 transform hover:scale-105"
-                  style={{
-                    backgroundColor: colors.accent,
-                    color: colors.background,
-                    border: `3px solid ${colors.background}`
-                  }}
+                  onClick={() => scrollToSection("#contact")}
+                  className="px-12 py-6 text-xl font-black shadow-2xl rounded-lg border-3 transition-all duration-300 transform hover:scale-105 bg-accent text-accent-foreground border-accent-foreground"
                 >
                   <Rocket className="inline mr-3" size={24} />
                   Let's Build Something Epic! 🔥
