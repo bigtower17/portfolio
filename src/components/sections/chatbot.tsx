@@ -1,47 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useTheme } from "@/components/theme-provider";
 
-// Colori esistenti, adattati per miglior contrasto (testo chiaro su sfondo scuro, e viceversa)
 const colors = {
-  background: 'var(--background)',
-  primary: 'var(--primary)',
-  secondary: 'var(--secondary)',
-  accent: 'var(--accent)',
-  textLight: 'var(--foreground)',
-  textDark: 'var(--card-foreground)',
-  textGreen: 'var(--textGreen, #4CAF50)',
+  background: "var(--background, #ffffff)",
+  primary: "var(--primary, #4b5e97)",
+  secondary: "var(--secondary, #e0e7ff)",
+  accent: "var(--accent, #6b7280)",
+  textLight: "var(--foreground, #ffffff)",
+  textDark: "var(--card-foreground, #000000)",
+  textGreen: "var(--textGreen, #4CAF50)",
 };
 
 export function Chatbot() {
-  const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string }[]>([]);
-  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [requestCount, setRequestCount] = useState(0);
+  const [lastReset, setLastReset] = useState(Date.now());
+  const { theme } = useTheme();
+
+  // Rate limit: 5 richieste ogni 60 secondi
+  const RATE_LIMIT = 5;
+  const RESET_INTERVAL = 60000; // 60 secondi in millisecondi
+
+  useEffect(() => {
+    setMessages([{ role: "assistant", content: "Ciao! Sono Benny, il tuo assistente virtuale. Chiedimi qualsiasi cosa su di me o sul mio sito!" }]);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    // Aggiungi il nuovo messaggio utente
-    const newMessages = [...messages, { role: 'user', content: input }];
+
+    // Controlla il rate limit
+    const now = Date.now();
+    if (now - lastReset >= RESET_INTERVAL) {
+      setRequestCount(1);
+      setLastReset(now);
+    } else if (requestCount >= RATE_LIMIT) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Rallenta! Hai raggiunto il limite di 5 richieste in 60 secondi. Riprova tra un po'." },
+      ]);
+      setLoading(false);
+      return;
+    } else {
+      setRequestCount((prev) => prev + 1);
+    }
+
+    const newMessages = [...messages, { role: "user", content: input }];
     setMessages(newMessages);
     setLoading(true);
-    setInput('');
+    setInput("");
 
     try {
-      // Limita l'array a un numero massimo di messaggi (es. ultimi 5)
-      const recentMessages = newMessages.slice(-5); // Tiene solo gli ultimi 5 messaggi
+      const recentMessages = newMessages.slice(-5);
 
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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',
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo', // Modello stabile per test
+          model: "gpt-3.5-turbo",
           messages: [
             {
-              role: 'system',
+              role: "system",
               content: `
                 Benny Torregrossa, hai 35 anni, un software engineer e sei italiano. Hai lavorato su complessi progetti finanziati dall'UE prima di dedicarti allo sviluppo software, specializzandoti in prodotti che scalano e rompono barriere. Hai lanciato più di 25 progetti, collaborato con oltre 10 team globali e gestito 15+ deploy cloud.
 
@@ -85,26 +111,36 @@ export function Chatbot() {
       }
 
       const data = await response.json();
-
       if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
-        throw new Error('Risposta API non valida: choices non presente o vuoto');
+        throw new Error("Risposta API non valida: choices non presente o vuoto");
       }
 
       const botMessage = data.choices[0].message.content;
-      setMessages(prev => [...prev, { role: 'assistant', content: botMessage }]); // Corretto a 'assistant'
+      setMessages((prev) => [...prev, { role: "assistant", content: botMessage }]);
     } catch (error) {
-      console.error('Errore API:', error);
-      setMessages(prev => [...prev, { role: 'assistant', content: `Ops, errore! Dettagli: ${error.message}. Verifica la API key o il model.` }]);
+      console.error("Errore API:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `Mi dispiace, c'è stato un errore: ${error.message}. Controlla la connessione o contattami a hello@torregrossa.dev!`,
+        },
+      ]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="chatbot" className="py-20" style={{ backgroundColor: 'var(--background)' }}>
+    <section id="chatbot" className="py-20" style={{ backgroundColor: colors.background }}>
       <div className="max-w-4xl mx-auto px-4">
-        <h2 style={{ color: 'var(--accent)' }} className="text-3xl font-black text-center mb-8">Chatta con Me! 🤖</h2>
-        <div className="border-2 p-4 rounded-xl" style={{ borderColor: 'var(--primary)', backgroundColor: 'rgba(54,54,53,0.8)' }}>
+        <h2 style={{ color: colors.accent }} className="text-3xl font-black text-center mb-8">
+          Chatta con Me! 🤖
+        </h2>
+        <div
+          className="border-2 p-4 rounded-xl"
+          style={{ borderColor: colors.primary, backgroundColor: "rgba(54, 54, 53, 0.8)" }}
+        >
           <div className="h-64 overflow-y-auto space-y-4 mb-4">
             {messages.map((msg, i) => (
               <motion.div
@@ -113,14 +149,14 @@ export function Chatbot() {
                 animate={{ opacity: 1 }}
                 className="p-2 rounded"
                 style={{
-                  backgroundColor: msg.role === 'user' ? 'var(--secondary)' : 'transparent',
-                  color: msg.role === 'user' ? 'var(--textLight)' : 'var(--textGreen)',
+                  backgroundColor: msg.role === "user" ? colors.secondary : "transparent",
+                  color: msg.role === "user" ? colors.textLight : colors.textGreen,
                 }}
               >
-                <strong>{msg.role === 'user' ? 'Tu:' : 'Io:'}</strong> {msg.content}
+                <strong>{msg.role === "user" ? "Tu:" : "Io:"}</strong> {msg.content}
               </motion.div>
             ))}
-            {loading && <p style={{ color: 'var(--accent)' }}>Typing...</p>}
+            {loading && <p style={{ color: colors.accent }}>Typing...</p>}
           </div>
           <div className="flex">
             <input
@@ -128,13 +164,17 @@ export function Chatbot() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Chiedimi qualcosa su di me o sul sito..."
               className="flex-1 p-2 border-2 rounded-l"
-              style={{ borderColor: 'var(--primary)', backgroundColor: 'var(--background)', color: 'var(--textLight)' }}
+              style={{
+                borderColor: colors.primary,
+                backgroundColor: colors.background,
+                color: colors.textLight,
+              }}
             />
             <button
               onClick={handleSend}
               disabled={loading}
               className="p-2 rounded-r"
-              style={{ background: 'var(--primary)', color: 'var(--textLight)' }}
+              style={{ background: colors.primary, color: colors.textLight }}
             >
               Invia
             </button>
