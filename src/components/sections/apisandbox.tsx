@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import md5 from "md5"; // Assicurati di avere questa dipendenza: npm install md5
 
 export function ApiSandbox() {
   const [name, setName] = useState('');
