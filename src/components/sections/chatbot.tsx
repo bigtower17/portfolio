@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/components/theme-provider";
+import sanitizeHtml from "sanitize-html";
 
 const colors = {
   background: "var(--background, #ffffff)",
@@ -22,9 +23,9 @@ export function Chatbot() {
   const [lastReset, setLastReset] = useState(Date.now());
   const { theme } = useTheme();
 
-  // Rate limit: 5 richieste ogni 60 secondi
+  // Rate limit: 5 requests per 60 seconds
   const RATE_LIMIT = 5;
-  const RESET_INTERVAL = 60000; // 60 secondi in millisecondi
+  const RESET_INTERVAL = 60000; // 60 seconds in milliseconds
 
   useEffect(() => {
     setMessages([{ role: "assistant", content: "Ciao! Sono Benny, il tuo assistente virtuale. Chiedimi qualsiasi cosa su di me o sul mio sito!" }]);
@@ -33,7 +34,21 @@ export function Chatbot() {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    // Controlla il rate limit
+    // Sanitize input to prevent injections
+    const sanitizedInput = sanitizeHtml(input, {
+      allowedTags: [], // No HTML tags allowed
+      allowedAttributes: {},
+    }).trim();
+
+    if (!sanitizedInput) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Input non valido. Usa solo testo semplice." },
+      ]);
+      return;
+    }
+
+    // Check rate limit
     const now = Date.now();
     if (now - lastReset >= RESET_INTERVAL) {
       setRequestCount(1);
@@ -41,7 +56,10 @@ export function Chatbot() {
     } else if (requestCount >= RATE_LIMIT) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Rallenta! Hai raggiunto il limite di 5 richieste in 60 secondi. Riprova tra un po'." },
+        {
+          role: "assistant",
+          content: `Rallenta! Hai raggiunto il limite di ${RATE_LIMIT} richieste in 60 secondi. Riprova tra ${Math.ceil((RESET_INTERVAL - (now - lastReset)) / 1000)} secondi.`,
+        },
       ]);
       setLoading(false);
       return;
@@ -49,7 +67,7 @@ export function Chatbot() {
       setRequestCount((prev) => prev + 1);
     }
 
-    const newMessages = [...messages, { role: "user", content: input }];
+    const newMessages = [...messages, { role: "user", content: sanitizedInput }];
     setMessages(newMessages);
     setLoading(true);
     setInput("");
@@ -123,7 +141,7 @@ export function Chatbot() {
         ...prev,
         {
           role: "assistant",
-          content: `Mi dispiace, c'è stato un errore: ${error.message}. Controlla la connessione o contattami a hello@torregrossa.dev!`,
+          content: `Errore: ${error.message}. Controlla la connessione o contattami a hello@torregrossa.dev!`,
         },
       ]);
     } finally {
