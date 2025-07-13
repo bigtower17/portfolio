@@ -2,7 +2,7 @@ name: Deploy Direct to VPS
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [master, main]
   workflow_dispatch:
 
 env:
@@ -14,59 +14,58 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit
-        
+
       - name: Run build test
         run: npm run build
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
-          
+
       - name: Verify build output
         run: |
           echo "🔍 Checking build output..."
           ls -la
-          
+
           if [ ! -d ".next" ]; then
             echo "❌ Build test failed - no '.next' directory found"
             ls -la
             exit 1
           fi
-          
+
           echo "✅ Build test successful - '.next' directory exists"
           echo "📁 Contents of '.next' directory:"
           ls -la .next/ | head -10
-          
+
           # Verifica che ci siano i file essenziali
           if [ ! -f ".next/BUILD_ID" ]; then
-            echo "⚠️  Warning: BUILD_ID not found"
+            echo "⚠️ Warning: BUILD_ID not found"
           else
             echo "✅ BUILD_ID found: $(cat .next/BUILD_ID)"
           fi
-          
+
           if [ -d ".next/static" ]; then
             echo "✅ Static assets found"
           else
-            echo "⚠️  Warning: No static assets found"
+            echo "⚠️ Warning: No static assets found"
           fi
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code for deployment
         uses: actions/checkout@v4
         with:
           path: 'source'
-          
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -75,19 +74,19 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             echo "🚀 Starting deployment..."
-            
+
             # Check system resources
             echo "💾 Checking system resources..."
             free -h
             df -h /
-            
+
             # Install Node.js if not present
             if ! command -v node &> /dev/null; then
               echo "📦 Installing Node.js..."
               curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
               apt-get install -y nodejs
             fi
-            
+
             # Install Docker if not present
             if ! command -v docker &> /dev/null; then
               echo "🐳 Installing Docker..."
@@ -97,19 +96,19 @@ jobs:
               systemctl start docker
               usermod -aG docker $USER
             fi
-            
+
             # Install certbot if not present
             if ! command -v certbot &> /dev/null; then
               echo "🔒 Installing certbot..."
               apt-get update
               apt-get install -y certbot
             fi
-            
+
             # Clean project directory
             echo "🧹 Cleaning project directory..."
             rm -rf /opt/torregrossa-portfolio
             mkdir -p /opt/torregrossa-portfolio
-            
+
       - name: Copy files to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -119,7 +118,7 @@ jobs:
           source: "source/*"
           target: "/opt/torregrossa-portfolio/"
           strip_components: 1
-          
+
       - name: Setup SSL and deploy with Docker
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -128,26 +127,26 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /opt/torregrossa-portfolio
-            
+
             echo "📁 Checking files..."
             ls -la
-            
+
             if [ ! -f "package.json" ]; then
               echo "❌ package.json not found!"
               echo "Files in directory:"
               find . -type f -name "*.json" -o -name "*.js" -o -name "*.ts" | head -20
               exit 1
             fi
-            
+
             # Setup SSL certificate if not exists
             echo "🔒 Checking SSL certificate..."
             if [ ! -d "/etc/letsencrypt/live/torregrossa.dev" ]; then
               echo "📜 SSL certificate not found, creating new one..."
-              
+
               # Stop any running container temporarily
               docker stop torregrossa-app 2>/dev/null || true
               docker rm torregrossa-app 2>/dev/null || true
-              
+
               # Generate SSL certificate
               certbot certonly --standalone \
                 -d torregrossa.dev \
@@ -159,7 +158,7 @@ jobs:
                 echo "⚠️ SSL certificate generation failed, continuing without SSL..."
                 SSL_ENABLED=false
               }
-              
+
               if [ -d "/etc/letsencrypt/live/torregrossa.dev" ]; then
                 echo "✅ SSL certificate created successfully!"
                 SSL_ENABLED=true
@@ -170,20 +169,20 @@ jobs:
               echo "✅ SSL certificate already exists!"
               SSL_ENABLED=true
             fi
-            
+
             echo "🐳 Building Docker image..."
-            
+
             # Clean up old Docker resources first
             echo "🧹 Cleaning old Docker resources..."
             docker stop torregrossa-app 2>/dev/null || true
             docker rm torregrossa-app 2>/dev/null || true
             docker rmi torregrossa-portfolio:latest 2>/dev/null || true
             docker system prune -f --volumes
-            
+
             # Build new image
             echo "🏗️ Building new Docker image..."
             docker build -t torregrossa-portfolio:latest . --no-cache
-            
+
             if [ $? -ne 0 ]; then
               echo "❌ Docker build failed!"
               echo "📋 Docker logs:"
@@ -193,12 +192,12 @@ jobs:
               df -h /
               exit 1
             fi
-            
+
             echo "✅ Docker image built successfully!"
             docker images | grep torregrossa-portfolio
-            
+
             echo "🚀 Starting new container..."
-            
+
             # Run container with or without SSL based on certificate availability
             if [ "$SSL_ENABLED" = "true" ]; then
               echo "🔒 Starting container with SSL support..."
@@ -211,11 +210,11 @@ jobs:
                 --memory="512m" \
                 --memory-swap="1g" \
                 torregrossa-portfolio:latest
-              
+
               echo "🔧 Configuring SSL in container..."
               # Wait for container to be ready
               sleep 5
-              
+
               # Create SSL-enabled nginx config
               docker exec torregrossa-app sh -c 'cat > /etc/nginx/nginx.conf << "EOF"
 events {
@@ -244,22 +243,22 @@ http {
         listen 443 ssl;
         http2 on;
         server_name torregrossa.dev www.torregrossa.dev;
-        
+
         root /usr/share/nginx/html;
         index index.html;
-        
+
         ssl_certificate /etc/letsencrypt/live/torregrossa.dev/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/torregrossa.dev/privkey.pem;
-        
+
         ssl_protocols TLSv1.2 TLSv1.3;
         ssl_ciphers HIGH:!aNULL:!MD5;
-        
+
         add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-        
+
         location / {
             try_files $uri $uri/ $uri.html /index.html;
         }
-        
+
         location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
             expires 1y;
             add_header Cache-Control "public, immutable";
@@ -267,11 +266,11 @@ http {
     }
 }
 EOF'
-              
+
               # Test and reload nginx
               docker exec torregrossa-app nginx -t && docker exec torregrossa-app nginx -s reload
               echo "✅ SSL configuration applied!"
-              
+
             else
               echo "⚠️ Starting container without SSL..."
               docker run -d \
@@ -282,39 +281,39 @@ EOF'
                 --memory-swap="1g" \
                 torregrossa-portfolio:latest
             fi
-            
+
             if [ $? -ne 0 ]; then
               echo "❌ Failed to start container!"
               docker logs torregrossa-app 2>/dev/null || echo "No container logs available"
               exit 1
             fi
-            
+
             echo "⏳ Waiting for container to start..."
             sleep 10
-            
+
             # Container health checks
             echo "📊 Container status after startup:"
             docker ps -a --filter "name=torregrossa-app"
-            
+
             echo "📋 Container logs after startup:"
             docker logs torregrossa-app 2>/dev/null || echo "No logs available"
-            
+
             # Test nginx inside container
             echo "🔍 Testing nginx inside container:"
             docker exec torregrossa-app nginx -t 2>/dev/null && echo "✅ Nginx config OK" || echo "❌ Nginx config error"
             docker exec torregrossa-app ps aux | grep nginx || echo "❌ Nginx not running"
-            
+
             # Check static files
             echo "📁 Checking static files:"
             docker exec torregrossa-app ls -la /usr/share/nginx/html/ | head -5
             docker exec torregrossa-app test -f /usr/share/nginx/html/index.html && echo "✅ index.html exists" || echo "❌ index.html missing"
-            
+
             # Internal connectivity test
             echo "🔍 Testing internal connectivity:"
             docker exec torregrossa-app wget -q --spider http://localhost/ && echo "✅ Internal health check OK" || echo "❌ Internal health check failed"
-            
+
             echo "🔍 Running external health check..."
-            
+
             for i in {1..15}; do
               # Check container status
               if ! docker ps --filter "name=torregrossa-app" --filter "status=running" | grep -q torregrossa-app; then
@@ -323,12 +322,12 @@ EOF'
                 docker logs torregrossa-app 2>/dev/null || echo "No container logs available"
                 exit 1
               fi
-              
+
               if curl -f http://localhost:80 >/dev/null 2>&1; then
                 echo "✅ Health check passed!"
                 echo "🌐 Site accessible at http://${{ secrets.VPS_HOST }}"
                 echo "📍 Your portfolio is now live at http://217.154.120.146"
-                
+
                 if [ "$SSL_ENABLED" = "true" ]; then
                   echo "🔒 HTTPS enabled: https://torregrossa.dev"
                   echo "🔗 HTTP redirects to HTTPS"
@@ -336,26 +335,26 @@ EOF'
                   echo "🌍 HTTP only: http://torregrossa.dev"
                   echo "🔒 Run manual SSL setup later with: sudo certbot --standalone"
                 fi
-                
+
                 # Show container status
                 echo "📊 Final container status:"
                 docker ps --filter "name=torregrossa-app"
-                
+
                 # Show resource usage
                 echo "💾 Resource usage:"
                 docker stats --no-stream torregrossa-app
-                
+
                 # Setup auto-renewal cron job if SSL enabled
                 if [ "$SSL_ENABLED" = "true" ]; then
                   echo "⏰ Setting up SSL auto-renewal..."
                   (crontab -l 2>/dev/null; echo "0 3 * * * certbot renew --quiet && docker restart torregrossa-app") | crontab -
                   echo "✅ SSL auto-renewal configured"
                 fi
-                
+
                 # Clean up old images
                 echo "🧹 Cleaning up old images..."
                 docker image prune -f --filter "dangling=true"
-                
+
                 exit 0
               else
                 echo "⏳ Attempt $i/15 - waiting for container..."
@@ -364,7 +363,7 @@ EOF'
                 sleep 5
               fi
             done
-            
+
             echo "❌ Health check failed after 15 attempts!"
             echo "📋 Full container logs:"
             docker logs torregrossa-app 2>/dev/null || echo "No container logs available"
@@ -383,14 +382,13 @@ EOF'
     needs: [test, deploy]
     runs-on: ubuntu-latest
     if: always()
-    
     steps:
       - name: Notify deployment status
         run: |
           echo "=== DEPLOYMENT SUMMARY ==="
           echo "Test job: ${{ needs.test.result }}"
           echo "Deploy job: ${{ needs.deploy.result }}"
-          
+
           if [ "${{ needs.deploy.result }}" == "success" ]; then
             echo "✅ Portfolio deployed successfully!"
             echo "🌐 HTTP: http://217.154.120.146"
