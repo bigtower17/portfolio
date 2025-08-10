@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code, Award, Globe, Cloud, Rocket, Zap } from "lucide-react";
+import { Code, Award, Globe, Cloud, Rocket, Zap, Brain, Lightbulb, Users, Target, Flame, Sparkles, TrendingUp, Building2 } from "lucide-react";
 
 interface CardProps {
   children: React.ReactNode;
@@ -106,7 +106,7 @@ export function About() {
           className="space-y-16"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center space-y-6">
+          <motion.div variants={itemVariants} className="text-center space-y-6 mb-4">
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               whileInView={{ scale: 1, rotate: 0 }}
@@ -114,7 +114,7 @@ export function About() {
               className="text-6xl mb-4"
               style={{ filter: `drop-shadow(0 0 20px hsl(var(--primary)))` }}
             >
-              🧙‍♂️
+              <Users size={48} strokeWidth={1.5} />
             </motion.div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-primary via-accent to-border bg-clip-text text-transparent">
               The Story Behind the Code
@@ -133,7 +133,7 @@ export function About() {
                   <p>
                     <strong className="text-primary">Plot twist:</strong> After{" "}
                     <strong className="text-accent">6 years managing complex EU-funded projects</strong>, 
-                    I had an epiphany 💡 Why manage other people's code when I could write the future myself?
+                    I had an epiphany. Why manage other people's code when I could write the future myself?
                   </p>
                 </motion.div>
                 
@@ -155,8 +155,8 @@ export function About() {
                 >
                   <p>
                     <strong className="text-accent">Secret weapon:</strong> My background in{" "}
-                    <strong className="text-primary">theoretical linguistics</strong> 
-                    gives me a superpower for spotting patterns and building systems that actually make sense 🧠
+                    <strong className="text-primary">theoretical linguistics </strong> 
+                    gives me a superpower for spotting patterns and building systems that actually make sense.
                   </p>
                 </motion.div>
               </div>
@@ -173,7 +173,7 @@ export function About() {
                     className="text-3xl"
                     style={{ filter: `drop-shadow(0 0 15px hsl(var(--primary)))` }}
                   >
-                    🧠
+                    <Brain size={28} strokeWidth={1.5} />
                   </motion.div>
                   <h3 className="text-2xl font-black text-accent">
                     My Toolkit
@@ -215,7 +215,7 @@ export function About() {
                     className="text-3xl"
                     style={{ filter: `drop-shadow(0 0 15px hsl(var(--accent)))` }}
                   >
-                    🚀
+                    <Rocket size={28} strokeWidth={1.5} />
                   </motion.div>
                   <h3 className="text-2xl font-black text-accent">
                     What I Actually Do
@@ -223,24 +223,25 @@ export function About() {
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   {[
-                    "🔥 Full-stack apps that users love",
-                    "⚡ CI/CD pipelines that just work", 
-                    "☁️ Cloud infrastructure that scales",
-                    "🏗️ Infrastructure-as-Code magic",
-                    "📱 Cross-platform mobile apps",
-                    "🎯 Zero-to-one product development"
-                  ].map((item, index) => (
+                    { icon: Flame, text: "Full-stack apps that users love" },
+                    { icon: Zap, text: "CI/CD pipelines that just work" }, 
+                    { icon: Cloud, text: "Cloud infrastructure that scales" },
+                    { icon: Building2, text: "Infrastructure-as-Code magic" },
+                    { icon: Code, text: "Cross-platform mobile apps" },
+                    { icon: Target, text: "Zero-to-one product development" }
+                  ].map(({ icon: Icon, text }, index) => (
                     <motion.div
                       key={index}
                       whileHover={{ scale: 1.05, x: 5 }}
-                      className={`p-4 rounded-xl border-2 font-bold shadow-md hover:shadow-lg transition-all duration-300 bg-card text-card-foreground ${
+                      className={`flex items-center gap-3 p-4 rounded-xl border-2 font-bold shadow-md hover:shadow-lg transition-all duration-300 bg-card text-card-foreground ${
                         index % 2 === 0 ? 'border-primary' : 'border-accent'
                       }`}
                       style={{
                         backdropFilter: 'blur(10px)'
                       }}
                     >
-                      {item}
+                      <Icon size={20} className={index % 2 === 0 ? 'text-primary' : 'text-accent'} strokeWidth={2} />
+                      <span>{text}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -283,8 +284,9 @@ export function About() {
                       <p className="text-sm font-bold mb-3 text-primary">
                         Solutions Architect Associate
                       </p>
-                      <Badge className="shadow-lg">
-                        SAA-C03 ✨
+                      <Badge className="shadow-lg flex items-center gap-2">
+                        <Award size={14} strokeWidth={2} />
+                        SAA-C03
                       </Badge>
                     </div>
                   </CardContent>
@@ -339,7 +341,7 @@ export function About() {
                       className="absolute top-2 right-2 text-2xl opacity-30"
                       style={{ filter: `drop-shadow(0 0 10px hsl(var(--primary)))` }}
                     >
-                      🦄
+                      <Sparkles size={24} strokeWidth={1.5} />
                     </motion.div>
                     
                     <div className="flex items-center gap-2">
@@ -349,7 +351,7 @@ export function About() {
                         className="text-2xl"
                         style={{ filter: `drop-shadow(0 0 10px hsl(var(--accent)))` }}
                       >
-                        🚀
+                        <Rocket size={24} strokeWidth={1.5} />
                       </motion.div>
                       <h3 className="font-black text-accent">
                         Startup Mode: ON
@@ -357,22 +359,23 @@ export function About() {
                     </div>
                     <div className="space-y-2 text-sm font-bold">
                       {[
-                        { text: "⚡ Zero-to-one mindset" },
-                        { text: "🌍 Remote-first, global reach" },
-                        { text: "🔥 Early-stage collaborations" },
-                        { text: "💡 Product-driven solutions" },
-                        { text: "🎯 Growth hacking approach" },
-                        { text: "🦄 Unicorn potential seeker" }
-                      ].map((item, index) => (
-                        <motion.p
+                        { icon: Zap, text: "Zero-to-one mindset" },
+                        { icon: Globe, text: "Remote-first, global reach" },
+                        { icon: Flame, text: "Early-stage collaborations" },
+                        { icon: Lightbulb, text: "Product-driven solutions" },
+                        { icon: TrendingUp, text: "Growth hacking approach" },
+                        { icon: Sparkles, text: "Unicorn potential seeker" }
+                      ].map(({ icon: Icon, text }, index) => (
+                        <motion.div
                           key={index}
                           whileHover={{ x: 5, scale: 1.05 }}
-                          className={`transition-all duration-300 ${
+                          className={`flex items-center gap-2 transition-all duration-300 ${
                             index % 2 === 0 ? 'text-primary' : 'text-accent'
                           }`}
                         >
-                          {item.text}
-                        </motion.p>
+                          <Icon size={16} strokeWidth={2} />
+                          <span>{text}</span>
+                        </motion.div>
                       ))}
                     </div>
                   </CardContent>
@@ -396,9 +399,9 @@ export function About() {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute top-4 right-8 text-5xl opacity-20"
+              className="absolute top-4 right-8 opacity-20"
             >
-              🦄
+              <Building2 size={48} strokeWidth={1} />
             </motion.div>
             <motion.div
               animate={{ 
@@ -410,9 +413,9 @@ export function About() {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute bottom-4 left-8 text-4xl opacity-30"
+              className="absolute bottom-4 left-8 opacity-30"
             >
-              ⚡
+              <Zap size={36} strokeWidth={1} />
             </motion.div>
 
             <motion.div
@@ -420,11 +423,11 @@ export function About() {
               className="space-y-6 relative z-10"
             >
               <h3 className="text-3xl md:text-4xl font-black">
-                Ready to Build the Next Big Thing? 🚀
+                Ready to Build the Next Big Thing?
               </h3>
               <p className="text-xl opacity-90 max-w-3xl mx-auto font-bold">
                 Whether you're a startup founder with a crazy idea or an established company ready to disrupt, 
-                let's ship something that users will love and competitors will envy! 💜
+                let's ship something that users will love and competitors will envy!
               </p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <button
@@ -432,7 +435,7 @@ export function About() {
                   className="px-12 py-6 text-xl font-black shadow-2xl rounded-lg border-3 transition-all duration-300 transform hover:scale-105 bg-accent text-accent-foreground border-accent-foreground"
                 >
                   <Rocket className="inline mr-3" size={24} />
-                  Let's Build Something Epic! 🔥
+                  Let's Build Something Epic
                 </button>
               </motion.div>
             </motion.div>

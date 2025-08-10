@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Github, Linkedin, Mail, Rocket, Zap } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Mail, Rocket, Zap, Code2, Building2, Ship, Target, Globe, Flame, Briefcase, Users } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
 
 // Temporary Button component with sober colors
@@ -19,10 +19,10 @@ function Button({
   className?: string;
   onClick?: () => void;
 }) {
-  const baseStyles = "inline-flex items-center justify-center rounded-lg font-black transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none transform hover:scale-105";
+  const baseStyles = "inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
   const variants = {
-    default: "bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-[var(--background)] hover:from-[var(--primary)] hover:to-[var(--primary)] shadow-lg hover:shadow-[var(--primary)]/25",
-    outline: "border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--background)]",
+    default: "bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--primary)]/90 shadow-md hover:shadow-lg",
+    outline: "border border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]",
   };
   const sizes = {
     default: "h-10 py-2 px-4",
@@ -65,12 +65,12 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20"
       style={{ backgroundColor: 'var(--background)' }}
     >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Floating emojis with sober glow */}
+        {/* Floating icons with corporate style */}
         <motion.div
           animate={{
             y: [0, -20, 0],
@@ -81,10 +81,10 @@ export function Hero() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-20 left-20 text-6xl opacity-30"
+          className="absolute top-20 left-20 opacity-20"
           style={{ filter: 'drop-shadow(0 0 20px var(--primary))' }}
         >
-          🚀
+          <Rocket size={48} strokeWidth={1.5} />
         </motion.div>
         <motion.div
           animate={{
@@ -97,10 +97,10 @@ export function Hero() {
             ease: "easeInOut",
             delay: 1,
           }}
-          className="absolute top-40 right-32 text-4xl opacity-40"
+          className="absolute top-40 right-32 opacity-25"
           style={{ filter: 'drop-shadow(0 0 15px var(--secondary))' }}
         >
-          ⚡
+          <Zap size={36} strokeWidth={1.5} />
         </motion.div>
         <motion.div
           animate={{
@@ -113,10 +113,10 @@ export function Hero() {
             ease: "easeInOut",
             delay: 2,
           }}
-          className="absolute bottom-32 left-32 text-5xl opacity-35"
+          className="absolute bottom-32 left-32 opacity-20"
           style={{ filter: 'drop-shadow(0 0 20px var(--primary))' }}
         >
-          🔥
+          <Code2 size={40} strokeWidth={1.5} />
         </motion.div>
 
         {/* Sober gradient orbs */}
@@ -158,11 +158,11 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-black border-2"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border"
               style={{
-                backgroundColor: 'rgba(128,174,160, 0.1)',
-                borderColor: 'var(--primary)',
-                color: 'var(--primary)',
+                backgroundColor: 'var(--secondary)',
+                borderColor: 'var(--border)',
+                color: 'var(--secondary-foreground)',
               }}
             >
               <Zap size={16} />
@@ -190,15 +190,15 @@ export function Hero() {
             <div className="text-2xl md:text-4xl lg:text-5xl font-black h-20 flex items-center justify-center">
               <TypeAnimation
                 sequence={[
-                  "Full-Stack Wizard 🧙‍♂️",
+                  "Full-Stack Developer",
                   2000,
-                  "Code Architect 🏗️",
+                  "Software Architect",
                   2000,
-                  "Product Ship-per 🚢",
+                  "Product Engineer",
                   2000,
-                  "Zero-to-One Engineer 🚀",
+                  "Technical Lead",
                   2000,
-                  "Digital Innovator 💡",
+                  "Digital Solutions Expert",
                   2000,
                 ]}
                 wrapper="span"
@@ -230,23 +230,23 @@ export function Hero() {
               className="flex flex-wrap justify-center gap-6 text-sm font-black"
             >
               {[
-                { text: "⚡ Ship fast, iterate faster", color: 'var(--primary)' },
-                { text: "🎯 Product-first mindset", color: 'var(--secondary)' },
-                { text: "🌍 Remote-native", color: 'var(--primary)' },
-                { text: "🔥 0-to-1 specialist", color: 'var(--secondary)' },
-              ].map((item, index) => (
+                { icon: Zap, text: "Rapid Development", color: 'var(--primary)' },
+                { icon: Target, text: "Product-Focused", color: 'var(--secondary)' },
+                { icon: Globe, text: "Remote Collaboration", color: 'var(--primary)' },
+                { icon: Rocket, text: "Innovation Driven", color: 'var(--secondary)' },
+              ].map(({ icon: Icon, text, color }, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05, y: -2 }}
-                  className="px-4 py-2 rounded-full border-2 transition-all duration-300"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-300"
                   style={{
-                    backgroundColor: 'rgba(54, 54, 53, 0.8)',
-                    borderColor: item.color,
-                    color: item.color,
-                    backdropFilter: 'blur(10px)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: color,
+                    color: color,
                   }}
                 >
-                  {item.text}
+                  <Icon size={16} strokeWidth={2} />
+                  <span className="font-medium">{text}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -262,10 +262,10 @@ export function Hero() {
                 <Button
                   size="lg"
                   onClick={scrollToProjects}
-                  className="px-10 py-4 text-xl font-black shadow-2xl"
+                  className="px-10 py-4 text-lg font-semibold shadow-lg"
                 >
-                  <Rocket className="mr-2" size={20} />
-                  See My Work 🚀
+                  <Briefcase className="mr-2" size={20} />
+                  View Portfolio
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -273,9 +273,10 @@ export function Hero() {
                   variant="outline"
                   size="lg"
                   onClick={scrollToContact}
-                  className="px-10 py-4 text-xl font-black border-2"
+                  className="px-10 py-4 text-lg font-semibold border-2"
                 >
-                  Let's Build Something 💡
+                  <Users className="mr-2" size={20} />
+                  Get In Touch
                 </Button>
               </motion.div>
             </motion.div>
@@ -285,7 +286,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
-              className="flex justify-center space-x-6"
+              className="flex justify-center space-x-6 mb-22"
             >
               {[
                 { icon: Github, href: "https://github.com", label: "GitHub", hoverColor: 'var(--accent)' },
@@ -299,12 +300,11 @@ export function Hero() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.2, y: -5, rotate: 5 }}
                   whileTap={{ scale: 0.9 }}
-                  className="p-4 rounded-xl border-2 transition-all duration-300 shadow-lg"
+                  className="p-3 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md"
                   style={{
-                    backgroundColor: 'rgba(54, 54, 53, 0.8)',
-                    borderColor: 'var(--primary)',
+                    backgroundColor: 'var(--card)',
+                    borderColor: 'var(--border)',
                     color: 'var(--accent)',
-                    backdropFilter: 'blur(10px)',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = hoverColor;
@@ -329,19 +329,18 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5 }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
           >
             <motion.button
               onClick={scrollToNext}
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
               whileHover={{ scale: 1.1 }}
-              className="p-3 rounded-full border-2 transition-all duration-300 shadow-lg"
+              className="p-3 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md"
               style={{
-                backgroundColor: 'rgba(54, 54, 53, 0.8)',
-                borderColor: 'var(--primary)',
+                backgroundColor: 'var(--card)',
+                borderColor: 'var(--border)',
                 color: 'var(--primary)',
-                backdropFilter: 'blur(10px)',
               }}
             >
               <ArrowDown size={24} />

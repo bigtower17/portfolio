@@ -60,7 +60,7 @@ export function ThemeProvider({
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
-      <div className="debug-theme">Current Theme: {theme}</div>
+      {/*<div className="debug-theme">Current Theme: {theme}</div>*/}
     </ThemeContext.Provider>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, Rocket, MessageSquare, Globe, Flame, CheckCircle, XCircle, Lightbulb } from "lucide-react";
 import { useState } from "react";
 
 // Sober Color Palette
@@ -64,7 +64,7 @@ export function Contact() {
     {
       icon: MapPin,
       label: "Località",
-      value: "Italia 🇮🇹",
+      value: "Italia",
       href: "#",
       color: 'var(--primary)',
     },
@@ -129,10 +129,10 @@ export function Contact() {
               initial={{ scale: 0, rotate: -180 }}
               whileInView={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", duration: 1 }}
-              className="text-6xl mb-4"
+              className="mb-4"
               style={{ filter: `drop-shadow(0 0 20px var(--primary))` }}
             >
-              🚀
+              <Rocket size={48} strokeWidth={1.5} />
             </motion.div>
             <h2
               className="text-3xl md:text-4xl font-black"
@@ -150,7 +150,7 @@ export function Contact() {
               style={{ color: 'var(--accent)' }}
             >
               Got a wild idea? Need a technical co-founder? Ready to disrupt an industry?
-              Let's turn your vision into reality! 💡
+              Let's turn your vision into reality!
             </p>
             <div
               className="w-24 h-1 mx-auto rounded-full"
@@ -168,7 +168,8 @@ export function Contact() {
                   className="text-2xl font-black"
                   style={{ color: 'var(--accent)' }}
                 >
-                  Get In Touch 📬
+                  <MessageSquare size={24} className="inline mr-2" />
+                  Get In Touch
                 </h3>
                 <p
                   className="font-bold"
@@ -187,7 +188,7 @@ export function Contact() {
                     whileHover={{ scale: 1.02, x: 5 }}
                     className="flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group border-2 shadow-lg"
                     style={{
-                      backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                      backgroundColor: 'var(--card)',
                       borderColor: info.color,
                       backdropFilter: 'blur(10px)',
                     }}
@@ -224,7 +225,8 @@ export function Contact() {
                   className="text-lg font-black"
                   style={{ color: 'var(--accent)' }}
                 >
-                  Connect With Me 🌐
+                  <Globe size={20} className="inline mr-2" />
+                  Connect With Me
                 </h4>
                 <div className="flex gap-4">
                   {socialLinks.map((social) => (
@@ -237,7 +239,7 @@ export function Contact() {
                       whileTap={{ scale: 0.95 }}
                       className="p-3 rounded-full transition-all duration-200 shadow-lg border-2"
                       style={{
-                        backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                        backgroundColor: 'var(--card)',
                         borderColor: social.color,
                         color: social.color,
                         backdropFilter: 'blur(10px)',
@@ -247,7 +249,7 @@ export function Contact() {
                         e.currentTarget.style.color = social.hoverBg === 'var(--background)' ? 'var(--accent)' : 'var(--background)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(54, 54, 53, 0.9)';
+                        e.currentTarget.style.backgroundColor = 'var(--card)';
                         e.currentTarget.style.color = social.color;
                       }}
                     >
@@ -276,7 +278,8 @@ export function Contact() {
                     className="font-black"
                     style={{ color: 'var(--accent)' }}
                   >
-                    Available for Epic Projects 🔥
+                    <Flame size={16} className="inline" />
+                    Available for Epic Projects
                   </span>
                 </div>
                 <p
@@ -309,7 +312,7 @@ export function Contact() {
                       required
                       className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
                       style={{
-                        backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                        backgroundColor: 'var(--card)',
                         borderColor: 'var(--primary)',
                         color: 'var(--accent)',
                       }}
@@ -333,7 +336,7 @@ export function Contact() {
                       required
                       className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
                       style={{
-                        backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                        backgroundColor: 'var(--card)',
                         borderColor: 'var(--primary)',
                         color: 'var(--accent)',
                       }}
@@ -359,7 +362,7 @@ export function Contact() {
                     required
                     className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
                     style={{
-                      backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                      backgroundColor: 'var(--card)',
                       borderColor: 'var(--primary)',
                       color: 'var(--accent)',
                     }}
@@ -384,7 +387,7 @@ export function Contact() {
                     rows={6}
                     className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors resize-none font-bold"
                     style={{
-                      backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                      backgroundColor: 'var(--card)',
                       borderColor: 'var(--primary)',
                       color: 'var(--accent)',
                     }}
@@ -417,7 +420,7 @@ export function Contact() {
                   ) : (
                     <Send size={20} />
                   )}
-                  {isSubmitting ? "Launching Message..." : "Launch This Message 🚀"}
+                  {isSubmitting ? "Launching Message..." : "Launch This Message"}
                 </motion.button>
 
                 {/* Status Messages */}
@@ -432,7 +435,8 @@ export function Contact() {
                       color: 'var(--accent)',
                     }}
                   >
-                    ✅ Message launched successfully! I'll get back to you faster than a SpaceX rocket.
+                    <CheckCircle size={20} className="inline mr-2" />
+                    Message launched successfully! I'll get back to you faster than a SpaceX rocket.
                   </motion.div>
                 )}
 
@@ -447,7 +451,8 @@ export function Contact() {
                       color: 'var(--secondary)',
                     }}
                   >
-                    ❌ Houston, we have a problem! Try again or hit me up directly via email.
+                    <XCircle size={20} className="inline mr-2" />
+                    Houston, we have a problem! Try again or hit me up directly via email.
                   </motion.div>
                 )}
               </form>

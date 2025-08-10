@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, ArrowUp, Github, Linkedin, Mail, Rocket } from "lucide-react";
+import { Heart, Github, Linkedin, Mail, Rocket, Link, Globe, Coffee, Zap } from "lucide-react";
 
 export function Footer() {
   const scrollToTop = () => {
@@ -60,7 +60,7 @@ export function Footer() {
             </motion.div>
             <p className="max-w-md leading-relaxed font-bold text-accent">
               Full-Stack Engineer obsessed with building products that scale, 
-              break barriers, and create real value. Always ready for the next big challenge! 🚀
+              break barriers, and create real value. Always ready for the next big challenge!
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social, index) => (
@@ -86,7 +86,8 @@ export function Footer() {
           {/* Quick Links */}
           <div className="space-y-4">
             <h4 className="text-lg font-black text-primary">
-              Quick Links 🔗
+              <Link size={16} className="inline mr-2" />
+              Quick Links
             </h4>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
@@ -106,11 +107,12 @@ export function Footer() {
           {/* Contact Info */}
           <div className="space-y-4">
             <h4 className="text-lg font-black text-accent">
-              Let's Connect 🌐
+              <Globe size={16} className="inline mr-2" />
+              Let&apos;s Connect
             </h4>
             <div className="space-y-3 text-sm font-bold text-accent">
               <div className="flex items-center gap-2">
-                <span>📧</span>
+                <Mail size={14} />
                 <motion.a
                   href="mailto:hello@torregrossa.dev"
                   whileHover={{ scale: 1.05 }}
@@ -120,7 +122,7 @@ export function Footer() {
                 </motion.a>
               </div>
               <div className="flex items-center gap-2">
-                <span>🌍</span>
+                <Globe size={14} />
                 <span>Based in Italy, Working Globally</span>
               </div>
               <div className="flex items-center gap-2">
@@ -152,7 +154,7 @@ export function Footer() {
                 >
                   <Heart size={14} className="text-red-500" />
                 </motion.span>
-                and lots of ☕ in Italy
+                and lots of <Coffee size={14} className="inline mx-1" /> in Italy
               </span>
             </div>
 
@@ -164,7 +166,7 @@ export function Footer() {
               className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-black transition-all duration-300 shadow-lg border-2 bg-gradient-to-r from-primary to-accent text-primary-foreground border-accent"
             >
               <Rocket size={16} />
-              Back to Top 🚀
+              Back to Top
             </motion.button>
           </div>
         </div>
@@ -183,10 +185,10 @@ export function Footer() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-8 right-8 text-4xl"
+          className="absolute top-8 right-8 opacity-20"
           style={{ filter: `drop-shadow(0 0 20px hsl(var(--primary)))` }}
         >
-          🚀
+          <Rocket size={32} strokeWidth={1} />
         </motion.div>
         <motion.div
           animate={{
@@ -200,10 +202,10 @@ export function Footer() {
             ease: "easeInOut",
             delay: 2,
           }}
-          className="absolute bottom-8 left-8 text-3xl"
+          className="absolute bottom-8 left-8 opacity-20"
           style={{ filter: `drop-shadow(0 0 15px hsl(var(--accent)))` }}
         >
-          ⚡
+          <Zap size={24} strokeWidth={1} />
         </motion.div>
       </div>
     </footer>

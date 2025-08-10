@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "@/components/theme-provider";
-import { Moon, Flame, Menu, X } from "lucide-react";
+import { Briefcase as BriefcaseIcon, Skull, Menu, X, Home, User, Briefcase, Brain, MessageSquare, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Button component with proper TypeScript types
@@ -44,11 +44,11 @@ export function Navbar() {
   }, []);
 
   const navItems = [
-    { href: "#home", label: "Home", emoji: "🏠" },
-    { href: "#about", label: "About", emoji: "🧙‍♂️" },
-    { href: "#projects", label: "Projects", emoji: "🚀" },
-    { href: "#skills", label: "Skills", emoji: "🧠" },
-    { href: "#contact", label: "Contact", emoji: "📬" },
+    { href: "#home", label: "Home", icon: Home },
+    { href: "#about", label: "About", icon: User },
+    { href: "#projects", label: "Projects", icon: Briefcase },
+    { href: "#skills", label: "Skills", icon: Brain },
+    { href: "#contact", label: "Contact", icon: MessageSquare },
   ];
 
   const scrollToSection = (href: string) => {
@@ -78,7 +78,8 @@ export function Navbar() {
                     key={item.href}
                     className="px-3 py-2 rounded-md text-sm font-black text-gray-600"
                   >
-                    {item.emoji} {item.label}
+                    <item.icon size={16} className="mr-2" />
+                    {item.label}
                   </span>
                 ))}
               </div>
@@ -115,7 +116,7 @@ export function Navbar() {
               onClick={() => scrollToSection("#home")}
               className="text-2xl font-black text-primary hover:text-primary/80 transition-colors duration-300"
             >
-              Torregrossa.dev {theme === "beast" ? "🤖" : ""}
+              Torregrossa.dev
             </button>
           </motion.div>
 
@@ -127,9 +128,10 @@ export function Navbar() {
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => scrollToSection(item.href)}
-                  className="px-3 py-2 rounded-md text-sm font-black transition-all duration-300 text-foreground hover:text-primary hover:bg-primary/10 border-2 border-transparent hover:border-primary/20"
+                  className="px-3 py-2 rounded-md text-sm font-black transition-all duration-300 text-foreground hover:text-primary hover:bg-primary/10 border-2 border-transparent hover:border-primary/20 flex items-center"
                 >
-                  {item.emoji} {item.label}
+                  <item.icon className="w-4 h-4 mr-2" />
+                  {item.label}
                 </motion.button>
               ))}
             </div>
@@ -145,11 +147,13 @@ export function Navbar() {
               >
                 {theme === "sober" ? (
                   <>
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1 animate-pulse text-white">⚡</span>
-                    <Flame size={20} />
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full p-1 animate-pulse text-white">
+                      <Zap size={10} />
+                    </span>
+                    <Skull size={20} />
                   </>
                 ) : (
-                  <Moon size={20} />
+                  <BriefcaseIcon size={20} />
                 )}
                 <span className="sr-only">{theme === "sober" ? "Activate Cyber Mode" : "Super Sobra"}</span>
               </Button>
@@ -189,7 +193,8 @@ export function Navbar() {
                     onClick={() => scrollToSection(item.href)}
                     className="block w-full text-left px-3 py-2 rounded-md transition-all duration-300 font-black text-foreground hover:text-primary hover:bg-primary/10 border-2 border-transparent hover:border-primary/20"
                   >
-                    {item.emoji} {item.label}
+                    <item.icon size={16} className="mr-2" />
+                    {item.label}
                   </motion.button>
                 ))}
               </div>

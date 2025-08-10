@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code, Database, Cloud, Smartphone, Globe, Zap } from "lucide-react";
+import { Code, Database, Cloud, Smartphone, Globe, Zap, Brain, Wrench, Target, TrendingUp, Rocket, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // Usa variabili CSS per i colori
@@ -122,7 +122,7 @@ export function Skills() {
               className="text-6xl mb-4"
               style={{ filter: `drop-shadow(0 0 20px var(--primary))` }}
             >
-              🧠
+              <Brain size={48} strokeWidth={1.5} />
             </motion.div>
             <h2
               className="text-3xl md:text-4xl font-black"
@@ -158,7 +158,7 @@ export function Skills() {
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="rounded-xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 border-2"
                 style={{
-                  backgroundColor: 'rgba(54, 54, 53, 0.95)',
+                  backgroundColor: 'var(--card)',
                   borderColor: 'var(--primary)',
                   backdropFilter: 'blur(15px)',
                 }}
@@ -220,12 +220,15 @@ export function Skills() {
 
           {/* Tools & Technologies */}
           <motion.div variants={itemVariants} className="space-y-8">
-            <h3
-              className="text-2xl font-black text-center"
-              style={{ color: 'var(--accent)' }}
-            >
-              Tools & Technologies 🛠️
-            </h3>
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <Wrench size={24} strokeWidth={2} style={{ color: 'var(--accent)' }} />
+              <h3
+                className="text-2xl font-black"
+                style={{ color: 'var(--accent)' }}
+              >
+                Tools & Technologies
+              </h3>
+            </div>
             <div className="flex flex-wrap justify-center gap-4">
               {tools.map((tool, index) => (
                 <motion.div
@@ -236,9 +239,9 @@ export function Skills() {
                   whileHover={{ scale: 1.1, y: -5 }}
                   className="px-6 py-3 rounded-full shadow-lg font-bold transition-all duration-200 border-2"
                   style={{
-                    backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                    backgroundColor: 'var(--card)',
                     borderColor: index % 2 === 0 ? 'var(--primary)' : 'var(--secondary)',
-                    color: 'var(--accent)',
+                    color: 'var(--card-foreground)',
                     backdropFilter: 'blur(10px)',
                   }}
                 >
@@ -250,12 +253,15 @@ export function Skills() {
 
           {/* Soft Skills */}
           <motion.div variants={itemVariants} className="space-y-8">
-            <h3
-              className="text-2xl font-black text-center"
-              style={{ color: 'var(--accent)' }}
-            >
-              Soft Skills 🎯
-            </h3>
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <Target size={24} strokeWidth={2} style={{ color: 'var(--accent)' }} />
+              <h3
+                className="text-2xl font-black"
+                style={{ color: 'var(--accent)' }}
+              >
+                Soft Skills
+              </h3>
+            </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {softSkills.map((skill, index) => (
                 <motion.div
@@ -266,7 +272,7 @@ export function Skills() {
                   whileHover={{ scale: 1.05, y: -5 }}
                   className="space-y-3 p-4 rounded-xl border-2 shadow-lg transition-all duration-300"
                   style={{
-                    backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                    backgroundColor: 'var(--card)',
                     borderColor: index % 2 === 0 ? 'var(--primary)' : 'var(--secondary)',
                     backdropFilter: 'blur(10px)',
                   }}
@@ -319,7 +325,7 @@ export function Skills() {
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               className="absolute top-4 right-4 text-4xl opacity-20"
             >
-              ⚡
+              <Zap size={36} strokeWidth={1} />
             </motion.div>
             <motion.div
               animate={{
@@ -333,7 +339,7 @@ export function Skills() {
               }}
               className="absolute bottom-4 left-4 text-3xl opacity-30"
             >
-              🚀
+              <Rocket size={28} strokeWidth={1} />
             </motion.div>
 
             <motion.div
@@ -343,7 +349,10 @@ export function Skills() {
             >
               <Zap size={48} />
             </motion.div>
-            <h3 className="text-2xl font-black mb-4">Always Learning, Always Growing 📈</h3>
+            <h3 className="text-2xl font-black mb-4 flex items-center justify-center gap-3">
+              Always Learning, Always Growing
+              <TrendingUp size={24} strokeWidth={2} />
+            </h3>
             <p className="text-lg opacity-90 max-w-2xl mx-auto font-bold">
               Technology evolves at breakneck speed, and so do I. Currently diving deep into
               AI/ML, Web3, and the bleeding edge of software development.

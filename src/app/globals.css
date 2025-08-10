@@ -1,84 +1,85 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
 @layer base {
   :root {
-    --background: hsl(0, 0%, 97%) !important; /* Grigio molto chiaro from theme-sober */
-    --foreground: hsl(222.2, 20%, 10%) !important; /* Grigio scuro per testo from theme-sober */
-    --muted: hsl(0, 0%, 90%) !important; /* Grigio chiaro from theme-sober */
-    --muted-foreground: hsl(222.2, 10%, 30%) !important;
-    --border: hsl(0, 0%, 80%) !important;
-    --primary: hsl(0, 0%, 40%) !important; /* Grigio scuro from theme-sober */
-    --primary-foreground: hsl(0, 0%, 100%) !important;
-    --accent: hsl(0, 0%, 70%) !important; /* Grigio medio from theme-sober */
-    --accent-foreground: hsl(222.2, 20%, 10%) !important;
-    --card: hsl(0, 0%, 95%) !important;
-    --card-foreground: hsl(222.2, 20%, 10%) !important;
-    --secondary: hsl(0, 0%, 60%) !important;
-    --secondary-foreground: hsl(0, 0%, 100%) !important;
-    --destructive: hsl(0, 60%, 50%) !important;
+    --background: hsl(0, 0%, 100%) !important; /* Bianco puro come PDF */
+    --foreground: hsl(0, 0%, 8%) !important; /* Nero intenso per testo principale */
+    --muted: hsl(0, 0%, 96%) !important; /* Grigio chiarissimo per sfondi muted */
+    --muted-foreground: hsl(0, 0%, 35%) !important; /* Grigio medio per testo secondario */
+    --border: hsl(0, 0%, 88%) !important; /* Grigio chiaro per bordi */
+    --primary: hsl(220, 90%, 25%) !important; /* Blu royal corporate (ispirato al badge AWS) */
+    --primary-foreground: hsl(0, 0%, 100%) !important; /* Bianco su blu */
+    --accent: hsl(0, 0%, 15%) !important; /* Grigio scuro per accenti */
+    --accent-foreground: hsl(0, 0%, 100%) !important; /* Bianco su grigio scuro */
+    --card: hsl(0, 0%, 100%) !important; /* Bianco per card */
+    --card-foreground: hsl(0, 0%, 8%) !important; /* Nero per testo su card */
+    --secondary: hsl(0, 0%, 94%) !important; /* Grigio molto chiaro */
+    --secondary-foreground: hsl(0, 0%, 8%) !important; /* Nero su grigio chiaro */
+    --destructive: hsl(0, 75%, 45%) !important; /* Rosso professionale */
     --destructive-foreground: hsl(0, 0%, 100%) !important;
-    --ring: hsl(0, 0%, 40%) !important;
+    --ring: hsl(220, 90%, 25%) !important; /* Stesso blu del primary */
   }
 
   .dark {
-    --background: hsl(60, 2%, 21%) !important; /* #363635 - Grigio scuro from theme-beast */
-    --foreground: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante per testo from theme-beast */
-    --muted: hsl(0, 0%, 18%) !important;
-    --muted-foreground: hsl(163, 15%, 50%) !important;
-    --border: hsl(267, 48%, 35%) !important; /* #592e83 - Viola per bordi from theme-beast */
-    --primary: hsl(163, 23%, 59%) !important; /* #80aea0 - Verde-azzurro from theme-beast */
-    --primary-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde-azzurro from theme-beast */
-    --secondary: hsl(267, 48%, 35%) !important; /* #592e83 - Viola from theme-beast */
-    --secondary-foreground: hsl(126, 79%, 72%) !important; /* Verde su viola from theme-beast */
-    --accent: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante from theme-beast */
-    --accent-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde from theme-beast */
-    --card: hsl(60, 2%, 21%) !important; /* #363635 - Stesso del background from theme-beast */
-    --card-foreground: hsl(126, 79%, 72%) !important; /* Verde per testo su card from theme-beast */
-    --destructive: hsl(0, 84%, 60%) !important;
-    --destructive-foreground: hsl(60, 2%, 21%) !important;
-    --ring: hsl(163, 23%, 59%) !important;
+    --background: hsl(0, 0%, 10%) !important; /* Nero più profondo per migliore contrasto */
+    --foreground: hsl(120, 100%, 85%) !important; /* Verde più chiaro e brillante */
+    --muted: hsl(0, 0%, 15%) !important; /* Grigio molto scuro */
+    --muted-foreground: hsl(120, 20%, 60%) !important; /* Verde spento per testo secondario */
+    --border: hsl(280, 60%, 45%) !important; /* Viola più vivido per bordi */
+    --primary: hsl(165, 80%, 50%) !important; /* Verde-azzurro più brillante */
+    --primary-foreground: hsl(0, 0%, 8%) !important; /* Quasi nero per contrasto massimo */
+    --secondary: hsl(280, 60%, 25%) !important; /* Viola più scuro */
+    --secondary-foreground: hsl(120, 100%, 90%) !important; /* Verde chiarissimo su viola */
+    --accent: hsl(90, 100%, 60%) !important; /* Verde lime vivace */
+    --accent-foreground: hsl(0, 0%, 8%) !important; /* Quasi nero su verde lime */
+    --card: hsl(0, 0%, 12%) !important; /* Leggermente più chiaro del background */
+    --card-foreground: hsl(120, 100%, 85%) !important; /* Verde brillante per testo su card */
+    --destructive: hsl(0, 90%, 65%) !important; /* Rosso più vivido */
+    --destructive-foreground: hsl(0, 0%, 8%) !important;
+    --ring: hsl(165, 80%, 50%) !important;
   }
 
-  /* Tema Super Sobra - Minimalista e professionale (optional override) */
+  /* Tema Sober - Black & White professionale come PDF */
   .theme-sober {
-    --background: hsl(0, 0%, 97%) !important; /* Grigio molto chiaro */
-    --foreground: hsl(0, 0%, 0%) !important; /* Grigio scuro per testo */
-    --muted: hsl(0, 0%, 90%) !important; /* Grigio chiaro */
-    --muted-foreground: hsl(222.2, 10%, 30%) !important;
-    --border: hsl(0, 0%, 80%) !important;
-    --primary: hsl(0, 0%, 0%) !important; /* Grigio scuro */
-    --primary-foreground: hsl(0, 0%, 100%) !important;
-    --accent: hsl(0, 0%, 70%) !important; /* Grigio medio */
-    --accent-foreground: hsl(222.2, 20%, 10%) !important;
-    --card: hsl(0, 0%, 95%) !important;
-    --card-foreground: hsl(222.2, 20%, 10%) !important;
-    --secondary: hsl(0, 30%, 96%) !important;
-    --secondary-foreground: hsl(0, 0%, 100%) !important;
-    --destructive: hsl(0, 60%, 50%) !important;
+    --background: hsl(0, 0%, 100%) !important; /* Bianco puro */
+    --foreground: hsl(0, 0%, 0%) !important; /* Nero puro per testo */
+    --muted: hsl(0, 0%, 97%) !important; /* Bianco leggermente off per sfondi */
+    --muted-foreground: hsl(0, 0%, 0%) !important; /* Nero per testo secondario - NO GRIGI */
+    --border: hsl(0, 0%, 80%) !important; /* Grigio più scuro per bordi */
+    --primary: hsl(220, 100%, 30%) !important; /* Blu corporate più chiaro */
+    --primary-foreground: hsl(0, 0%, 100%) !important; /* Bianco su blu */
+    --accent: hsl(0, 0%, 0%) !important; /* Nero per accenti */
+    --accent-foreground: hsl(0, 0%, 100%) !important; /* Bianco su nero */
+    --card: hsl(0, 0%, 100%) !important; /* Bianco per card */
+    --card-foreground: hsl(0, 0%, 0%) !important; /* Nero per testo su card */
+    --secondary: hsl(220, 100%, 30%) !important; /* Blu invece di grigio */
+    --secondary-foreground: hsl(0, 0%, 100%) !important; /* Bianco su blu */
+    --destructive: hsl(0, 80%, 50%) !important; /* Rosso */
     --destructive-foreground: hsl(0, 0%, 100%) !important;
-    --ring: hsl(0, 0%, 40%) !important;
+    --ring: hsl(220, 100%, 30%) !important; /* Stesso blu del primary */
   }
 
-  /* Tema Cyber Beast - FORZATO PER VINCERE SU OKLCH (optional override) */
+  /* Tema Cyber Beast - High contrast cyberpunk theme */
   .theme-beast {
-    --background: hsl(60, 2%, 21%) !important; /* #363635 - Grigio scuro */
-    --foreground: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante per testo */
-    --muted: hsl(0, 0%, 18%) !important;
-    --muted-foreground: hsl(163, 15%, 50%) !important;
-    --border: hsl(267, 48%, 35%) !important; /* #592e83 - Viola per bordi */
-    --primary: hsl(163, 23%, 59%) !important; /* #80aea0 - Verde-azzurro */
-    --primary-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde-azzurro */
-    --secondary: hsl(267, 48%, 35%) !important; /* #592e83 - Viola */
-    --secondary-foreground: hsl(126, 79%, 72%) !important; /* Verde su viola */
-    --accent: hsl(126, 79%, 72%) !important; /* #8aea92 - Verde brillante */
-    --accent-foreground: hsl(60, 2%, 21%) !important; /* Scuro su verde */
-    --card: hsl(60, 2%, 21%) !important; /* #363635 - Stesso del background */
-    --card-foreground: hsl(126, 79%, 72%) !important; /* Verde per testo su card */
-    --destructive: hsl(0, 84%, 60%) !important;
-    --destructive-foreground: hsl(60, 2%, 21%) !important;
-    --ring: hsl(163, 23%, 59%) !important;
+    --background: hsl(0, 0%, 10%) !important; /* Nero più profondo per migliore contrasto */
+    --foreground: hsl(120, 100%, 85%) !important; /* Verde più chiaro e brillante */
+    --muted: hsl(0, 0%, 15%) !important; /* Grigio molto scuro */
+    --muted-foreground: hsl(120, 20%, 60%) !important; /* Verde spento per testo secondario */
+    --border: hsl(280, 60%, 45%) !important; /* Viola più vivido per bordi */
+    --primary: hsl(165, 80%, 50%) !important; /* Verde-azzurro più brillante */
+    --primary-foreground: hsl(0, 0%, 8%) !important; /* Quasi nero per contrasto massimo */
+    --secondary: hsl(280, 60%, 25%) !important; /* Viola più scuro */
+    --secondary-foreground: hsl(120, 100%, 90%) !important; /* Verde chiarissimo su viola */
+    --accent: hsl(90, 100%, 60%) !important; /* Verde lime vivace */
+    --accent-foreground: hsl(0, 0%, 8%) !important; /* Quasi nero su verde lime */
+    --card: hsl(0, 0%, 12%) !important; /* Leggermente più chiaro del background */
+    --card-foreground: hsl(120, 100%, 85%) !important; /* Verde brillante per testo su card */
+    --destructive: hsl(0, 90%, 65%) !important; /* Rosso più vivido */
+    --destructive-foreground: hsl(0, 0%, 8%) !important;
+    --ring: hsl(165, 80%, 50%) !important;
   }
 }
 
@@ -109,6 +110,182 @@
     padding: 5px 10px;
     border-radius: 5px;
     z-index: 1000;
+  }
+  .font-bebas {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  /* ===== SOBER THEME - Clean & Simple ===== */
+  .theme-sober {
+    /* Typography */
+    font-family: Inter, system-ui, sans-serif;
+  }
+  
+  .theme-sober .font-black,
+  .theme-sober h1,
+  .theme-sober h2,
+  .theme-sober h3 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    letter-spacing: 0 !important;
+  }
+  
+  /* Navbar & Footer - Black */
+  .theme-sober nav,
+  .theme-sober footer {
+    background-color: #000000 !important;
+  }
+  
+  .theme-sober nav *,
+  .theme-sober footer * {
+    color: #ffffff !important;
+  }
+  
+  .theme-sober nav button {
+    border: none !important;
+    background: transparent !important;
+  }
+  
+  /* General Content - White background, Black text */
+  .theme-sober section {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  /* Cards - White background */
+  .theme-sober .bg-card,
+  .theme-sober [style*="backgroundColor: 'var(--card)"],
+  .theme-sober [style*="backgroundColor: var(--card)"] {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  /* Buttons - Clean styling */
+  .theme-sober button {
+    border: 1px solid #cccccc !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  .theme-sober button:hover {
+    background-color: #f5f5f5 !important;
+  }
+  
+  /* Footer buttons - NO borders, white text */
+  .theme-sober footer button {
+    border: none !important;
+    background: transparent !important;
+    color: #ffffff !important;
+  }
+  
+  .theme-sober .bg-primary,
+  .theme-sober .shadow-lg {
+    background-color: #1e40af !important;
+    color: #ffffff !important;
+    border-color: #1e40af !important;
+  }
+  
+  /* Project filters - less aggressive */
+  .theme-sober #projects button {
+    border: 2px solid #cccccc;
+    background: #ffffff;
+    color: #000000;
+  }
+  
+  .theme-sober #projects button.shadow-lg {
+    background-color: #1e40af;
+    color: #ffffff;
+  }
+  
+  .theme-sober #projects button:hover {
+    opacity: 0.8;
+  }
+  
+  /* Icons */
+  .theme-sober .lucide {
+    color: #000000 !important;
+  }
+  
+  .theme-sober .bg-primary .lucide,
+  .theme-sober .shadow-lg .lucide {
+    color: #ffffff !important;
+  }
+  
+  /* Remove opacity effects */
+  .theme-sober .opacity-90,
+  .theme-sober .opacity-80,
+  .theme-sober .opacity-70 {
+    opacity: 1 !important;
+  }
+  
+  /* Fix navbar logo - make it white */
+  .theme-sober nav h1,
+  .theme-sober nav .font-black {
+    color: #ffffff !important;
+  }
+  
+  /* Fix contact section cards - force white background (NOT in footer) */
+  .theme-sober #contact .bg-card,
+  .theme-sober section[id="contact"] .bg-card {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  .theme-sober #contact .bg-card *,
+  .theme-sober section[id="contact"] .bg-card * {
+    color: #000000 !important;
+  }
+  
+  /* Exclude footer from background overrides */
+  .theme-sober footer * {
+    background: transparent !important;
+  }
+  
+  /* Dive Deeper buttons - no borders */
+  .theme-sober a:has(.lucide),
+  .theme-sober [href*="#"],
+  .theme-sober .group {
+    border: none !important;
+  }
+  
+  /* Fix CTA sections - white background, black text, with border */
+  .theme-sober .rounded-2xl[style*="linear-gradient"],
+  .theme-sober .rounded-3xl[style*="linear-gradient"] {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #e5e5e5 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .theme-sober .rounded-2xl[style*="linear-gradient"] *,
+  .theme-sober .rounded-3xl[style*="linear-gradient"] * {
+    color: #000000 !important;
+  }
+  
+  /* Keep soft skills progress bars with their original styling */
+  .theme-sober .h-2[style*="linear-gradient"] {
+    background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%) !important;
+  }
+  
+  /* Fix soft skills cards - white background */
+  .theme-sober #skills .rounded-xl,
+  .theme-sober #skills .border-2 {
+    background: #ffffff !important;
+  }
+  
+  .theme-sober #skills .rounded-xl *,
+  .theme-sober #skills .border-2 * {
+    color: #000000 !important;
+  }
+  
+  /* But keep progress bars blue */
+  .theme-sober #skills .h-2 {
+    background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%) !important;
+  }
+  
+  /* Fix Tools & Technologies text - force black */
+  .theme-sober .rounded-full {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: #cccccc !important;
   }
 }
 

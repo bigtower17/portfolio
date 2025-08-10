@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ExternalLink, Github, ArrowRight, Rocket, Zap, Target } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Github, ArrowRight, Rocket, Zap, Target, CloudLightning, Activity, Shield, Monitor, Timer, Brain, Database, RefreshCw, Construction, Wrench, Sparkles, TrendingUp, Star, Building2, DollarSign } from "lucide-react";
 import { useState } from "react";
 
 // UI Components with sober styling
@@ -10,7 +10,7 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
     <div
       className={`rounded-xl border-2 shadow-xl transition-all duration-500 ${className}`}
       style={{
-        backgroundColor: 'rgba(54, 54, 53, 0.95)',
+        backgroundColor: 'var(--card)',
         borderColor: 'var(--primary)',
         backdropFilter: 'blur(15px)',
       }}
@@ -104,21 +104,22 @@ export function Projects() {
   const projects = [
     {
       id: 1,
-      title: "⚡ Serverless Beast",
+      title: "Serverless Beast",
       subtitle: "AWS Infrastructure That Scales",
-      description: "Built a serverless architecture that went from 0 to 100K users without breaking a sweat. Lambda + DynamoDB + some magic ✨",
+      description: "Built a serverless architecture that went from 0 to 100K users without breaking a sweat. Lambda + DynamoDB + some magic.",
       technologies: ["AWS Lambda", "DynamoDB", "API Gateway", "Terraform", "CloudFormation"],
       category: "cloud",
       github: "https://github.com",
       live: "https://demo.com",
       featured: true,
-      impact: "💰 70% cost reduction",
-      emoji: "☁️",
+      impact: "70% cost reduction",
+      emoji: "cloud",
+      icon: CloudLightning,
       glowColor: 'var(--primary)',
     },
     {
       id: 2,
-      title: "🚀 Deploy Machine",
+      title: "Deploy Machine",
       subtitle: "CI/CD Pipeline on Steroids",
       description: "Zero-downtime deployments with automated testing, Docker magic, and Kubernetes orchestration. Because manual deploys are so 2020.",
       technologies: ["GitHub Actions", "Docker", "Kubernetes", "EKS", "Terraform"],
@@ -126,13 +127,14 @@ export function Projects() {
       github: "https://github.com",
       live: "https://demo.com",
       featured: true,
-      impact: "⚡ 10x faster deploys",
-      emoji: "🔄",
+      impact: "10x faster deploys",
+      emoji: "refresh",
+      icon: RefreshCw,
       glowColor: 'var(--secondary)',
     },
     {
       id: 3,
-      title: "💎 Full-Stack Powerhouse",
+      title: "Full-Stack Powerhouse",
       subtitle: "React App That Users Love",
       description: "Modern web app with buttery smooth UX, real-time features, and authentication that just works. Users actually enjoy using it!",
       technologies: ["React", "Node.js", "PostgreSQL", "JWT", "WebSocket"],
@@ -140,26 +142,28 @@ export function Projects() {
       github: "https://github.com",
       live: "https://demo.com",
       featured: true,
-      impact: "📈 95% user satisfaction",
-      emoji: "💻",
+      impact: "95% user satisfaction",
+      emoji: "monitor",
+      icon: Monitor,
       glowColor: 'var(--primary)',
     },
     {
       id: 4,
-      title: "🛠️ Infrastructure as Poetry",
+      title: "Infrastructure as Poetry",
       subtitle: "Terraform Modules That Sing",
       description: "Reusable Terraform modules that provision infrastructure faster than you can say 'vendor lock-in'. Multi-environment, zero drama.",
       technologies: ["Terraform", "AWS", "GitLab CI", "CloudWatch"],
       category: "cloud",
       github: "https://github.com",
       featured: false,
-      impact: "🎯 5min deployments",
-      emoji: "🏗️",
+      impact: "5min deployments",
+      emoji: "construction",
+      icon: Construction,
       glowColor: 'var(--secondary)',
     },
     {
       id: 5,
-      title: "📱 Mobile-First MVP",
+      title: "Mobile-First MVP",
       subtitle: "React Native Done Right",
       description: "Cross-platform app that doesn't feel like a hybrid. Push notifications, offline mode, and performance that rivals native.",
       technologies: ["React Native", "Expo", "Node.js", "Firebase"],
@@ -167,32 +171,34 @@ export function Projects() {
       github: "https://github.com",
       live: "https://demo.com",
       featured: false,
-      impact: "📱 iOS + Android in 1 codebase",
-      emoji: "📲",
+      impact: "iOS + Android in 1 codebase",
+      emoji: "mobile",
+      icon: Activity,
       glowColor: 'var(--primary)',
     },
     {
       id: 6,
-      title: "🧠 Data Pipeline Beast",
+      title: "Data Pipeline Beast",
       subtitle: "Python + AWS = Magic",
       description: "Real-time data processing with Python, pandas, and serverless architecture. From raw data to insights in milliseconds.",
       technologies: ["Python", "Pandas", "AWS Lambda", "S3", "CloudWatch"],
       category: "backend",
       github: "https://github.com",
       featured: false,
-      impact: "🔥 Real-time analytics",
-      emoji: "📊",
+      impact: "Real-time analytics",
+      emoji: "database",
+      icon: Database,
       glowColor: 'var(--secondary)',
     },
   ];
 
   const categories = [
-    { key: "all", label: "🎯 All Projects", color: 'var(--accent)' },
-    { key: "cloud", label: "☁️ Cloud & AWS", color: 'var(--primary)' },
-    { key: "devops", label: "🚀 DevOps", color: 'var(--secondary)' },
-    { key: "fullstack", label: "💻 Full Stack", color: 'var(--primary)' },
-    { key: "mobile", label: "📱 Mobile", color: 'var(--secondary)' },
-    { key: "backend", label: "🔧 Backend", color: 'var(--primary)' },
+    { key: "all", label: "All Projects", color: 'var(--accent)', icon: Target },
+    { key: "cloud", label: "Cloud & AWS", color: 'var(--primary)', icon: CloudLightning },
+    { key: "devops", label: "DevOps", color: 'var(--secondary)', icon: RefreshCw },
+    { key: "fullstack", label: "Full Stack", color: 'var(--primary)', icon: Monitor },
+    { key: "mobile", label: "Mobile", color: 'var(--secondary)', icon: Activity },
+    { key: "backend", label: "Backend", color: 'var(--primary)', icon: Wrench },
   ];
 
   const filteredProjects = filter === "all" ? projects : projects.filter(project => project.category === filter);
@@ -239,10 +245,10 @@ export function Projects() {
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
               transition={{ type: "spring", duration: 0.8 }}
-              className="text-6xl mb-4"
+              className="mb-4"
               style={{ filter: `drop-shadow(0 0 30px var(--primary))` }}
             >
-              🚀
+              <Rocket size={48} strokeWidth={1.5} />
             </motion.div>
             <h2
               className="text-4xl md:text-6xl font-black tracking-tight"
@@ -262,7 +268,7 @@ export function Projects() {
               From MVP to scale. Here's what happens when you mix{" "}
               <strong style={{ color: 'var(--primary)' }}>code</strong>,
               <strong style={{ color: 'var(--secondary)' }}> creativity</strong>, and{" "}
-              <strong style={{ color: 'var(--primary)' }}>caffeine</strong> ☕
+              <strong style={{ color: 'var(--primary)' }}>caffeine</strong>.
             </p>
             <div
               className="w-32 h-2 mx-auto rounded-full"
@@ -277,7 +283,7 @@ export function Projects() {
             <div
               className="flex flex-wrap gap-3 p-3 rounded-2xl border-2 shadow-lg"
               style={{
-                backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                backgroundColor: 'var(--card)',
                 borderColor: 'var(--primary)',
                 backdropFilter: 'blur(15px)',
               }}
@@ -291,6 +297,7 @@ export function Projects() {
                   className={filter === category.key ? "shadow-lg" : ""}
                   style={filter !== category.key ? { color: category.color } : {}}
                 >
+                  {category.icon && <category.icon size={16} className="mr-2" />}
                   {category.label}
                 </Button>
               ))}
@@ -298,12 +305,15 @@ export function Projects() {
           </motion.div>
 
           {/* Projects Grid */}
-          <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project) => (
+          <AnimatePresence mode="wait">
+            <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map((project) => (
               <motion.div
                 key={project.id}
-                layout
-                variants={itemVariants}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="group"
               >
@@ -329,7 +339,7 @@ export function Projects() {
                       className="absolute top-4 left-4 text-3xl z-10"
                       style={{ filter: `drop-shadow(0 0 15px ${project.glowColor})` }}
                     >
-                      {project.emoji}
+                      {project.icon && <project.icon size={28} strokeWidth={1.5} />}
                     </motion.div>
 
                     {/* Action Buttons - Top Right */}
@@ -343,7 +353,7 @@ export function Projects() {
                           rel="noopener noreferrer"
                           className="p-2 rounded-full shadow-lg transition-colors"
                           style={{
-                            backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                            backgroundColor: 'var(--card)',
                             color: 'var(--accent)',
                             border: `2px solid var(--primary)`,
                           }}
@@ -360,7 +370,7 @@ export function Projects() {
                           rel="noopener noreferrer"
                           className="p-2 rounded-full shadow-lg transition-colors"
                           style={{
-                            backgroundColor: 'rgba(54, 54, 53, 0.9)',
+                            backgroundColor: 'var(--card)',
                             color: 'var(--accent)',
                             border: `2px solid var(--secondary)`,
                           }}
@@ -386,7 +396,8 @@ export function Projects() {
                             borderColor: 'var(--accent)',
                           }}
                         >
-                          ⭐ Featured
+                          <Star size={14} className="mr-1" />
+                          Featured
                         </Badge>
                       </motion.div>
                     )}
@@ -454,7 +465,8 @@ export function Projects() {
                 </Card>
               </motion.div>
             ))}
-          </motion.div>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Call to Action */}
           <motion.div
@@ -476,9 +488,9 @@ export function Projects() {
                 repeat: Infinity,
                 ease: "linear",
               }}
-              className="absolute top-4 right-4 text-4xl opacity-20"
+              className="absolute top-4 right-4 opacity-20"
             >
-              🚀
+              <Rocket size={36} strokeWidth={1} />
             </motion.div>
             <motion.div
               animate={{
@@ -490,18 +502,18 @@ export function Projects() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute bottom-4 left-4 text-3xl opacity-30"
+              className="absolute bottom-4 left-4 opacity-30"
             >
-              ⚡
+              <Zap size={28} strokeWidth={1} />
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.02 }} className="space-y-6 relative z-10">
               <h3 className="text-3xl md:text-4xl font-black">
-                Ready to Build Something Epic? 🦄
+                Ready to Build Something Epic?
               </h3>
               <p className="text-xl opacity-90 max-w-3xl mx-auto font-bold">
                 Got a wild idea? A problem that needs solving? Let's turn your vision into
-                a product that users will love (and investors will notice) 💰
+                a product that users will love (and investors will notice).
               </p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -515,7 +527,7 @@ export function Projects() {
                   }}
                 >
                   <Rocket className="mr-3" size={24} />
-                  Let's Ship It! 🚀
+                  Let's Ship It
                 </Button>
               </motion.div>
             </motion.div>
