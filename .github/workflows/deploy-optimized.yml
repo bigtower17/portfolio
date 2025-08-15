@@ -1,0 +1,238 @@
+name: Deploy Optimized to VPS
+
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+        
+      - name: Build application
+        run: |
+          echo "🏗️ Building application..."
+          npm run build
+        env:
+          NODE_OPTIONS: '--max-old-space-size=2048'
+          
+      - name: Verify build output
+        run: |
+          echo "🔍 Checking build output..."
+          if [ ! -d "out" ]; then
+            echo "❌ Build failed - no 'out' directory found"
+            exit 1
+          fi
+          echo "✅ Build successful!"
+          echo "📁 Build size: $(du -sh out | cut -f1)"
+          
+      - name: Create deployment package
+        run: |
+          echo "📦 Creating deployment package..."
+          tar -czf deploy-package.tar.gz out nginx.conf nginx-ssl.conf Dockerfile.production fix-ssl.sh
+          echo "📦 Package size: $(du -h deploy-package.tar.gz | cut -f1)"
+          
+      - name: Copy package to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "deploy-package.tar.gz"
+          target: "/tmp/"
+          
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 10m
+          script: |
+            echo "🚀 Starting optimized deployment..."
+            
+            # Clean and create deployment directory
+            rm -rf /opt/torregrossa-deploy
+            mkdir -p /opt/torregrossa-deploy
+            cd /opt/torregrossa-deploy
+            
+            # Extract package
+            echo "📦 Extracting deployment package..."
+            tar -xzf /tmp/deploy-package.tar.gz
+            rm /tmp/deploy-package.tar.gz
+            
+            # Check if SSL certificate exists
+            echo "🔒 Checking SSL certificate..."
+            SSL_ENABLED=false
+            if [ -d "/etc/letsencrypt/live/torregrossa.dev" ]; then
+              echo "✅ SSL certificate exists!"
+              SSL_ENABLED=true
+            else
+              echo "⚠️ No SSL certificate found. You can set it up later with fix-ssl.sh"
+            fi
+            
+            # Stop and remove old container
+            echo "🧹 Cleaning old container..."
+            docker stop torregrossa-app 2>/dev/null || true
+            docker rm torregrossa-app 2>/dev/null || true
+            docker rmi torregrossa-portfolio:latest 2>/dev/null || true
+            
+            # Build new image with pre-built files
+            echo "🐳 Building Docker image with pre-built files..."
+            docker build -f Dockerfile.production -t torregrossa-portfolio:latest .
+            
+            if [ $? -ne 0 ]; then
+              echo "❌ Docker build failed!"
+              exit 1
+            fi
+            
+            echo "✅ Docker image built successfully!"
+            
+            # Run container
+            echo "🚀 Starting container..."
+            if [ "$SSL_ENABLED" = "true" ]; then
+              echo "🔒 Starting with SSL support..."
+              docker run -d \
+                --name torregrossa-app \
+                --restart unless-stopped \
+                -p 80:80 \
+                -p 443:443 \
+                -v /etc/letsencrypt/live/torregrossa.dev/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro \
+                -v /etc/letsencrypt/live/torregrossa.dev/privkey.pem:/etc/nginx/ssl/privkey.pem:ro \
+                --memory="256m" \
+                --memory-swap="512m" \
+                torregrossa-portfolio:latest
+                
+              # Apply SSL configuration
+              docker exec torregrossa-app sh -c "cat > /etc/nginx/nginx.conf << 'EOF'
+            events {
+                worker_connections 1024;
+            }
+            
+            http {
+                include       /etc/nginx/mime.types;
+                default_type  application/octet-stream;
+            
+                sendfile on;
+                tcp_nopush on;
+                tcp_nodelay on;
+                keepalive_timeout 65;
+                
+                gzip on;
+                gzip_vary on;
+                gzip_min_length 1024;
+                gzip_types text/plain text/css text/xml text/javascript application/javascript application/json image/svg+xml;
+            
+                # Redirect HTTP to HTTPS
+                server {
+                    listen 80;
+                    server_name torregrossa.dev www.torregrossa.dev;
+                    return 301 https://\\\$server_name\\\$request_uri;
+                }
+            
+                # HTTPS server
+                server {
+                    listen 443 ssl http2;
+                    server_name torregrossa.dev www.torregrossa.dev;
+            
+                    ssl_certificate /etc/nginx/ssl/fullchain.pem;
+                    ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+                    ssl_protocols TLSv1.2 TLSv1.3;
+                    ssl_ciphers HIGH:!aNULL:!MD5;
+                    ssl_prefer_server_ciphers on;
+            
+                    root /usr/share/nginx/html;
+                    index index.html;
+            
+                    # Security headers
+                    add_header X-Frame-Options \"SAMEORIGIN\" always;
+                    add_header X-XSS-Protection \"1; mode=block\" always;
+                    add_header X-Content-Type-Options \"nosniff\" always;
+            
+                    location / {
+                        try_files \\\$uri \\\$uri/ \\\$uri.html /index.html;
+                    }
+            
+                    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)\$ {
+                        expires 1y;
+                        add_header Cache-Control \"public, immutable\";
+                    }
+            
+                    location ~ /\. {
+                        deny all;
+                    }
+                }
+            }
+            EOF"
+              docker exec torregrossa-app nginx -s reload
+            else
+              echo "⚠️ Starting without SSL..."
+              docker run -d \
+                --name torregrossa-app \
+                --restart unless-stopped \
+                -p 80:80 \
+                --memory="256m" \
+                --memory-swap="512m" \
+                torregrossa-portfolio:latest
+            fi
+            
+            # Wait for container to start
+            echo "⏳ Waiting for container to start..."
+            sleep 5
+            
+            # Health check
+            echo "🔍 Running health check..."
+            if docker ps --filter "name=torregrossa-app" --filter "status=running" | grep -q torregrossa-app; then
+              echo "✅ Container is running!"
+              
+              # Test HTTP
+              if curl -f -I http://localhost:80 >/dev/null 2>&1; then
+                echo "✅ HTTP is working!"
+              else
+                echo "❌ HTTP test failed"
+              fi
+              
+              # Show status
+              echo "📊 Container status:"
+              docker ps --filter "name=torregrossa-app"
+              
+              echo "💾 Resource usage:"
+              docker stats --no-stream torregrossa-app
+              
+              echo ""
+              echo "🎉 Deployment successful!"
+              echo "🌐 Site accessible at: http://torregrossa.dev"
+              
+              if [ "$SSL_ENABLED" = "true" ]; then
+                echo "🔒 HTTPS enabled: https://torregrossa.dev"
+                
+                # Setup auto-renewal
+                (crontab -l 2>/dev/null | grep -v "certbot renew") | crontab -
+                (crontab -l 2>/dev/null; echo "0 3 * * * certbot renew --quiet --post-hook 'docker restart torregrossa-app'") | crontab -
+                echo "⏰ SSL auto-renewal configured"
+              else
+                echo "📝 To enable HTTPS, run: bash /opt/torregrossa-deploy/fix-ssl.sh"
+              fi
+              
+              # Clean up
+              echo "🧹 Cleaning up..."
+              docker image prune -f
+              
+            else
+              echo "❌ Container failed to start!"
+              docker logs torregrossa-app
+              exit 1
+            fi
