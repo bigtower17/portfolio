@@ -12,11 +12,12 @@ RUN npm ci --prefer-offline --no-audit
 # Copy source code
 COPY . .
 
-# Set environment variable for build
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+# Set environment variable for build - reduced for low memory VPS
+ENV NODE_OPTIONS="--max-old-space-size=512"
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_SHARP_PATH=/tmp/node_modules/sharp
 
-# Build the application
+# Build the application with memory optimization
 RUN npm run build
 
 # Verify build output

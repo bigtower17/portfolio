@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_OPTIONS: '--max-old-space-size=4096'
+  NODE_OPTIONS: '--max-old-space-size=512'
 
 jobs:
   test:
@@ -27,7 +27,7 @@ jobs:
       - name: Run build test
         run: npm run build
         env:
-          NODE_OPTIONS: '--max-old-space-size=4096'
+          NODE_OPTIONS: '--max-old-space-size=512'
           
       - name: Verify build output
         run: |
