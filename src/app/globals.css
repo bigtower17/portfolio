@@ -42,24 +42,24 @@
     --ring: hsl(165, 80%, 50%) !important;
   }
 
-  /* Tema Sober - Black & White professionale come PDF */
+  /* Tema Torregrossa - Minimalista chic ispirato al logo */
   .theme-sober {
     --background: hsl(0, 0%, 100%) !important; /* Bianco puro */
-    --foreground: hsl(0, 0%, 0%) !important; /* Nero puro per testo */
-    --muted: hsl(0, 0%, 97%) !important; /* Bianco leggermente off per sfondi */
-    --muted-foreground: hsl(0, 0%, 0%) !important; /* Nero per testo secondario - NO GRIGI */
-    --border: hsl(0, 0%, 80%) !important; /* Grigio più scuro per bordi */
-    --primary: hsl(220, 100%, 30%) !important; /* Blu corporate più chiaro */
-    --primary-foreground: hsl(0, 0%, 100%) !important; /* Bianco su blu */
-    --accent: hsl(0, 0%, 0%) !important; /* Nero per accenti */
-    --accent-foreground: hsl(0, 0%, 100%) !important; /* Bianco su nero */
-    --card: hsl(0, 0%, 100%) !important; /* Bianco per card */
-    --card-foreground: hsl(0, 0%, 0%) !important; /* Nero per testo su card */
-    --secondary: hsl(220, 100%, 30%) !important; /* Blu invece di grigio */
-    --secondary-foreground: hsl(0, 0%, 100%) !important; /* Bianco su blu */
-    --destructive: hsl(0, 80%, 50%) !important; /* Rosso */
+    --foreground: hsl(0, 0%, 8%) !important; /* Nero quasi puro per testo */
+    --muted: hsl(0, 0%, 96%) !important; /* Grigio chiarissimo per sfondi */
+    --muted-foreground: hsl(0, 0%, 50%) !important; /* Grigio medio per testo secondario */
+    --border: hsl(0, 0%, 85%) !important; /* Grigio chiaro per bordi sottili */
+    --primary: hsl(0, 0%, 8%) !important; /* Nero per elementi primari */
+    --primary-foreground: hsl(0, 0%, 100%) !important; /* Bianco su nero */
+    --accent: hsl(0, 0%, 20%) !important; /* Grigio scuro per accenti */
+    --accent-foreground: hsl(0, 0%, 100%) !important; /* Bianco su grigio scuro */
+    --card: hsl(0, 0%, 98%) !important; /* Bianco sporco per card */
+    --card-foreground: hsl(0, 0%, 8%) !important; /* Nero per testo su card */
+    --secondary: hsl(0, 0%, 92%) !important; /* Grigio chiaro per secondari */
+    --secondary-foreground: hsl(0, 0%, 8%) !important; /* Nero su grigio chiaro */
+    --destructive: hsl(0, 65%, 45%) !important; /* Rosso sobrio */
     --destructive-foreground: hsl(0, 0%, 100%) !important;
-    --ring: hsl(220, 100%, 30%) !important; /* Stesso blu del primary */
+    --ring: hsl(0, 0%, 8%) !important; /* Nero per focus ring */
   }
 
   /* Tema Cyber Beast - High contrast cyberpunk theme */
@@ -114,178 +114,242 @@
   .font-bebas {
     font-family: 'Bebas Neue', sans-serif;
   }
-  /* ===== SOBER THEME - Clean & Simple ===== */
+  /* ===== TORREGROSSA THEME - Minimalist Chic ===== */
   .theme-sober {
-    /* Typography */
-    font-family: Inter, system-ui, sans-serif;
+    /* Typography - Bebas Neue per tutti i titoli */
+    font-family: var(--font-inter), Inter, system-ui, sans-serif;
   }
-  
-  .theme-sober .font-black,
+
+  .theme-sober .font-heading,
+  .theme-sober .font-bebas,
   .theme-sober h1,
   .theme-sober h2,
-  .theme-sober h3 {
-    font-family: 'Bebas Neue', sans-serif !important;
-    letter-spacing: 0 !important;
+  .theme-sober h3,
+  .theme-sober h4,
+  .theme-sober h5,
+  .theme-sober h6,
+  .theme-sober .text-4xl,
+  .theme-sober .text-5xl,
+  .theme-sober .text-6xl,
+  .theme-sober .text-7xl,
+  .theme-sober .text-8xl,
+  .theme-sober .text-9xl {
+    font-family: var(--font-bebas), 'Bebas Neue', cursive !important;
+    letter-spacing: 0.05em !important;
+    font-weight: 400 !important;
   }
   
-  /* Navbar & Footer - Black */
-  .theme-sober nav,
-  .theme-sober footer {
-    background-color: #000000 !important;
+  /* === LAYOUT SECTIONS === */
+
+  /* Navbar - Nero puro, SENZA BORDI */
+  .theme-sober nav {
+    background-color: hsl(0, 0%, 8%) !important;
+    border: none !important;
+    box-shadow: none !important;
   }
-  
-  .theme-sober nav *,
-  .theme-sober footer * {
-    color: #ffffff !important;
+
+  .theme-sober nav * {
+    color: white !important;
+    border: none !important;
   }
-  
+
   .theme-sober nav button {
-    border: none !important;
     background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    transition: all 0.2s ease !important;
   }
-  
-  /* General Content - White background, Black text */
+
+  .theme-sober nav button:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Pulsanti attivi navbar - inversione colori RETTANGOLARI FULL HEIGHT */
+  .theme-sober nav button.active,
+  .theme-sober nav .active {
+    background: white !important;
+    color: black !important;
+    border: none !important;
+    border-radius: 0 !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    position: relative !important;
+    top: 0 !important;
+    bottom: 0 !important;
+  }
+
+  /* Rimuovi tutti i bordi dalla navbar - FORZA TOTALE */
+  .theme-sober nav,
+  .theme-sober nav *,
+  .theme-sober nav .no-border,
+  .theme-sober nav button,
+  .theme-sober nav a {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Override specifico per i focus states */
+  .theme-sober nav *:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Menu mobile - anche questi rettangolari */
+  .theme-sober nav .md\\:hidden button {
+    border-radius: 0 !important;
+    width: 100% !important;
+  }
+
+  .theme-sober nav .md\\:hidden button.active {
+    background: white !important;
+    color: black !important;
+    border-radius: 0 !important;
+  }
+
+  /* Sezioni generali - Bianco pulito */
   .theme-sober section {
-    background-color: #ffffff !important;
-    color: #000000 !important;
+    background-color: white !important;
+    color: hsl(0, 0%, 8%) !important;
   }
-  
-  /* Cards - White background */
-  .theme-sober .bg-card,
-  .theme-sober [style*="backgroundColor: 'var(--card)"],
-  .theme-sober [style*="backgroundColor: var(--card)"] {
-    background-color: #ffffff !important;
-    color: #000000 !important;
+
+  /* Footer - Nero come navbar */
+  .theme-sober footer {
+    background-color: hsl(0, 0%, 8%) !important;
+    color: white !important;
   }
-  
-  /* Buttons - Clean styling */
-  .theme-sober button {
-    border: 1px solid #cccccc !important;
-    background-color: #ffffff !important;
-    color: #000000 !important;
-  }
-  
-  .theme-sober button:hover {
-    background-color: #f5f5f5 !important;
-  }
-  
-  /* Footer buttons - NO borders, white text */
-  .theme-sober footer button {
-    border: none !important;
-    background: transparent !important;
-    color: #ffffff !important;
-  }
-  
-  .theme-sober .bg-primary,
-  .theme-sober .shadow-lg {
-    background-color: #1e40af !important;
-    color: #ffffff !important;
-    border-color: #1e40af !important;
-  }
-  
-  /* Project filters - less aggressive */
-  .theme-sober #projects button {
-    border: 2px solid #cccccc;
-    background: #ffffff;
-    color: #000000;
-  }
-  
-  .theme-sober #projects button.shadow-lg {
-    background-color: #1e40af;
-    color: #ffffff;
-  }
-  
-  .theme-sober #projects button:hover {
-    opacity: 0.8;
-  }
-  
-  /* Icons */
-  .theme-sober .lucide {
-    color: #000000 !important;
-  }
-  
-  .theme-sober .bg-primary .lucide,
-  .theme-sober .shadow-lg .lucide {
-    color: #ffffff !important;
-  }
-  
-  /* Remove opacity effects */
-  .theme-sober .opacity-90,
-  .theme-sober .opacity-80,
-  .theme-sober .opacity-70 {
-    opacity: 1 !important;
-  }
-  
-  /* Fix navbar logo - make it white */
-  .theme-sober nav h1,
-  .theme-sober nav .font-black {
-    color: #ffffff !important;
-  }
-  
-  /* Fix contact section cards - force white background (NOT in footer) */
-  .theme-sober #contact .bg-card,
-  .theme-sober section[id="contact"] .bg-card {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-  }
-  
-  .theme-sober #contact .bg-card *,
-  .theme-sober section[id="contact"] .bg-card * {
-    color: #000000 !important;
-  }
-  
-  /* Exclude footer from background overrides */
+
   .theme-sober footer * {
+    color: white !important;
+  }
+
+  .theme-sober footer button {
     background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
-  
-  /* Dive Deeper buttons - no borders */
-  .theme-sober a:has(.lucide),
-  .theme-sober [href*="#"],
-  .theme-sober .group {
-    border: none !important;
+
+  /* === TIPOGRAFIA === */
+
+  /* Tutti i titoli grandi utilizzano Bebas Neue */
+  .theme-sober .text-6xl,
+  .theme-sober .text-7xl,
+  .theme-sober .text-8xl {
+    font-size: clamp(3rem, 8vw, 6rem) !important;
+    line-height: 0.9 !important;
+    letter-spacing: 0.02em !important;
   }
-  
-  /* Fix CTA sections - white background, black text, with border */
+
+  /* === COMPONENTI === */
+
+  /* Card - Fondo bianco sporco con ombra sottile */
+  .theme-sober .bg-card {
+    background-color: hsl(0, 0%, 98%) !important;
+    color: hsl(0, 0%, 8%) !important;
+    border: 1px solid hsl(0, 0%, 90%) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  /* Bottoni primari - Nero su bianco */
+  .theme-sober .bg-primary,
+  .theme-sober button.bg-primary {
+    background-color: hsl(0, 0%, 8%) !important;
+    color: white !important;
+    border: 1px solid hsl(0, 0%, 8%) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .theme-sober .bg-primary:hover,
+  .theme-sober button.bg-primary:hover {
+    background-color: hsl(0, 0%, 15%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Bottoni secondari - Outline nero */
+  .theme-sober button:not(.bg-primary):not(nav button):not(footer button) {
+    background-color: white !important;
+    color: hsl(0, 0%, 8%) !important;
+    border: 1px solid hsl(0, 0%, 85%) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .theme-sober button:not(.bg-primary):not(nav button):not(footer button):hover {
+    background-color: hsl(0, 0%, 96%) !important;
+    border-color: hsl(0, 0%, 8%) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  /* Badge e tag - Grigio chiaro */
+  .theme-sober .rounded-full {
+    background-color: hsl(0, 0%, 92%) !important;
+    color: hsl(0, 0%, 8%) !important;
+    border: 1px solid hsl(0, 0%, 85%) !important;
+    font-weight: 500 !important;
+  }
+
+  /* === EFFETTI E DECORAZIONI === */
+
+  /* Rimuovi gradients e sostituisci con colori solidi */
+  .theme-sober [style*="linear-gradient"],
   .theme-sober .rounded-2xl[style*="linear-gradient"],
   .theme-sober .rounded-3xl[style*="linear-gradient"] {
-    background: #ffffff !important;
-    color: #000000 !important;
-    border: 2px solid #e5e5e5 !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    background: white !important;
+    color: hsl(0, 0%, 8%) !important;
+    border: 1px solid hsl(0, 0%, 85%) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   }
-  
-  .theme-sober .rounded-2xl[style*="linear-gradient"] *,
-  .theme-sober .rounded-3xl[style*="linear-gradient"] * {
-    color: #000000 !important;
+
+  /* Progress bars - Nero invece che blu */
+  .theme-sober .h-2[style*="linear-gradient"],
+  .theme-sober .progress-bar {
+    background: linear-gradient(90deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 20%) 100%) !important;
   }
-  
-  /* Keep soft skills progress bars with their original styling */
-  .theme-sober .h-2[style*="linear-gradient"] {
-    background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%) !important;
+
+  /* Icons - Nero di default, bianco su sfondi scuri */
+  .theme-sober .lucide {
+    color: hsl(0, 0%, 8%) !important;
   }
-  
-  /* Fix soft skills cards - white background */
-  .theme-sober #skills .rounded-xl,
-  .theme-sober #skills .border-2 {
-    background: #ffffff !important;
+
+  .theme-sober .bg-primary .lucide,
+  .theme-sober nav .lucide,
+  .theme-sober footer .lucide {
+    color: white !important;
   }
-  
-  .theme-sober #skills .rounded-xl *,
-  .theme-sober #skills .border-2 * {
-    color: #000000 !important;
+
+  /* === SPACING E LAYOUT === */
+
+  /* Aumenta padding per respiro visivo */
+  .theme-sober section {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
   }
-  
-  /* But keep progress bars blue */
-  .theme-sober #skills .h-2 {
-    background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%) !important;
+
+  .theme-sober .container {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
   }
-  
-  /* Fix Tools & Technologies text - force black */
-  .theme-sober .rounded-full {
-    background: #ffffff !important;
-    color: #000000 !important;
-    border-color: #cccccc !important;
+
+  /* === STATI HOVER E FOCUS === */
+
+  /* Focus states - Outline nero */
+  .theme-sober *:focus {
+    outline: 2px solid hsl(0, 0%, 8%) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Link hover effects */
+  .theme-sober a:hover {
+    color: hsl(0, 0%, 20%) !important;
+    transition: color 0.2s ease !important;
   }
 }
 

@@ -1,16 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, Rocket, MessageSquare, Globe, Flame, CheckCircle, XCircle, Lightbulb } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from "lucide-react";
 import { useState } from "react";
-
-// Sober Color Palette
-const colors = {
-  background: 'var(--background)',
-  primary: 'var(--primary)',
-  secondary: 'var(--secondary)',
-  accent: 'var(--accent)',
-};
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -52,21 +44,18 @@ export function Contact() {
       label: "Email",
       value: "hello@torregrossa.dev",
       href: "mailto:hello@torregrossa.dev",
-      color: 'var(--primary)',
     },
     {
       icon: Phone,
       label: "Telefono",
       value: "+39 123 456 7890",
-      href: "tel:+391234567890",
-      color: 'var(--secondary)',
+      href: "tel:+39123456789",
     },
     {
       icon: MapPin,
       label: "Località",
       value: "Italia",
-      href: "#",
-      color: 'var(--primary)',
+      href: null,
     },
   ];
 
@@ -75,22 +64,16 @@ export function Contact() {
       icon: Github,
       label: "GitHub",
       href: "https://github.com",
-      color: 'var(--accent)',
-      hoverBg: 'var(--background)',
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
       href: "https://linkedin.com",
-      color: 'var(--primary)',
-      hoverBg: 'var(--primary)',
     },
     {
       icon: Twitter,
       label: "Twitter",
       href: "https://twitter.com",
-      color: 'var(--secondary)',
-      hoverBg: 'var(--secondary)',
     },
   ];
 
@@ -105,7 +88,7 @@ export function Contact() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 },
   };
 
@@ -124,111 +107,63 @@ export function Contact() {
           className="space-y-16"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center space-y-4">
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", duration: 1 }}
-              className="mb-4"
-              style={{ filter: `drop-shadow(0 0 20px var(--primary))` }}
-            >
-              <Rocket size={48} strokeWidth={1.5} />
-            </motion.div>
-            <h2
-              className="text-3xl md:text-4xl font-black"
-              style={{
-                background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Let's Build Something Epic Together
+          <motion.div variants={itemVariants} className="text-center space-y-8">
+            <h2 className="font-heading text-4xl md:text-6xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+              LET'S BUILD SOMETHING EPIC TOGETHER
             </h2>
-            <p
-              className="text-lg max-w-2xl mx-auto font-bold"
-              style={{ color: 'var(--accent)' }}
-            >
-              Got a wild idea? Need a technical co-founder? Ready to disrupt an industry?
-              Let's turn your vision into reality!
+            <p className="text-lg font-light max-w-2xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
+              Skip the small talk. Let's dive straight into how we can create something amazing together.
             </p>
-            <div
-              className="w-24 h-1 mx-auto rounded-full"
-              style={{
-                background: `linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%)`,
-              }}
-            />
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Information */}
-            <motion.div variants={itemVariants} className="space-y-8">
-              <div className="space-y-6">
-                <h3
-                  className="text-2xl font-black"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  <MessageSquare size={24} className="inline mr-2" />
-                  Get In Touch
-                </h3>
-                <p
-                  className="font-bold"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  Skip the small talk. Let's dive straight into how we can create something amazing together.
-                </p>
-              </div>
-
-              {/* Contact Methods */}
-              <div className="space-y-4">
-                {contactInfo.map((info) => (
-                  <motion.a
+            <motion.div variants={itemVariants} className="space-y-12">
+              {/* Contact Details */}
+              <div className="space-y-8">
+                {contactInfo.map((info, index) => (
+                  <motion.div
                     key={info.label}
-                    href={info.href}
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    className="flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group border-2 shadow-lg"
-                    style={{
-                      backgroundColor: 'var(--card)',
-                      borderColor: info.color,
-                      backdropFilter: 'blur(10px)',
-                    }}
+                    whileHover={{ x: 10 }}
+                    className="flex items-center space-x-4 transition-all duration-300"
                   >
                     <div
-                      className="flex-shrink-0 p-3 rounded-full"
+                      className="p-3 border"
                       style={{
-                        background: `linear-gradient(135deg, ${info.color} 0%, ${info.color}CC 100%)`,
+                        backgroundColor: 'var(--card)',
+                        borderColor: 'var(--border)',
                       }}
                     >
-                      <info.icon size={20} style={{ color: 'var(--background)' }} />
+                      <info.icon size={20} strokeWidth={1.5} style={{ color: 'var(--foreground)' }} />
                     </div>
                     <div>
-                      <p
-                        className="font-black transition-colors"
-                        style={{ color: 'var(--accent)' }}
-                      >
+                      <h3 className="font-heading text-lg tracking-wide" style={{ color: 'var(--foreground)' }}>
                         {info.label}
-                      </p>
-                      <p
-                        className="font-bold"
-                        style={{ color: info.color }}
-                      >
-                        {info.value}
-                      </p>
+                      </h3>
+                      {info.href ? (
+                        <a
+                          href={info.href}
+                          className="text-base font-light transition-colors duration-200 hover:underline"
+                          style={{ color: 'var(--muted-foreground)' }}
+                        >
+                          {info.value}
+                        </a>
+                      ) : (
+                        <p className="text-base font-light" style={{ color: 'var(--muted-foreground)' }}>
+                          {info.value}
+                        </p>
+                      )}
                     </div>
-                  </motion.a>
+                  </motion.div>
                 ))}
               </div>
 
               {/* Social Links */}
-              <div className="space-y-4">
-                <h4
-                  className="text-lg font-black"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  <Globe size={20} className="inline mr-2" />
-                  Connect With Me
-                </h4>
-                <div className="flex gap-4">
+              <motion.div variants={itemVariants} className="space-y-6">
+                <h3 className="font-heading text-xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+                  CONNECT WITH ME
+                </h3>
+                <div className="flex space-x-6">
                   {socialLinks.map((social) => (
                     <motion.a
                       key={social.label}
@@ -237,55 +172,33 @@ export function Contact() {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.1, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className="p-3 rounded-full transition-all duration-200 shadow-lg border-2"
+                      className="p-3 border transition-all duration-200"
                       style={{
                         backgroundColor: 'var(--card)',
-                        borderColor: social.color,
-                        color: social.color,
-                        backdropFilter: 'blur(10px)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = social.hoverBg;
-                        e.currentTarget.style.color = social.hoverBg === 'var(--background)' ? 'var(--accent)' : 'var(--background)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--card)';
-                        e.currentTarget.style.color = social.color;
+                        borderColor: 'var(--border)',
+                        color: 'var(--muted-foreground)'
                       }}
                     >
-                      <social.icon size={24} />
+                      <social.icon size={20} strokeWidth={1.5} />
                       <span className="sr-only">{social.label}</span>
                     </motion.a>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Availability */}
+              {/* Availability Status */}
               <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="p-6 rounded-xl border-2 shadow-lg"
+                variants={itemVariants}
+                className="p-6 border space-y-4"
                 style={{
-                  backgroundColor: 'rgba(138,234,146, 0.1)',
-                  borderColor: 'var(--accent)',
+                  backgroundColor: 'var(--card)',
+                  borderColor: 'var(--border)',
                 }}
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div
-                    className="w-3 h-3 rounded-full animate-pulse"
-                    style={{ backgroundColor: 'var(--accent)' }}
-                  />
-                  <span
-                    className="font-black"
-                    style={{ color: 'var(--accent)' }}
-                  >
-                    <Flame size={16} className="inline" />
-                    Available for Epic Projects
-                  </span>
-                </div>
-                <p
-                  className="text-sm font-bold"
-                  style={{ color: 'var(--accent)' }}
-                >
+                <h3 className="font-heading text-xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+                  AVAILABLE FOR EPIC PROJECTS
+                </h3>
+                <p className="text-base font-light" style={{ color: 'var(--muted-foreground)' }}>
                   Currently accepting new collaborations, co-founder opportunities, and game-changing projects.
                 </p>
               </motion.div>
@@ -294,149 +207,128 @@ export function Contact() {
             {/* Contact Form */}
             <motion.div variants={itemVariants}>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-black mb-2"
-                      style={{ color: 'var(--accent)' }}
-                    >
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium" style={{ color: 'var(--foreground)' }}>
                       Name *
                     </label>
                     <input
                       type="text"
-                      id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
-                      style={{
-                        backgroundColor: 'var(--card)',
-                        borderColor: 'var(--primary)',
-                        color: 'var(--accent)',
-                      }}
                       placeholder="Your name"
+                      className="w-full px-4 py-3 border transition-all duration-200 focus:outline-none focus:ring-2"
+                      style={{
+                        backgroundColor: 'var(--background)',
+                        borderColor: 'var(--border)',
+                        color: 'var(--foreground)',
+                        ['--tw-ring-color' as any]: 'var(--foreground)',
+                      }}
                     />
                   </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-black mb-2"
-                      style={{ color: 'var(--accent)' }}
-                    >
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium" style={{ color: 'var(--foreground)' }}>
                       Email *
                     </label>
                     <input
                       type="email"
-                      id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
-                      style={{
-                        backgroundColor: 'var(--card)',
-                        borderColor: 'var(--primary)',
-                        color: 'var(--accent)',
-                      }}
                       placeholder="your@email.com"
+                      className="w-full px-4 py-3 border transition-all duration-200 focus:outline-none focus:ring-2"
+                      style={{
+                        backgroundColor: 'var(--background)',
+                        borderColor: 'var(--border)',
+                        color: 'var(--foreground)',
+                        ['--tw-ring-color' as any]: 'var(--foreground)',
+                      }}
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-black mb-2"
-                    style={{ color: 'var(--accent)' }}
-                  >
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium" style={{ color: 'var(--foreground)' }}>
                     Subject *
                   </label>
                   <input
                     type="text"
-                    id="subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors font-bold"
-                    style={{
-                      backgroundColor: 'var(--card)',
-                      borderColor: 'var(--primary)',
-                      color: 'var(--accent)',
-                    }}
                     placeholder="What's the big idea?"
+                    className="w-full px-4 py-3 border transition-all duration-200 focus:outline-none focus:ring-2"
+                    style={{
+                      backgroundColor: 'var(--background)',
+                      borderColor: 'var(--border)',
+                      color: 'var(--foreground)',
+                      ['--tw-ring-color' as any]: 'var(--foreground)',
+                    }}
                   />
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-black mb-2"
-                    style={{ color: 'var(--accent)' }}
-                  >
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium" style={{ color: 'var(--foreground)' }}>
                     Message *
                   </label>
                   <textarea
-                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-colors resize-none font-bold"
-                    style={{
-                      backgroundColor: 'var(--card)',
-                      borderColor: 'var(--primary)',
-                      color: 'var(--accent)',
-                    }}
                     placeholder="Tell me about your vision, your challenges, and how we can build something incredible together..."
+                    className="w-full px-4 py-3 border transition-all duration-200 focus:outline-none focus:ring-2 resize-none"
+                    style={{
+                      backgroundColor: 'var(--background)',
+                      borderColor: 'var(--border)',
+                      color: 'var(--foreground)',
+                      ['--tw-ring-color' as any]: 'var(--foreground)',
+                    }}
                   />
                 </div>
 
-                {/* Submit Button */}
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                  className="w-full flex items-center justify-center gap-3 px-8 py-4 rounded-lg font-black text-lg transition-all duration-300 shadow-2xl"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full flex items-center justify-center gap-3 px-8 py-3 font-sans font-medium transition-all duration-200"
                   style={{
-                    background: isSubmitting
-                      ? 'rgba(107, 114, 128, 0.5)'
-                      : `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`,
-                    color: 'var(--background)',
-                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                    backgroundColor: isSubmitting ? 'var(--muted)' : 'var(--foreground)',
+                    color: isSubmitting ? 'var(--muted-foreground)' : 'var(--background)',
+                    border: `1px solid ${isSubmitting ? 'var(--muted)' : 'var(--foreground)'}`,
                   }}
                 >
                   {isSubmitting ? (
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="w-5 h-5 border-2 border-t-transparent rounded-full"
-                      style={{ borderColor: 'var(--background)' }}
-                    />
+                    <>
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      Sending...
+                    </>
                   ) : (
-                    <Send size={20} />
+                    <>
+                      <Send size={18} strokeWidth={1.5} />
+                      Launch This Message
+                    </>
                   )}
-                  {isSubmitting ? "Launching Message..." : "Launch This Message"}
                 </motion.button>
 
-                {/* Status Messages */}
                 {submitStatus === "success" && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 border-2 rounded-lg font-black"
+                    className="p-4 border"
                     style={{
-                      backgroundColor: 'rgba(138,234,146, 0.1)',
-                      borderColor: 'var(--accent)',
-                      color: 'var(--accent)',
+                      backgroundColor: 'var(--card)',
+                      borderColor: 'var(--border)',
+                      color: 'var(--foreground)',
                     }}
                   >
-                    <CheckCircle size={20} className="inline mr-2" />
-                    Message launched successfully! I'll get back to you faster than a SpaceX rocket.
+                    Message sent successfully! I'll get back to you soon.
                   </motion.div>
                 )}
 
@@ -444,15 +336,14 @@ export function Contact() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 border-2 rounded-lg font-black"
+                    className="p-4 border"
                     style={{
-                      backgroundColor: 'rgba(89,46,131, 0.1)',
-                      borderColor: 'var(--secondary)',
-                      color: 'var(--secondary)',
+                      backgroundColor: 'var(--card)',
+                      borderColor: 'var(--destructive)',
+                      color: 'var(--destructive)',
                     }}
                   >
-                    <XCircle size={20} className="inline mr-2" />
-                    Houston, we have a problem! Try again or hit me up directly via email.
+                    Something went wrong. Please try again.
                   </motion.div>
                 )}
               </form>

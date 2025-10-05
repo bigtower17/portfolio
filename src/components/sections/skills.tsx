@@ -1,28 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code, Database, Cloud, Smartphone, Globe, Zap, Brain, Wrench, Target, TrendingUp, Rocket, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
-
-// Usa variabili CSS per i colori
-const colors = {
-  background: 'var(--background)',
-  primary: 'var(--primary)',
-  secondary: 'var(--secondary)',
-  accent: 'var(--accent)',
-  textLight: 'var(--foreground)',
-  textDark: 'var(--card-foreground)',
-  textGreen: 'var(--textGreen, #4CAF50)',
-};
 
 export function Skills() {
   const [isVisible, setIsVisible] = useState(false);
 
   const skillCategories = [
     {
-      icon: Code,
       title: "Frontend Development",
-      gradient: `linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%)`,
       skills: [
         { name: "React/Next.js", level: 95 },
         { name: "TypeScript", level: 90 },
@@ -31,9 +17,7 @@ export function Skills() {
       ],
     },
     {
-      icon: Database,
       title: "Backend Development",
-      gradient: `linear-gradient(135deg, var(--secondary) 0%, var(--secondary) 100%)`,
       skills: [
         { name: "Node.js", level: 90 },
         { name: "Python", level: 80 },
@@ -42,9 +26,7 @@ export function Skills() {
       ],
     },
     {
-      icon: Cloud,
       title: "DevOps & Cloud",
-      gradient: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`,
       skills: [
         { name: "Docker", level: 85 },
         { name: "AWS", level: 80 },
@@ -53,9 +35,7 @@ export function Skills() {
       ],
     },
     {
-      icon: Smartphone,
       title: "Mobile Development",
-      gradient: `linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%)`,
       skills: [
         { name: "React Native", level: 80 },
         { name: "Flutter", level: 70 },
@@ -90,7 +70,7 @@ export function Skills() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 },
   };
 
@@ -98,6 +78,13 @@ export function Skills() {
     const timer = setTimeout(() => setIsVisible(true), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  const scrollToContact = () => {
+    const contactSection = document.querySelector("#contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section
@@ -114,105 +101,56 @@ export function Skills() {
           className="space-y-16"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center space-y-4">
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", duration: 1 }}
-              className="text-6xl mb-4"
-              style={{ filter: `drop-shadow(0 0 20px var(--primary))` }}
-            >
-              <Brain size={48} strokeWidth={1.5} />
-            </motion.div>
-            <h2
-              className="text-3xl md:text-4xl font-black"
-              style={{
-                background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              My Arsenal of Skills
+          <motion.div variants={itemVariants} className="text-center space-y-8">
+            <h2 className="font-heading text-4xl md:text-6xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+              MY ARSENAL OF SKILLS
             </h2>
-            <p
-              className="text-lg max-w-2xl mx-auto font-bold"
-              style={{ color: 'var(--accent)' }}
-            >
-              A lethal combination of technical prowess and soft skills,
-              constantly evolving with the latest tech trends.
+            <p className="text-lg font-light max-w-2xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
+              A lethal combination of technical prowess and soft skills, constantly evolving with the latest tech trends.
             </p>
-            <div
-              className="w-24 h-1 mx-auto rounded-full"
-              style={{
-                background: `linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%)`,
-              }}
-            />
           </motion.div>
 
-          {/* Technical Skills */}
+          {/* Technical Skills Grid */}
           <motion.div variants={itemVariants} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {skillCategories.map((category, index) => (
+            {skillCategories.map((category, categoryIndex) => (
               <motion.div
                 key={category.title}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="rounded-xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 border-2"
+                whileHover={{ scale: 1.02 }}
+                className="space-y-6 p-6 border"
                 style={{
                   backgroundColor: 'var(--card)',
-                  borderColor: 'var(--primary)',
-                  backdropFilter: 'blur(15px)',
+                  borderColor: 'var(--border)',
                 }}
               >
-                <div className="space-y-6">
-                  {/* Category Header */}
-                  <div className="text-center space-y-3">
-                    <div
-                      className="inline-flex p-4 rounded-full shadow-lg"
-                      style={{ background: category.gradient }}
-                    >
-                      <category.icon size={24} style={{ color: 'var(--background)' }} />
-                    </div>
-                    <h3
-                      className="text-lg font-black"
-                      style={{ color: 'var(--accent)' }}
-                    >
-                      {category.title}
-                    </h3>
-                  </div>
-
-                  {/* Skills with Progress Bars */}
-                  <div className="space-y-4">
-                    {category.skills.map((skill, skillIndex) => (
-                      <div key={skill.name} className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span
-                            className="font-bold"
-                            style={{ color: 'var(--accent)' }}
-                          >
-                            {skill.name}
-                          </span>
-                          <span
-                            className="font-black"
-                            style={{ color: 'var(--primary)' }}
-                          >
-                            {skill.level}%
-                          </span>
-                        </div>
-                        <div
-                          className="w-full rounded-full h-2"
-                          style={{ backgroundColor: 'rgba(128,174,160, 0.2)' }}
-                        >
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={isVisible ? { width: `${skill.level}%` } : { width: 0 }}
-                            transition={{ duration: 1.5, delay: index * 0.1 + skillIndex * 0.1 }}
-                            className="h-2 rounded-full"
-                            style={{ background: category.gradient }}
-                          />
-                        </div>
+                <h3 className="font-heading text-lg tracking-wide" style={{ color: 'var(--foreground)' }}>
+                  {category.title}
+                </h3>
+                <div className="space-y-4">
+                  {category.skills.map((skill, skillIndex) => (
+                    <div key={skill.name} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+                          {skill.name}
+                        </span>
+                        <span className="text-xs font-light" style={{ color: 'var(--muted-foreground)' }}>
+                          {skill.level}%
+                        </span>
                       </div>
-                    ))}
-                  </div>
+                      <div className="h-1 w-full" style={{ backgroundColor: 'var(--muted)' }}>
+                        <motion.div
+                          className="h-full"
+                          style={{ backgroundColor: 'var(--foreground)' }}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          transition={{
+                            duration: 1,
+                            delay: (categoryIndex * 0.1) + (skillIndex * 0.1),
+                            ease: "easeOut",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
             ))}
@@ -220,29 +158,22 @@ export function Skills() {
 
           {/* Tools & Technologies */}
           <motion.div variants={itemVariants} className="space-y-8">
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <Wrench size={24} strokeWidth={2} style={{ color: 'var(--accent)' }} />
-              <h3
-                className="text-2xl font-black"
-                style={{ color: 'var(--accent)' }}
-              >
-                Tools & Technologies
-              </h3>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4">
+            <h3 className="font-heading text-2xl tracking-wide text-center" style={{ color: 'var(--foreground)' }}>
+              TOOLS & TECHNOLOGIES
+            </h3>
+            <div className="flex flex-wrap justify-center gap-3">
               {tools.map((tool, index) => (
                 <motion.div
                   key={tool}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ scale: 1.1, y: -5 }}
-                  className="px-6 py-3 rounded-full shadow-lg font-bold transition-all duration-200 border-2"
+                  whileHover={{ scale: 1.05 }}
+                  className="px-4 py-2 text-sm font-medium border transition-all duration-200"
                   style={{
-                    backgroundColor: 'var(--card)',
-                    borderColor: index % 2 === 0 ? 'var(--primary)' : 'var(--secondary)',
-                    color: 'var(--card-foreground)',
-                    backdropFilter: 'blur(10px)',
+                    backgroundColor: 'var(--muted)',
+                    borderColor: 'var(--border)',
+                    color: 'var(--foreground)'
                   }}
                 >
                   {tool}
@@ -253,55 +184,38 @@ export function Skills() {
 
           {/* Soft Skills */}
           <motion.div variants={itemVariants} className="space-y-8">
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <Target size={24} strokeWidth={2} style={{ color: 'var(--accent)' }} />
-              <h3
-                className="text-2xl font-black"
-                style={{ color: 'var(--accent)' }}
-              >
-                Soft Skills
-              </h3>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {softSkills.map((skill, index) => (
+            <h3 className="font-heading text-2xl tracking-wide text-center" style={{ color: 'var(--foreground)' }}>
+              SOFT SKILLS
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {softSkills.map((item, index) => (
                 <motion.div
-                  key={skill.skill}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="space-y-3 p-4 rounded-xl border-2 shadow-lg transition-all duration-300"
+                  key={item.skill}
+                  whileHover={{ scale: 1.02 }}
+                  className="space-y-3 p-4 border"
                   style={{
                     backgroundColor: 'var(--card)',
-                    borderColor: index % 2 === 0 ? 'var(--primary)' : 'var(--secondary)',
-                    backdropFilter: 'blur(10px)',
+                    borderColor: 'var(--border)',
                   }}
                 >
                   <div className="flex justify-between items-center">
-                    <span
-                      className="font-bold"
-                      style={{ color: 'var(--accent)' }}
-                    >
-                      {skill.skill}
+                    <span className="font-medium" style={{ color: 'var(--foreground)' }}>
+                      {item.skill}
                     </span>
-                    <span
-                      className="text-sm font-black"
-                      style={{ color: 'var(--primary)' }}
-                    >
-                      {skill.level}%
+                    <span className="text-sm font-light" style={{ color: 'var(--muted-foreground)' }}>
+                      {item.level}%
                     </span>
                   </div>
-                  <div
-                    className="w-full rounded-full h-2"
-                    style={{ backgroundColor: 'rgba(128,174,160, 0.2)' }}
-                  >
+                  <div className="h-1 w-full" style={{ backgroundColor: 'var(--muted)' }}>
                     <motion.div
+                      className="h-full"
+                      style={{ backgroundColor: 'var(--foreground)' }}
                       initial={{ width: 0 }}
-                      animate={isVisible ? { width: `${skill.level}%` } : { width: 0 }}
-                      transition={{ duration: 1.5, delay: 1 + index * 0.1 }}
-                      className="h-2 rounded-full"
-                      style={{
-                        background: `linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%)`,
+                      whileInView={{ width: `${item.level}%` }}
+                      transition={{
+                        duration: 1,
+                        delay: index * 0.1,
+                        ease: "easeOut",
                       }}
                     />
                   </div>
@@ -310,53 +224,53 @@ export function Skills() {
             </div>
           </motion.div>
 
-          {/* Learning & Growth */}
+          {/* Always Learning Section */}
           <motion.div
             variants={itemVariants}
-            className="text-center rounded-2xl p-8 relative overflow-hidden"
+            className="text-center space-y-6 p-12 border"
             style={{
-              background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`,
-              color: 'var(--card-foreground)',
+              backgroundColor: 'var(--card)',
+              borderColor: 'var(--border)'
             }}
           >
-            {/* Background decorations */}
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute top-4 right-4 text-4xl opacity-20"
-            >
-              <Zap size={36} strokeWidth={1} />
-            </motion.div>
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-                rotate: [0, 10, -10, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute bottom-4 left-4 text-3xl opacity-30"
-            >
-              <Rocket size={28} strokeWidth={1} />
-            </motion.div>
-
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-              className="inline-block mb-4"
-            >
-              <Zap size={48} />
-            </motion.div>
-            <h3 className="text-2xl font-black mb-4 flex items-center justify-center gap-3">
-              Always Learning, Always Growing
-              <TrendingUp size={24} strokeWidth={2} />
+            <h3 className="font-heading text-3xl md:text-4xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+              ALWAYS LEARNING, ALWAYS GROWING
             </h3>
-            <p className="text-lg opacity-90 max-w-2xl mx-auto font-bold">
-              Technology evolves at breakneck speed, and so do I. Currently diving deep into
-              AI/ML, Web3, and the bleeding edge of software development.
+            <p className="text-lg font-light max-w-3xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
+              Technology evolves at breakneck speed, and so do I. Currently diving deep into AI/ML,
+              Web3, and the bleeding edge of software development.
             </p>
+          </motion.div>
+
+          {/* Call to Action */}
+          <motion.div
+            variants={itemVariants}
+            className="text-center space-y-6 p-12 border"
+            style={{
+              backgroundColor: 'var(--card)',
+              borderColor: 'var(--border)'
+            }}
+          >
+            <h3 className="font-heading text-3xl md:text-4xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+              LET'S BUILD SOMETHING EPIC TOGETHER
+            </h3>
+            <p className="text-lg font-light max-w-2xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
+              Got a wild idea? Need a technical co-founder? Ready to disrupt an industry?
+              Let's turn your vision into reality!
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={scrollToContact}
+              className="px-8 py-3 font-sans font-medium transition-all duration-200"
+              style={{
+                backgroundColor: 'var(--foreground)',
+                color: 'var(--background)',
+                border: '1px solid var(--foreground)',
+              }}
+            >
+              Get In Touch
+            </motion.button>
           </motion.div>
         </motion.div>
       </div>

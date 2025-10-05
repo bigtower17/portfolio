@@ -11,6 +11,8 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+        bebas: ["var(--font-bebas)", "Bebas Neue", "cursive"],
+        heading: ["var(--font-bebas)", "Bebas Neue", "cursive"],
       },
       colors: {
         background: "hsl(var(--background))",

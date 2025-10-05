@@ -1,102 +1,8 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, ArrowRight, Rocket, Zap, Target, CloudLightning, Activity, Shield, Monitor, Timer, Brain, Database, RefreshCw, Construction, Wrench, Sparkles, TrendingUp, Star, Building2, DollarSign } from "lucide-react";
+import { motion } from "framer-motion";
+import { ExternalLink, Github, ArrowRight } from "lucide-react";
 import { useState } from "react";
-
-// UI Components with sober styling
-function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div
-      className={`rounded-xl border-2 shadow-xl transition-all duration-500 ${className}`}
-      style={{
-        backgroundColor: 'var(--card)',
-        borderColor: 'var(--primary)',
-        backdropFilter: 'blur(15px)',
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function CardContent({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`p-6 pt-0 ${className}`}>{children}</div>;
-}
-
-function Badge({ children, variant = "default", className = "", style }: {
-  children: React.ReactNode;
-  variant?: "default" | "secondary";
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  const baseStyle = "inline-flex items-center rounded-full border-2 px-3 py-1 text-xs font-black transition-all duration-300 hover:scale-105";
-  const defaultStyles = {
-    default: {
-      background: `linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%)`,
-      borderColor: 'var(--primary)',
-      color: 'var(--background)',
-    },
-    secondary: {
-      backgroundColor: 'rgba(128,174,160, 0.1)',
-      borderColor: 'var(--primary)',
-      color: 'var(--primary)',
-    },
-  };
-  const finalStyle = style || defaultStyles[variant];
-
-  return (
-    <div className={`${baseStyle} ${className}`} style={finalStyle}>
-      {children}
-    </div>
-  );
-}
-
-function Button({
-  children,
-  variant = "default",
-  size = "default",
-  className = "",
-  onClick,
-  style,
-  ...props
-}: {
-  children: React.ReactNode;
-  variant?: "default" | "ghost";
-  size?: "default" | "sm" | "lg";
-  className?: string;
-  onClick?: () => void;
-  style?: React.CSSProperties;
-}) {
-  const baseStyles = "inline-flex items-center justify-center rounded-lg font-black transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none transform hover:scale-105";
-  const sizes = {
-    default: "h-10 py-2 px-4",
-    sm: "h-8 px-3 text-sm",
-    lg: "h-12 px-8 text-lg",
-  };
-  const buttonStyle = style || (variant === "ghost"
-    ? {
-        backgroundColor: 'transparent',
-        color: 'var(--primary)',
-        border: `1px solid var(--primary)`,
-      }
-    : {
-        background: `linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%)`,
-        color: 'var(--background)',
-        boxShadow: `0 10px 30px var(--primary)25`,
-      });
-
-  return (
-    <button
-      className={`${baseStyles} ${sizes[size]} ${className}`}
-      style={buttonStyle}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-}
 
 export function Projects() {
   const [filter, setFilter] = useState("all");
@@ -113,9 +19,6 @@ export function Projects() {
       live: "https://demo.com",
       featured: true,
       impact: "70% cost reduction",
-      emoji: "cloud",
-      icon: CloudLightning,
-      glowColor: 'var(--primary)',
     },
     {
       id: 2,
@@ -128,9 +31,6 @@ export function Projects() {
       live: "https://demo.com",
       featured: true,
       impact: "10x faster deploys",
-      emoji: "refresh",
-      icon: RefreshCw,
-      glowColor: 'var(--secondary)',
     },
     {
       id: 3,
@@ -143,9 +43,6 @@ export function Projects() {
       live: "https://demo.com",
       featured: true,
       impact: "95% user satisfaction",
-      emoji: "monitor",
-      icon: Monitor,
-      glowColor: 'var(--primary)',
     },
     {
       id: 4,
@@ -157,9 +54,6 @@ export function Projects() {
       github: "https://github.com",
       featured: false,
       impact: "5min deployments",
-      emoji: "construction",
-      icon: Construction,
-      glowColor: 'var(--secondary)',
     },
     {
       id: 5,
@@ -172,9 +66,6 @@ export function Projects() {
       live: "https://demo.com",
       featured: false,
       impact: "iOS + Android in 1 codebase",
-      emoji: "mobile",
-      icon: Activity,
-      glowColor: 'var(--primary)',
     },
     {
       id: 6,
@@ -186,19 +77,16 @@ export function Projects() {
       github: "https://github.com",
       featured: false,
       impact: "Real-time analytics",
-      emoji: "database",
-      icon: Database,
-      glowColor: 'var(--secondary)',
     },
   ];
 
   const categories = [
-    { key: "all", label: "All Projects", color: 'var(--accent)', icon: Target },
-    { key: "cloud", label: "Cloud & AWS", color: 'var(--primary)', icon: CloudLightning },
-    { key: "devops", label: "DevOps", color: 'var(--secondary)', icon: RefreshCw },
-    { key: "fullstack", label: "Full Stack", color: 'var(--primary)', icon: Monitor },
-    { key: "mobile", label: "Mobile", color: 'var(--secondary)', icon: Activity },
-    { key: "backend", label: "Backend", color: 'var(--primary)', icon: Wrench },
+    { key: "all", label: "All Projects" },
+    { key: "cloud", label: "Cloud & AWS" },
+    { key: "devops", label: "DevOps" },
+    { key: "fullstack", label: "Full Stack" },
+    { key: "mobile", label: "Mobile" },
+    { key: "backend", label: "Backend" },
   ];
 
   const filteredProjects = filter === "all" ? projects : projects.filter(project => project.category === filter);
@@ -214,7 +102,7 @@ export function Projects() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 },
   };
 
@@ -240,297 +128,177 @@ export function Projects() {
           className="space-y-16"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center space-y-6">
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.8 }}
-              className="mb-4"
-              style={{ filter: `drop-shadow(0 0 30px var(--primary))` }}
-            >
-              <Rocket size={48} strokeWidth={1.5} />
-            </motion.div>
-            <h2
-              className="text-4xl md:text-6xl font-black tracking-tight"
-              style={{
-                background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Things I've Shipped
+          <motion.div variants={itemVariants} className="text-center space-y-8">
+            <h2 className="font-heading text-4xl md:text-6xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+              THINGS I'VE SHIPPED
             </h2>
-            <p
-              className="text-xl md:text-2xl max-w-3xl mx-auto font-bold"
-              style={{ color: 'var(--accent)' }}
-            >
-              From MVP to scale. Here's what happens when you mix{" "}
-              <strong style={{ color: 'var(--primary)' }}>code</strong>,
-              <strong style={{ color: 'var(--secondary)' }}> creativity</strong>, and{" "}
-              <strong style={{ color: 'var(--primary)' }}>caffeine</strong>.
+            <p className="text-lg font-light max-w-2xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
+              From MVP to scale. Here's what happens when you mix code, creativity, and caffeine.
             </p>
-            <div
-              className="w-32 h-2 mx-auto rounded-full"
-              style={{
-                background: `linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%)`,
-              }}
-            />
           </motion.div>
 
-          {/* Filter Buttons */}
-          <motion.div variants={itemVariants} className="flex justify-center">
-            <div
-              className="flex flex-wrap gap-3 p-3 rounded-2xl border-2 shadow-lg"
-              style={{
-                backgroundColor: 'var(--card)',
-                borderColor: 'var(--primary)',
-                backdropFilter: 'blur(15px)',
-              }}
-            >
-              {categories.map((category) => (
-                <Button
-                  key={category.key}
-                  variant={filter === category.key ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setFilter(category.key)}
-                  className={filter === category.key ? "shadow-lg" : ""}
-                  style={filter !== category.key ? { color: category.color } : {}}
-                >
-                  {category.icon && <category.icon size={16} className="mr-2" />}
-                  {category.label}
-                </Button>
-              ))}
-            </div>
+          {/* Category Filters */}
+          <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3">
+            {categories.map((category) => (
+              <motion.button
+                key={category.key}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setFilter(category.key)}
+                className={`px-4 py-2 text-sm font-medium border transition-all duration-200 ${
+                  filter === category.key
+                    ? 'bg-foreground text-background border-foreground'
+                    : 'bg-background text-foreground border-border hover:border-foreground'
+                }`}
+                style={{
+                  backgroundColor: filter === category.key ? 'var(--foreground)' : 'var(--background)',
+                  color: filter === category.key ? 'var(--background)' : 'var(--foreground)',
+                  borderColor: filter === category.key ? 'var(--foreground)' : 'var(--border)',
+                }}
+              >
+                {category.label}
+              </motion.button>
+            ))}
           </motion.div>
 
           {/* Projects Grid */}
-          <AnimatePresence mode="wait">
-            <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProjects.map((project) => (
+          <motion.div
+            layout
+            className="grid lg:grid-cols-2 gap-8"
+          >
+            {filteredProjects.map((project) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="group"
+                layout
+                variants={itemVariants}
+                whileHover={{ scale: 1.02, y: -5 }}
+                className="group space-y-6 p-8 border transition-all duration-300"
+                style={{
+                  backgroundColor: 'var(--card)',
+                  borderColor: 'var(--border)',
+                }}
               >
-                <Card className="h-full hover:shadow-2xl transition-all duration-500 overflow-hidden">
-                  {/* Project Header - FIXED LAYOUT */}
-                  <div
-                    className="relative p-6 min-h-[120px]"
-                    style={{
-                      background: `linear-gradient(135deg, rgba(128,174,160, 0.1) 0%, rgba(89,46,131, 0.1) 100%)`,
-                    }}
-                  >
-                    {/* Floating Emoji - Top Left */}
-                    <motion.div
-                      animate={{
-                        y: [0, -5, 0],
-                        rotate: [0, 5, -5, 0],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="absolute top-4 left-4 text-3xl z-10"
-                      style={{ filter: `drop-shadow(0 0 15px ${project.glowColor})` }}
-                    >
-                      {project.icon && <project.icon size={28} strokeWidth={1.5} />}
-                    </motion.div>
-
-                    {/* Action Buttons - Top Right */}
-                    <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                      {project.github && (
-                        <motion.a
-                          whileHover={{ scale: 1.2, rotate: 10 }}
-                          whileTap={{ scale: 0.9 }}
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-full shadow-lg transition-colors"
-                          style={{
-                            backgroundColor: 'var(--card)',
-                            color: 'var(--accent)',
-                            border: `2px solid var(--primary)`,
-                          }}
-                        >
-                          <Github size={18} />
-                        </motion.a>
-                      )}
-                      {project.live && (
-                        <motion.a
-                          whileHover={{ scale: 1.2, rotate: -10 }}
-                          whileTap={{ scale: 0.9 }}
-                          href={project.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-full shadow-lg transition-colors"
-                          style={{
-                            backgroundColor: 'var(--card)',
-                            color: 'var(--accent)',
-                            border: `2px solid var(--secondary)`,
-                          }}
-                        >
-                          <ExternalLink size={18} />
-                        </motion.a>
-                      )}
+                {/* Project Header */}
+                <div className="space-y-3">
+                  {project.featured && (
+                    <div className="inline-block">
+                      <span className="px-2 py-1 text-xs font-medium border" style={{
+                        backgroundColor: 'var(--muted)',
+                        borderColor: 'var(--border)',
+                        color: 'var(--foreground)'
+                      }}>
+                        Featured
+                      </span>
                     </div>
+                  )}
 
-                    {/* Featured Badge - Top Center (only if no conflicts) */}
-                    {project.featured && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.5, type: "spring" }}
-                        className="absolute top-2 left-1/2 transform -translate-x-1/2 z-20"
-                      >
-                        <Badge
-                          className="shadow-lg font-black"
-                          style={{
-                            background: `linear-gradient(135deg, var(--secondary) 0%, var(--secondary) 100%)`,
-                            color: 'var(--accent)',
-                            borderColor: 'var(--accent)',
-                          }}
-                        >
-                          <Star size={14} className="mr-1" />
-                          Featured
-                        </Badge>
-                      </motion.div>
-                    )}
-
-                    {/* Impact Badge - Bottom Right */}
-                    <motion.div whileHover={{ scale: 1.05 }} className="absolute bottom-4 right-4 z-10">
-                      <div
-                        className="px-3 py-1 text-xs font-black rounded-full shadow-lg"
-                        style={{
-                          background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`,
-                          color: 'var(--background)',
-                        }}
-                      >
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-heading text-2xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+                          {project.title}
+                        </h3>
+                        <p className="text-sm font-light" style={{ color: 'var(--muted-foreground)' }}>
+                          {project.subtitle}
+                        </p>
+                      </div>
+                      <div className="text-xs font-medium" style={{ color: 'var(--foreground)' }}>
                         {project.impact}
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
+                </div>
 
-                  {/* Project Content */}
-                  <CardContent className="p-6 space-y-4">
-                    <div className="space-y-2">
-                      <h3
-                        className="text-xl font-black transition-all duration-300"
-                        style={{ color: 'var(--accent)' }}
-                      >
-                        {project.title}
-                      </h3>
-                      <p
-                        className="text-sm font-bold"
-                        style={{ color: 'var(--primary)' }}
-                      >
-                        {project.subtitle}
-                      </p>
-                    </div>
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: 'var(--accent)' }}
+                {/* Description */}
+                <p className="text-base font-light leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+                  {project.description}
+                </p>
+
+                {/* Technologies */}
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 py-1 text-xs font-medium border"
+                      style={{
+                        backgroundColor: 'var(--muted)',
+                        borderColor: 'var(--border)',
+                        color: 'var(--foreground)'
+                      }}
                     >
-                      {project.description}
-                    </p>
-                    {/* Technologies */}
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech) => (
-                        <motion.div key={tech} whileHover={{ scale: 1.1, y: -2 }}>
-                          <Badge variant="secondary" className="text-xs transition-colors hover:shadow-lg">
-                            {tech}
-                          </Badge>
-                        </motion.div>
-                      ))}
-                    </div>
-                    
-                    {/* Action Button */}
-                    <div className="pt-2">
-                      <motion.button
-                        whileHover={{ x: 5, scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2 font-black text-sm group-hover:gap-3 transition-all duration-300"
-                        style={{ color: 'var(--primary)' }}
-                      >
-                        <span>Dive Deeper</span>
-                        <ArrowRight size={16} />
-                      </motion.button>
-                    </div>
-                  </CardContent>
-                </Card>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Action Links */}
+                <div className="flex items-center gap-4 pt-4">
+                  {project.github && (
+                    <motion.a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+                      style={{ color: 'var(--muted-foreground)' }}
+                    >
+                      <Github size={16} strokeWidth={1.5} />
+                      Code
+                    </motion.a>
+                  )}
+                  {project.live && (
+                    <motion.a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+                      style={{ color: 'var(--muted-foreground)' }}
+                    >
+                      <ExternalLink size={16} strokeWidth={1.5} />
+                      Live Demo
+                    </motion.a>
+                  )}
+                  <motion.div
+                    whileHover={{ x: 5 }}
+                    className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    <ArrowRight size={16} strokeWidth={1.5} style={{ color: 'var(--muted-foreground)' }} />
+                  </motion.div>
+                </div>
               </motion.div>
             ))}
-            </motion.div>
-          </AnimatePresence>
+          </motion.div>
 
           {/* Call to Action */}
           <motion.div
             variants={itemVariants}
-            className="text-center rounded-3xl p-12 relative overflow-hidden"
+            className="text-center space-y-6 p-12 border"
             style={{
-              background: `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`,
-              color: 'var(--card-foreground)',
+              backgroundColor: 'var(--card)',
+              borderColor: 'var(--border)'
             }}
           >
-            {/* Background decorations */}
-            <motion.div
-              animate={{
-                rotate: [0, 360],
-                scale: [1, 1.1, 1],
+            <h3 className="font-heading text-3xl md:text-4xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+              READY TO BUILD SOMETHING EPIC?
+            </h3>
+            <p className="text-lg font-light max-w-2xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
+              Got a wild idea? Need a technical co-founder? Ready to disrupt an industry?
+              Let's turn your vision into reality!
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={scrollToContact}
+              className="px-8 py-3 font-sans font-medium transition-all duration-200"
+              style={{
+                backgroundColor: 'var(--foreground)',
+                color: 'var(--background)',
+                border: '1px solid var(--foreground)',
               }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="absolute top-4 right-4 opacity-20"
             >
-              <Rocket size={36} strokeWidth={1} />
-            </motion.div>
-            <motion.div
-              animate={{
-                rotate: [360, 0],
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 15,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute bottom-4 left-4 opacity-30"
-            >
-              <Zap size={28} strokeWidth={1} />
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }} className="space-y-6 relative z-10">
-              <h3 className="text-3xl md:text-4xl font-black">
-                Ready to Build Something Epic?
-              </h3>
-              <p className="text-xl opacity-90 max-w-3xl mx-auto font-bold">
-                Got a wild idea? A problem that needs solving? Let's turn your vision into
-                a product that users will love (and investors will notice).
-              </p>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  size="lg"
-                  onClick={scrollToContact}
-                  className="px-12 py-6 text-xl font-black shadow-2xl"
-                  style={{
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--background)',
-                    border: `3px solid var(--background)`,
-                  }}
-                >
-                  <Rocket className="mr-3" size={24} />
-                  Let's Ship It
-                </Button>
-              </motion.div>
-            </motion.div>
+              Let's Ship It
+            </motion.button>
           </motion.div>
         </motion.div>
       </div>

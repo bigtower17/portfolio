@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTheme } from "@/components/theme-provider";
-import { Briefcase as BriefcaseIcon, Skull, Menu, X, Home, User, Briefcase, Brain, MessageSquare, Zap } from "lucide-react";
+import { Menu, X, Home, User, Briefcase, Brain, MessageSquare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Button component with proper TypeScript types
@@ -34,13 +33,43 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     setMounted(true);
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+
+      // Detect active section
+      const sections = ["home", "about", "projects", "skills", "contact"];
+      let currentSection = "home"; // Default to home
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          // More aggressive detection - if the section is in the top half of the viewport
+          if (rect.top <= window.innerHeight / 2 && rect.bottom >= 0) {
+            currentSection = section;
+          }
+        }
+      }
+
+      setActiveSection(currentSection);
+      console.log("Active section:", currentSection); // Debug
+    };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Force initial detection after a short delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      handleScroll();
+    }, 100);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
   }, []);
 
   const navItems = [
@@ -57,11 +86,6 @@ export function Navbar() {
     setIsOpen(false);
   };
 
-  const toggleTheme = () => {
-    if (!mounted) return;
-    const newTheme = theme === "sober" ? "beast" : "sober";
-    setTheme(newTheme);
-  };
 
   if (!mounted) {
     return (
@@ -69,24 +93,27 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex-shrink-0">
-              <span className="text-2xl font-black text-gray-800">Torregrossa.dev</span>
+              <span className="text-3xl font-heading tracking-wide text-gray-800">
+                TORREGROSSA
+                <span className="text-base font-sans">.dev</span>
+              </span>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 {navItems.map((item) => (
                   <span
                     key={item.href}
-                    className="px-3 py-2 rounded-md text-sm font-black text-gray-600"
+                    className="px-3 py-2 rounded-md text-sm font-heading tracking-wide text-gray-600"
                   >
-                    <item.icon size={16} className="mr-2" />
                     {item.label}
                   </span>
                 ))}
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="h-10 w-10 bg-gray-200 rounded-lg"></div>
-              <div className="md:hidden h-10 w-10 bg-gray-200 rounded-lg"></div>
+              <div className="md:hidden">
+                <button className="h-10 w-10 bg-gray-200 rounded-lg"></button>
+              </div>
             </div>
           </div>
         </div>
@@ -94,81 +121,62 @@ export function Navbar() {
     );
   }
 
-  const themeButtonVariants = {
-    initial: { scale: 1, rotate: 0 },
-    hover: { scale: 1.2, rotate: theme === "sober" ? 360 : -360, transition: { duration: 0.5 } },
-    tap: { scale: 0.9, rotate: theme === "sober" ? -15 : 15, transition: { duration: 0.2 } },
-  };
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b-2 border-border theme-transition ${
-        scrolled ? "bg-background/95 backdrop-blur-md" : "bg-background/80 backdrop-blur-sm"
-      }`}
+      className="fixed top-0 w-full z-50 transition-all duration-300"
+      style={{
+        backgroundColor: 'hsl(0, 0%, 8%)',
+        boxShadow: scrolled ? '0 1px 3px rgba(0, 0, 0, 0.1)' : 'none'
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Debug - rimuovere dopo test */}
+        <div className="text-white text-xs bg-black/50 px-2 py-1 rounded">
+          Active: {activeSection || "none"}
+        </div>
         <div className="flex items-center justify-between h-16">
           <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
             <button
               onClick={() => scrollToSection("#home")}
-              className="text-2xl font-black text-primary hover:text-primary/80 transition-colors duration-300"
+              className="font-heading tracking-wide text-white hover:text-white/80 transition-colors duration-300 no-border"
             >
-              Torregrossa.dev
+              <div className="text-2xl leading-none">TORREGROSSA</div>
+              <div className="text-sm font-sans leading-none text-right -mt-1">.dev</div>
             </button>
           </motion.div>
 
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+          <div className="hidden md:block h-full">
+            <div className="ml-10 flex items-center h-full space-x-4">
               {navItems.map((item) => (
                 <motion.button
                   key={item.href}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => scrollToSection(item.href)}
-                  className="px-3 py-2 rounded-md text-sm font-black transition-all duration-300 text-foreground hover:text-primary hover:bg-primary/10 border-2 border-transparent hover:border-primary/20 flex items-center"
+                  className={`px-4 text-sm font-heading tracking-wide transition-all duration-300 h-full ${
+                    activeSection === item.href.replace("#", "") ? 'active' : ''
+                  }`}
                 >
-                  <item.icon className="w-4 h-4 mr-2" />
                   {item.label}
                 </motion.button>
               ))}
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <motion.div variants={themeButtonVariants} initial="initial" whileHover="hover" whileTap="tap">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="relative"
-              >
-                {theme === "sober" ? (
-                  <>
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full p-1 animate-pulse text-white">
-                      <Zap size={10} />
-                    </span>
-                    <Skull size={20} />
-                  </>
-                ) : (
-                  <BriefcaseIcon size={20} />
-                )}
-                <span className="sr-only">{theme === "sober" ? "Activate Cyber Mode" : "Super Sobra"}</span>
-              </Button>
-            </motion.div>
-
+          <div className="flex items-center">
             <div className="md:hidden">
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  {isOpen ? <X size={20} /> : <Menu size={20} />}
-                </Button>
-              </motion.div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-2 text-white hover:text-white/80 transition-colors duration-200"
+              >
+                {isOpen ? <X size={20} /> : <Menu size={20} />}
+              </motion.button>
             </div>
           </div>
         </div>
@@ -180,7 +188,8 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden border-t-2 border-border bg-background/98 backdrop-blur-md"
+              className="md:hidden border-t border-white/20"
+              style={{ backgroundColor: 'hsl(0, 0%, 8%)' }}
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {navItems.map((item, index) => (
@@ -191,9 +200,10 @@ export function Navbar() {
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ x: 10, scale: 1.02 }}
                     onClick={() => scrollToSection(item.href)}
-                    className="block w-full text-left px-3 py-2 rounded-md transition-all duration-300 font-black text-foreground hover:text-primary hover:bg-primary/10 border-2 border-transparent hover:border-primary/20"
+                    className={`block w-full text-left px-4 py-3 transition-all duration-300 font-heading tracking-wide ${
+                      activeSection === item.href.replace("#", "") ? 'active' : ''
+                    }`}
                   >
-                    <item.icon size={16} className="mr-2" />
                     {item.label}
                   </motion.button>
                 ))}
