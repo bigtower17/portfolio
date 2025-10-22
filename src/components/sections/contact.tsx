@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, BookOpen } from "lucide-react";
 import { useState } from "react";
 
 export function Contact() {
@@ -71,9 +71,9 @@ export function Contact() {
       href: "https://linkedin.com",
     },
     {
-      icon: Twitter,
-      label: "Twitter",
-      href: "https://twitter.com",
+      icon: BookOpen,
+      label: "Substack",
+      href: "https://substack.com/@torregrossa",
     },
   ];
 
