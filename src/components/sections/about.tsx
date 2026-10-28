@@ -1,73 +1,55 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Code, Award, Globe, Cloud, Rocket, Zap, Brain, Lightbulb, Users, Target, Flame, Sparkles, TrendingUp, Building2 } from "lucide-react";
-
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-function Card({ children, className = "" }: CardProps) {
-  return (
-    <div 
-      className={`rounded-xl border-2 shadow-xl transition-all duration-300 bg-card border-border ${className}`}
-      style={{ 
-        backdropFilter: 'blur(10px)'
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function CardContent({ children, className = "" }: CardProps) {
-  return (
-    <div className={`p-6 ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-interface BadgeProps {
-  children: React.ReactNode;
-  variant?: "default" | "secondary";
-  className?: string;
-}
-
-function Badge({ children, variant = "default", className = "" }: BadgeProps) {
-  const baseStyle = "inline-flex items-center rounded-full border-2 px-3 py-1 text-xs font-black transition-all duration-300 hover:scale-105";
-  
-  if (variant === "secondary") {
-    return (
-      <div 
-        className={`${baseStyle} ${className} bg-primary/10 border-primary text-primary`}
-      >
-        {children}
-      </div>
-    );
-  }
-  
-  return (
-    <div 
-      className={`${baseStyle} ${className} bg-primary border-primary text-primary-foreground`}
-    >
-      {children}
-    </div>
-  );
-}
 
 export function About() {
   const stats = [
-    { icon: Rocket, label: "Years Shipping Code", value: "6+" },
-    { icon: Code, label: "Products Launched", value: "25+" },
-    { icon: Globe, label: "Global Teams", value: "10+" },
-    { icon: Cloud, label: "Cloud Deployments", value: "15+" },
+    { label: "EU project portfolio", value: "€4.5M" },
+    { label: "EU projects led as PM", value: "20" },
+    { label: "Platforms built since 2024", value: "12" },
+    { label: "Spoken languages", value: "4" },
   ];
 
   const technologies = [
-    "Node.js", "React", "Vue", "Python", "C#", "Go", 
-    "PostgreSQL", "Docker", "AWS", "Terraform", "React Native"
+    "TypeScript", "Next.js", "React", "Node.js", "Go", "Python", "FastAPI",
+    "PostgreSQL", "Redis", "AWS", "GCP", "Terraform", "Docker", "Kubernetes",
+    "GitHub Actions", "LangChain",
+  ];
+
+  const experience = [
+    {
+      company: "Monetito Payments",
+      roles: ["CTO · Jan 2026 – Present", "IT Manager · Jul – Dec 2025"],
+      description:
+        "Technical strategy and hands-on execution for a fintech startup: architecture, cloud, backend, team and vendors. Led a 3-person product team that took dopopay and Monetito Express from zero to go-to-market in 4 months, with beta tests on selected customers; dopopay reached 200+ merchants in its first 5 months. Also built the back office running a network of ~1,000 clients and 80+ agents. As IT Manager, bridged business requirements and technical delivery across internal and external teams.",
+    },
+    {
+      company: "Freelance",
+      roles: ["Software & Cloud Engineer · Feb 2024 – Present"],
+      description:
+        "AI backends, cloud infrastructure and full-stack products: from an agentic IT support assistant on GCP to an on-premise Proxmox cluster.",
+    },
+    {
+      company: "PRISM Impresa Sociale · Promimpresa",
+      roles: ["Senior EU Project Manager · Nov 2018 – Dec 2024"],
+      description:
+        "Lead PM on 20 international projects (Erasmus+, Interreg, COSME) with a €4.5M total portfolio, and Lead PM at the Erasmus+ Knowledge Alliance Cluster Meeting.",
+    },
+  ];
+
+  const education = [
+    { title: "Master's in Theoretical and Applied Linguistics", detail: "Università degli Studi di Pavia · 2018" },
+    { title: "Bachelor's in Modern Languages and Cultures", detail: "Università Kore di Enna · 2015" },
+  ];
+
+  const ibmCertifications = [
+    "GenAI Apps with Python",
+    "AI Apps with Python and Flask",
+    "Python for Data Science & AI",
+    "Prompt Engineering",
+    "GenAI Applications",
+    "Intro to AI",
   ];
 
   const containerVariants = {
@@ -85,23 +67,16 @@ export function About() {
     visible: { opacity: 1, y: 0 },
   };
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <section 
-      id="about" 
+    <section
+      id="about"
       className="py-20 bg-background"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.05 }}
           variants={containerVariants}
           className="space-y-16"
         >
@@ -116,31 +91,57 @@ export function About() {
             {/* Main Content */}
             <motion.div variants={itemVariants} className="lg:col-span-2 space-y-12">
               <div className="space-y-8 text-lg leading-relaxed font-light" style={{ color: 'var(--muted-foreground)' }}>
-                <motion.p
-                  whileHover={{ x: 10 }}
-                  className="transition-all duration-300"
-                >
-                  Plot twist: After 6 years managing complex EU-funded projects, I had an epiphany.
-                  Why manage other people's code when I could write the future myself?
-                </motion.p>
+                <p>
+                  After 6 years managing EU-funded digitalization and innovation projects, I made a bold shift
+                  into tech, driven by curiosity and a deep love for technology.
+                </p>
 
-                <motion.p
-                  whileHover={{ x: 10 }}
-                  className="transition-all duration-300"
-                >
-                  Now I live at the intersection of shipping fast and building right.
-                  I'm AWS Certified (SAA-C03) and constantly learning the next big thing in DevOps,
-                  automation, and infrastructure-as-code.
-                </motion.p>
+                <p>
+                  Today I lead engineering end to end: technical strategy, architecture, team and vendors,
+                  while staying hands-on in the code. My work sits at the intersection of web development,
+                  cloud infrastructure and production LLM systems, with a growing focus on DevOps,
+                  CI/CD automation and infrastructure as code.
+                </p>
 
-                <motion.p
-                  whileHover={{ x: 10 }}
-                  className="transition-all duration-300"
-                >
-                  Secret weapon: My background in theoretical linguistics gives me a superpower
-                  for spotting patterns and building systems that actually make sense.
-                </motion.p>
+                <p>
+                  My linguistics background gives me a sharp eye for structure, in syntax and in systems,
+                  and a knack for connecting disciplines.
+                </p>
               </div>
+
+              {/* Experience */}
+              <motion.div
+                variants={itemVariants}
+                className="space-y-6"
+              >
+                <h3 className="font-heading text-2xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+                  EXPERIENCE
+                </h3>
+                <ol className="space-y-8 border-l pl-6" style={{ borderColor: 'var(--border)' }}>
+                  {experience.map((item) => (
+                    <li key={item.company} className="relative space-y-2">
+                      <span
+                        aria-hidden
+                        className="absolute -left-[29px] top-2 h-2 w-2"
+                        style={{ backgroundColor: 'var(--foreground)' }}
+                      />
+                      <div className="text-lg font-medium" style={{ color: 'var(--foreground)' }}>
+                        {item.company}
+                      </div>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1">
+                        {item.roles.map((role) => (
+                          <span key={role} className="text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--muted-foreground)' }}>
+                            {role}
+                          </span>
+                        ))}
+                      </div>
+                      <p className="text-base font-light leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+                        {item.description}
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+              </motion.div>
 
               {/* Technologies */}
               <motion.div
@@ -148,7 +149,7 @@ export function About() {
                 className="space-y-6"
               >
                 <h3 className="font-heading text-2xl tracking-wide" style={{ color: 'var(--foreground)' }}>
-                  MY TOOLKIT
+                  CORE STACK
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {technologies.map((tech, index) => (
@@ -170,35 +171,6 @@ export function About() {
                   ))}
                 </div>
               </motion.div>
-
-              {/* What I Do */}
-              <motion.div
-                variants={itemVariants}
-                className="space-y-6"
-              >
-                <h3 className="font-heading text-2xl tracking-wide" style={{ color: 'var(--foreground)' }}>
-                  WHAT I ACTUALLY DO
-                </h3>
-                <div className="space-y-3">
-                  {[
-                    "Full-stack apps that users love",
-                    "CI/CD pipelines that just work",
-                    "Cloud infrastructure that scales",
-                    "Infrastructure-as-Code magic",
-                    "Cross-platform mobile apps",
-                    "Zero-to-one product development"
-                  ].map((text, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ x: 10 }}
-                      className="text-base font-light transition-all duration-300"
-                      style={{ color: 'var(--muted-foreground)' }}
-                    >
-                      {text}
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
             </motion.div>
 
             {/* Sidebar minimalista */}
@@ -212,14 +184,21 @@ export function About() {
                   borderColor: 'var(--border)'
                 }}
               >
+                <Image
+                  src="/saabadge.png"
+                  alt="AWS Certified Solutions Architect – Associate badge"
+                  width={120}
+                  height={120}
+                  className="mx-auto"
+                />
                 <h3 className="font-heading text-xl tracking-wide" style={{ color: 'var(--foreground)' }}>
                   AWS CERTIFIED
                 </h3>
                 <p className="text-sm font-light" style={{ color: 'var(--muted-foreground)' }}>
-                  Solutions Architect Associate
+                  Solutions Architect – Associate
                 </p>
                 <div className="text-xs font-medium" style={{ color: 'var(--foreground)' }}>
-                  SAA-C03
+                  SAA-C03 · May 2025
                 </div>
               </motion.div>
 
@@ -248,75 +227,46 @@ export function About() {
                 ))}
               </div>
 
-              {/* Startup Mode */}
+              {/* Education & Certifications */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="space-y-4 p-6 border"
+                className="space-y-6 p-6 border"
                 style={{
                   backgroundColor: 'var(--card)',
                   borderColor: 'var(--border)'
                 }}
               >
-                <h3 className="font-heading text-xl tracking-wide" style={{ color: 'var(--foreground)' }}>
-                  STARTUP MODE: ON
-                </h3>
-                <div className="space-y-2 text-sm font-light" style={{ color: 'var(--muted-foreground)' }}>
-                  {[
-                    "Zero-to-one mindset",
-                    "Remote-first, global reach",
-                    "Early-stage collaborations",
-                    "Product-driven solutions",
-                    "Growth hacking approach",
-                    "Unicorn potential seeker"
-                  ].map((text, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ x: 5 }}
-                      className="transition-all duration-300"
-                    >
-                      {text}
-                    </motion.div>
+                <div className="space-y-4">
+                  <h3 className="font-heading text-xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+                    EDUCATION
+                  </h3>
+                  {education.map((item) => (
+                    <div key={item.title} className="space-y-1">
+                      <div className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+                        {item.title}
+                      </div>
+                      <div className="text-xs font-light" style={{ color: 'var(--muted-foreground)' }}>
+                        {item.detail}
+                      </div>
+                    </div>
                   ))}
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-heading text-xl tracking-wide" style={{ color: 'var(--foreground)' }}>
+                    IBM CERTIFICATIONS
+                  </h3>
+                  <div className="space-y-1 text-sm font-light" style={{ color: 'var(--muted-foreground)' }}>
+                    {ibmCertifications.map((cert) => (
+                      <div key={cert}>{cert}</div>
+                    ))}
+                  </div>
+                  <div className="text-xs font-medium" style={{ color: 'var(--foreground)' }}>
+                    Oct – Nov 2025
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
           </div>
-
-          {/* Call to Action minimalista */}
-          <motion.div
-            variants={itemVariants}
-            className="text-center space-y-8 p-12 border"
-            style={{
-              backgroundColor: 'var(--card)',
-              borderColor: 'var(--border)'
-            }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.01 }}
-              className="space-y-6"
-            >
-              <h3 className="font-heading text-3xl md:text-4xl tracking-wide" style={{ color: 'var(--foreground)' }}>
-                READY TO BUILD THE NEXT BIG THING?
-              </h3>
-              <p className="text-lg font-light max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-                Whether you're a startup founder with a crazy idea or an established company ready to disrupt,
-                let's ship something that users will love and competitors will envy!
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => scrollToSection("#contact")}
-                className="px-8 py-3 font-sans font-medium transition-all duration-200"
-                style={{
-                  backgroundColor: 'var(--foreground)',
-                  color: 'var(--background)',
-                  border: '1px solid var(--foreground)',
-                }}
-              >
-                Let's Build Something Epic
-              </motion.button>
-            </motion.div>
-          </motion.div>
         </motion.div>
       </div>
     </section>

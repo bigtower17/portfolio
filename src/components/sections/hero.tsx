@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail, Rocket, Zap, Code2, Building2, Ship, Target, Globe, Flame, Briefcase, Users } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
+import { site } from "@/lib/site";
 
 // Temporary Button component with sober colors
 function Button({
@@ -112,7 +113,7 @@ export function Hero() {
               className="text-xl md:text-2xl lg:text-3xl font-sans font-light tracking-wide"
               style={{ color: 'var(--muted-foreground)' }}
             >
-              Software Engineer
+              {site.role}
             </motion.div>
 
             {/* SVG Graphic Element */}
@@ -171,8 +172,8 @@ export function Hero() {
               className="max-w-2xl mx-auto text-lg md:text-xl font-light leading-relaxed"
               style={{ color: 'var(--muted-foreground)' }}
             >
-              Transforming ideas into scalable digital solutions.
-              From concept to deployment, crafting software that matters.
+              Engineering leader and hands-on builder. Architecture, cloud, backend and team:
+              I take products from first design to production, from LLM systems to full-stack platforms.
             </motion.p>
 
             {/* CTA Buttons minimalisti */}
@@ -218,9 +219,9 @@ export function Hero() {
               className="flex justify-center space-x-8 mt-12"
             >
               {[
-                { icon: Github, href: "https://github.com/bigtower17", label: "GitHub" },
-                { icon: Linkedin, href: "https://www.linkedin.com/in/bentorregrossa/", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:beniamino@torregrossa.dev", label: "Email" },
+                { icon: Github, href: site.github, label: "GitHub" },
+                { icon: Linkedin, href: site.linkedin, label: "LinkedIn" },
+                { icon: Mail, href: `mailto:${site.email}`, label: "Email" },
               ].map(({ icon: Icon, href, label }) => (
                 <motion.a
                   key={label}
