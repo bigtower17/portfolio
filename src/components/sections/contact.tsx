@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Github, Linkedin, BookOpen } from "lucide-react";
+import { Mail, MapPin, Send, Github, Linkedin } from "lucide-react";
 import { useState } from "react";
+import { site } from "@/lib/site";
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -11,24 +12,15 @@ export function Contact() {
     subject: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success">("idle");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Static export has no backend: hand the message off to the visitor's email client
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simula invio form
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    }
+    const body = `${formData.message}\n\n${formData.name}\n${formData.email}`;
+    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}`;
+    setSubmitStatus("success");
+    setTimeout(() => setSubmitStatus("idle"), 8000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -42,19 +34,19 @@ export function Contact() {
     {
       icon: Mail,
       label: "Email",
-      value: "hello@torregrossa.dev",
-      href: "mailto:hello@torregrossa.dev",
+      value: site.email,
+      href: `mailto:${site.email}`,
     },
     {
-      icon: Phone,
-      label: "Phone",
-      value: "+39 123 456 7890",
-      href: "tel:+39123456789",
+      icon: Linkedin,
+      label: "LinkedIn",
+      value: "linkedin.com/in/bentorregrossa",
+      href: site.linkedin,
     },
     {
       icon: MapPin,
       label: "Location",
-      value: "Italy",
+      value: site.location,
       href: null,
     },
   ];
@@ -63,17 +55,12 @@ export function Contact() {
     {
       icon: Github,
       label: "GitHub",
-      href: "https://github.com",
+      href: site.github,
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      href: "https://linkedin.com",
-    },
-    {
-      icon: BookOpen,
-      label: "Substack",
-      href: "https://substack.com/@torregrossa",
+      href: site.linkedin,
     },
   ];
 
@@ -109,10 +96,10 @@ export function Contact() {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center space-y-8">
             <h2 className="font-heading text-4xl md:text-6xl tracking-wide" style={{ color: 'var(--foreground)' }}>
-              LET'S BUILD SOMETHING EPIC TOGETHER
+              LET&apos;S TALK
             </h2>
             <p className="text-lg font-light max-w-2xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
-              Skip the small talk. Let's dive straight into how we can create something amazing together.
+              CTO or head-of-engineering roles, freelance contracts or a technical conversation: tell me what you&apos;re building.
             </p>
           </motion.div>
 
@@ -143,6 +130,8 @@ export function Contact() {
                       {info.href ? (
                         <a
                           href={info.href}
+                          target={info.href.startsWith("http") ? "_blank" : undefined}
+                          rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
                           className="text-base font-light transition-colors duration-200 hover:underline"
                           style={{ color: 'var(--muted-foreground)' }}
                         >
@@ -196,10 +185,11 @@ export function Contact() {
                 }}
               >
                 <h3 className="font-heading text-xl tracking-wide" style={{ color: 'var(--foreground)' }}>
-                  AVAILABLE FOR EPIC PROJECTS
+                  OPEN TO NEW ROLES
                 </h3>
                 <p className="text-base font-light" style={{ color: 'var(--muted-foreground)' }}>
-                  Currently accepting new collaborations, co-founder opportunities, and game-changing projects.
+                  Looking for CTO, head of engineering or tech lead positions, in any industry.
+                  Also available for freelance work on AI backends, cloud infrastructure and full-stack products.
                 </p>
               </motion.div>
             </motion.div>
@@ -294,27 +284,17 @@ export function Contact() {
 
                 <motion.button
                   type="submit"
-                  disabled={isSubmitting}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   className="w-full flex items-center justify-center gap-3 px-8 py-3 font-sans font-medium transition-all duration-200"
                   style={{
-                    backgroundColor: isSubmitting ? 'var(--muted)' : 'var(--foreground)',
-                    color: isSubmitting ? 'var(--muted-foreground)' : 'var(--background)',
-                    border: `1px solid ${isSubmitting ? 'var(--muted)' : 'var(--foreground)'}`,
+                    backgroundColor: 'var(--foreground)',
+                    color: 'var(--background)',
+                    border: '1px solid var(--foreground)',
                   }}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send size={18} strokeWidth={1.5} />
-                      Launch This Message
-                    </>
-                  )}
+                  <Send size={18} strokeWidth={1.5} />
+                  Send Message
                 </motion.button>
 
                 {submitStatus === "success" && (
@@ -328,22 +308,8 @@ export function Contact() {
                       color: 'var(--foreground)',
                     }}
                   >
-                    Message sent successfully! I'll get back to you soon.
-                  </motion.div>
-                )}
-
-                {submitStatus === "error" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 border"
-                    style={{
-                      backgroundColor: 'var(--card)',
-                      borderColor: 'var(--destructive)',
-                      color: 'var(--destructive)',
-                    }}
-                  >
-                    Something went wrong. Please try again.
+                    Your email app should open with the message ready to send. If it doesn&apos;t, write to{" "}
+                    <a href={`mailto:${site.email}`} className="underline">{site.email}</a>.
                   </motion.div>
                 )}
               </form>

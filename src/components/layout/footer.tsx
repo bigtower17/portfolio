@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Heart } from "lucide-react";
+import { site } from "@/lib/site";
 
 export function Footer() {
   const scrollToTop = () => {
@@ -21,17 +22,17 @@ export function Footer() {
   const socialLinks = [
     {
       icon: Github,
-      href: "https://github.com",
+      href: site.github,
       label: "GitHub",
     },
     {
       icon: Linkedin,
-      href: "https://linkedin.com",
+      href: site.linkedin,
       label: "LinkedIn",
     },
     {
       icon: Mail,
-      href: "mailto:hello@torregrossa.dev",
+      href: `mailto:${site.email}`,
       label: "Email",
     },
   ];
@@ -62,8 +63,7 @@ export function Footer() {
               </div>
             </motion.button>
             <p className="text-base font-light leading-relaxed max-w-md" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-              Full-Stack Engineer obsessed with building products that scale, break barriers, and create real value.
-              Always ready for the next big challenge!
+              {site.role}. Production LLM systems, cloud infrastructure on AWS and GCP and full-stack platforms.
             </p>
             <div className="flex space-x-6">
               {socialLinks.map((social) => (
@@ -110,14 +110,18 @@ export function Footer() {
               LET'S CONNECT
             </h3>
             <div className="space-y-3">
+              <a
+                href={`mailto:${site.email}`}
+                className="block text-base font-light hover:underline"
+                style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+              >
+                {site.email}
+              </a>
               <p className="text-base font-light" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                hello@torregrossa.dev
-              </p>
-              <p className="text-base font-light" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                Based in Italy, Working Globally
+                Based in Sicily, Italy · Working remotely
               </p>
               <p className="text-base font-light" style={{ color: 'var(--background)' }}>
-                Available for Epic Projects
+                Open to CTO & engineering lead roles
               </p>
             </div>
           </div>
