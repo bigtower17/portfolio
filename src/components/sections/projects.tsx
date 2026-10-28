@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ExternalLink, Github } from "lucide-react";
 import { useState } from "react";
 import { site } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 type Category = "fintech" | "ai" | "cloud" | "backend" | "fullstack" | "mobile" | "iot";
 type GroupKey = "monetito" | "freelance" | "oss";
@@ -337,12 +338,11 @@ export function Projects() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setFilter(category.key)}
                 aria-pressed={filter === category.key}
-                className="px-4 py-2 text-sm font-medium border transition-all duration-200"
-                style={{
-                  backgroundColor: filter === category.key ? 'var(--foreground)' : 'var(--background)',
-                  color: filter === category.key ? 'var(--background)' : 'var(--foreground)',
-                  borderColor: filter === category.key ? 'var(--foreground)' : 'var(--border)',
-                }}
+                // globals.css forces every button white with !important; bg-primary is its black-button escape hatch
+                className={cn(
+                  "px-4 py-2 text-sm font-medium border transition-all duration-200",
+                  filter === category.key && "bg-primary"
+                )}
               >
                 {category.label}
               </motion.button>
@@ -355,9 +355,13 @@ export function Projects() {
             if (groupProjects.length === 0) return null;
 
             return (
-              <motion.div key={group.key} variants={itemVariants} className="space-y-8">
-                {/* Group Header */}
-                <div
+              <div key={group.key} className="space-y-8">
+                {/* Group Header: animates on its own, since groups remount when the filter changes */}
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  variants={itemVariants}
                   className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 pb-4 border-b"
                   style={{ borderColor: 'var(--border)' }}
                 >
@@ -376,14 +380,17 @@ export function Projects() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Projects Grid */}
-                <motion.div layout className="grid lg:grid-cols-2 gap-8">
+                <div className="grid lg:grid-cols-2 gap-8">
                   {groupProjects.map((project) => (
                     <motion.article
                       key={project.id}
-                      layout
+                      layout="position"
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.2 }}
                       variants={itemVariants}
                       whileHover={{ y: -4 }}
                       className="flex flex-col gap-6 p-8 border transition-all duration-300"
@@ -488,8 +495,8 @@ export function Projects() {
                       )}
                     </motion.article>
                   ))}
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             );
           })}
 
