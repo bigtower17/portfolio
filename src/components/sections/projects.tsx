@@ -498,7 +498,7 @@ export function Projects() {
                               style={{ color: 'var(--foreground)' }}
                             >
                               <ExternalLink size={16} strokeWidth={1.5} />
-                              {project.liveLabel ?? \"Product site\"}
+                              {project.liveLabel ?? "Product site"}
                             </motion.a>
                           )}
                           {project.repo && (
