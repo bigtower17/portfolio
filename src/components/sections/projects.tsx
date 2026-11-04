@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Category = "fintech" | "ai" | "cloud" | "backend" | "fullstack" | "mobile" | "iot";
-type GroupKey = "monetito" | "freelance" | "oss";
+type GroupKey = "monetito" | "freelance" | "own" | "oss";
 
 interface Project {
   id: string;
@@ -23,6 +23,7 @@ interface Project {
   stack: string[];
   repo?: string;
   live?: string;
+  liveLabel?: string;
 }
 
 const groups: { key: GroupKey; title: string; meta: string[]; description: string }[] = [
@@ -38,6 +39,12 @@ const groups: { key: GroupKey; title: string; meta: string[]; description: strin
     title: "Freelance",
     meta: ["Software & Cloud Engineer · Feb 2024 – Present"],
     description: "Contract work across AI backends, cloud infrastructure and full-stack products.",
+  },
+  {
+    key: "own",
+    title: "Own products & research",
+    meta: ["Personal projects · 2026 – Present"],
+    description: "Products I design, build and run myself, and research where the linguistics degree meets the engineering.",
   },
   {
     key: "oss",
@@ -157,25 +164,12 @@ const projects: Project[] = [
     live: "https://heliosdigital.ai/",
   },
   {
-    id: "whispra",
-    group: "freelance",
-    title: "Whispra",
-    tagline: "End-to-end encrypted chat platform",
-    role: "Full-stack design & development",
-    categories: ["backend", "mobile", "cloud"],
-    highlights: [
-      "Go backend with a WebSocket protocol and RSA/AES/Diffie-Hellman encryption.",
-      "Cross-platform responsive mobile app with end-to-end encryption.",
-      "Deployed on AWS EC2 + ELB with Docker and GitHub Actions.",
-    ],
-    stack: ["Go", "PostgreSQL", "WebSocket", "Expo", "React Native", "TypeScript", "AWS EC2", "Docker"],
-  },
-  {
     id: "proxmox",
     group: "freelance",
     title: "On-premise Proxmox cluster",
     tagline: "Self-hosted infrastructure for a private company",
-    role: "Design, setup & management",
+    role: "Design, setup & management · contract",
+    period: "Mar – Apr 2025",
     categories: ["cloud"],
     highlights: [
       "Automated horizontal scaling and load management.",
@@ -189,7 +183,8 @@ const projects: Project[] = [
     group: "freelance",
     title: "PartyCash",
     tagline: "Event-based cash-flow management",
-    role: "Full-stack developer",
+    role: "Full-stack developer · contract",
+    period: "Jul – Dec 2024",
     categories: ["fullstack", "cloud"],
     highlights: [
       "Refactored a single-tenant white-label app for multi-tenancy, with differential access, report generation and export.",
@@ -202,8 +197,8 @@ const projects: Project[] = [
     group: "freelance",
     title: "Officina in Cloud",
     tagline: "Garage management platform",
-    role: "Full-stack developer",
-    period: "Launched Sep 2025",
+    role: "Full-stack developer · contract",
+    period: "Feb – Dec 2025 · Launched Sep 2025",
     categories: ["fullstack"],
     highlights: [
       "Multi-tenant app for car garages and tyre shops.",
@@ -224,6 +219,41 @@ const projects: Project[] = [
       "QR-code ticket validation and Twilio API integration.",
     ],
     stack: ["Node.js", "Express.js", "PostgreSQL", "React", "TypeScript", "Tailwind CSS", "Twilio"],
+  },
+  {
+    id: "brina",
+    group: "own",
+    title: "Brina",
+    tagline: "End-to-end encrypted ephemeral chat for Slack",
+    role: "Own product",
+    period: "Launching 2026",
+    categories: ["backend", "fullstack"],
+    highlights: [
+      "/brina @colleague opens a two-person room in the browser, for what shouldn't stay in Slack history: passwords, keys, client data.",
+      "Messages vanish 60 seconds after reading; the Go relay forwards only ciphertext and keeps everything in memory.",
+      "Double Ratchet with hybrid post-quantum key exchange (X25519 + ML-KEM-768), encrypted headers and length padding, all in the browser.",
+      "CPace PIN and a spoken safety code against link interception and man-in-the-middle; passkey-protected local keys.",
+    ],
+    stack: ["Go", "React", "TypeScript", "WebCrypto", "Caddy"],
+    live: "https://brina.chat",
+  },
+  {
+    id: "iride",
+    group: "own",
+    title: "Iride",
+    tagline: "Autonomous AI agent on Instagram",
+    role: "Personal research project",
+    period: "Nov 2026 – Present",
+    categories: ["ai", "backend"],
+    highlights: [
+      "Chooses when to wake and whether to publish a post, a story or nothing, drawing on long-term semantic memory; for now everything goes through human approval on Telegram.",
+      "Closed action set against prompt injection: the model only fills typed tool schemas and code executes them, so outside text never becomes a command.",
+      "Mood model on Plutchik's wheel, with inertia and a baseline temperament; it can propose monthly rewrites of its own character, within fixed values checked by a separate reviewer.",
+      "Longitudinal language corpus: every model call is logged with its prompt and the exact persona, character and rule versions, to study how an AI's language and identity shift over time. An interactive 3D map shows the memory embeddings.",
+    ],
+    stack: ["Python", "Claude API", "Instagram Graph API", "fastembed", "SQLite", "systemd"],
+    live: "https://www.instagram.com/iride.immagina/",
+    liveLabel: "Instagram profile",
   },
   {
     id: "openhub2",
@@ -475,7 +505,7 @@ export function Projects() {
                               style={{ color: 'var(--foreground)' }}
                             >
                               <ExternalLink size={16} strokeWidth={1.5} />
-                              Product site
+                              {project.liveLabel ?? "Product site"}
                             </motion.a>
                           )}
                           {project.repo && (
