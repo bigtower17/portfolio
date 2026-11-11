@@ -8,4 +8,6 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/bentorregrossa/",
   github: "https://github.com/bigtower17",
   githubHandle: "bigtower17",
+  // Iride's public pages (/mondo/, /mente/), served live by her VPS
+  iride: "https://iride.torregrossa.dev",
 };
