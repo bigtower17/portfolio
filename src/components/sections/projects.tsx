@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
-import { useState } from "react";
+import { ExternalLink, Github, Maximize2 } from "lucide-react";
+import Image from "next/image";
+import { useCallback, useState } from "react";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { LiveView, type LiveViewItem } from "./live-view";
 
 type Category = "fintech" | "ai" | "cloud" | "backend" | "fullstack" | "mobile" | "iot";
 type GroupKey = "monetito" | "freelance" | "own" | "oss";
@@ -24,6 +26,8 @@ interface Project {
   repo?: string;
   live?: string;
   liveLabel?: string;
+  // Live pages shown as previews that open full screen
+  views?: LiveViewItem[];
 }
 
 const groups: { key: GroupKey; title: string; meta: string[]; description: string }[] = [
@@ -249,11 +253,25 @@ const projects: Project[] = [
       "Chooses when to wake and whether to publish a post, a story or nothing, drawing on long-term semantic memory; for now everything goes through human approval on Telegram.",
       "Closed action set against prompt injection: the model only fills typed tool schemas and code executes them, so outside text never becomes a command.",
       "Mood model on Plutchik's wheel, with inertia and a baseline temperament; it can propose monthly rewrites of its own character, within fixed values checked by a separate reviewer.",
-      "Longitudinal language corpus: every model call is logged with its prompt and the exact persona, character and rule versions, to study how an AI's language and identity shift over time. An interactive 3D map shows the memory embeddings.",
+      "Longitudinal language corpus: every model call is logged with its prompt and the exact persona, character and rule versions, to study how an AI's language and identity shift over time.",
     ],
-    stack: ["Python", "Claude API", "Instagram Graph API", "fastembed", "SQLite", "systemd"],
+    stack: ["Python", "Claude API", "Instagram Graph API", "fastembed", "SQLite", "systemd", "three.js"],
     live: "https://www.instagram.com/iride.immagina/",
     liveLabel: "Instagram profile",
+    views: [
+      {
+        title: "Her world",
+        caption: "The neighbourhood she imagined, as a 3D diorama: she places the spots, each with the photos she posted there.",
+        url: `${site.iride}/mondo/`,
+        poster: "/iride/mondo.jpg",
+      },
+      {
+        title: "Her mind",
+        caption: "Values, memories and posts as nodes, linked by meaning through embeddings; colour by type or by the emotion she felt.",
+        url: `${site.iride}/mente/`,
+        poster: "/iride/mente.jpg",
+      },
+    ],
   },
   {
     id: "openhub2",
@@ -310,6 +328,8 @@ const categories: { key: Category | "all"; label: string }[] = [
 
 export function Projects() {
   const [filter, setFilter] = useState<Category | "all">("all");
+  const [view, setView] = useState<LiveViewItem | null>(null);
+  const closeView = useCallback(() => setView(null), []);
 
   const filteredProjects = filter === "all" ? projects : projects.filter(project => project.categories.includes(filter));
 
@@ -473,6 +493,60 @@ export function Projects() {
                         ))}
                       </ul>
 
+                      {/* Live views: a plain link that opens in place (modifier clicks still open a new tab) */}
+                      {project.views && (
+                        <div className="space-y-3">
+                          <div className="text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--muted-foreground)' }}>
+                            Look inside · live, updated hourly
+                          </div>
+                          <div className="grid sm:grid-cols-2 gap-4">
+                            {project.views.map((item) => (
+                              <a
+                                key={item.url}
+                                href={item.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(event) => {
+                                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                                  event.preventDefault();
+                                  setView(item);
+                                }}
+                                className="group block border transition-colors duration-200"
+                                style={{ borderColor: 'var(--border)' }}
+                              >
+                                <div className="relative aspect-[16/10] overflow-hidden" style={{ backgroundColor: '#0b0d12' }}>
+                                  <Image
+                                    src={item.poster}
+                                    alt={`Preview of ${item.title.toLowerCase()}`}
+                                    width={920}
+                                    height={575}
+                                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                  />
+                                  <span
+                                    className="absolute bottom-2 right-2 flex items-center gap-1.5 px-2 py-1 text-xs font-medium"
+                                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.65)', color: '#fff' }}
+                                  >
+                                    <Maximize2 size={12} strokeWidth={1.5} />
+                                    Explore
+                                  </span>
+                                </div>
+                                <div className="p-3 space-y-1">
+                                  <div className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+                                    {item.title}
+                                  </div>
+                                  <div className="text-sm font-light leading-snug" style={{ color: 'var(--muted-foreground)' }}>
+                                    {item.caption}
+                                  </div>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                          <p className="text-xs font-light" style={{ color: 'var(--muted-foreground)' }}>
+                            The pages are in Italian, like her.
+                          </p>
+                        </div>
+                      )}
+
                       {/* Stack */}
                       {project.stack.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-auto">
@@ -562,6 +636,7 @@ export function Projects() {
           </motion.div>
         </motion.div>
       </div>
+      <LiveView view={view} onClose={closeView} />
     </section>
   );
 }
